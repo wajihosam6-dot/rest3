@@ -4906,6 +4906,37 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
            wide horizontal lockup; the standalone symbol fits it. --- */
     .nav-brand-img { width: 44px; height: 40px; object-fit: contain; border-radius: 0; border: none; color: var(--text-pure); }
 
+    /* --- SPACING TUNE-UP (user report 2026-11-09): the section headers had
+           no bottom margin, so the header and the content below touched (0px)
+           in the map, guide, gallery, booking and how-it-works sections, and
+           several card/link gaps sat at 6–12px. A light, regular breathing
+           space is added — enough to read as precise, not loose. --- */
+    /* 1) Every section header breathes before its content (was 0px). The
+           strip header already carries 40px and the directory header 48px,
+           so they are left alone. */
+    .section-headline-group { margin-bottom: 28px; }
+    #resort-map .section-head { margin-bottom: 28px; }
+    @media (max-width: 900px) {
+      .section-headline-group { margin-bottom: 24px; }
+      #resort-map .section-head { margin-bottom: 24px; }
+    }
+    /* 2) Title -> subtitle: the map title touched its subtitle (0px); the
+           others sat at 12px (8px on the strip header). One regular 16px
+           gap everywhere. (!important lifts the inline margins on the h2s.) */
+    .section-headline-group h2, #resort-map .section-head h2, .suffo-strip-header h2 { margin-bottom: 16px !important; }
+    /* 3) Map: a little more air inside the info card, between pin and label,
+           and above the note. */
+    .map-panel { gap: var(--sp-200); }
+    .map-marker { gap: 10px; }
+    .map-note { margin-top: var(--sp-500); }
+    /* 4) How-it-works cards: title -> description was 8px. */
+    .step-monolith h3 { margin-bottom: var(--sp-150) !important; }
+    /* 5) Footer links: 12px -> 16px between links. */
+    .footer-nav-list { gap: var(--sp-150); }
+    /* 6) Guide tabs and booking step pills: a touch more room between them. */
+    .guide-tabs-bar { gap: var(--sp-150); }
+    .bk-steps-nav { gap: var(--sp-100); }
+
     @media (prefers-reduced-motion: reduce) {
       .botanical-scroll-art.is-drawn .botanical-svg { animation: none; }
       .draw-path { transition: none; stroke-dashoffset: 0; }
