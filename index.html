@@ -4085,8 +4085,12 @@
         gap: 8px;
         padding: 16px 10px;
       }
+      /* every row shows its description in full on mobile (stacked below
+         the name), nothing hidden */
       .suffo-dir-col-desc {
-        display: none;
+        display: block;
+        grid-column: 1 / -1;
+        line-height: 1.7;
       }
     }
     .suffo-dir-row:hover,
@@ -4852,9 +4856,11 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
       .lifestyle-palm-showcase-card { height: 320px; }
       .botanical-palm { width: 170px !important; bottom: -20px !important; right: -10px !important; opacity: 0.75 !important; }
       .botanical-rose { width: 150px !important; bottom: -15px !important; left: -5px !important; opacity: 0.75 !important; }
-      /* the shared floating preview becomes a static strip above the table */
+      /* the shared floating preview becomes a static strip above the table.
+         4:3 shows the photo with far less cropping than the old 190px band,
+         and it never overlaps the rows (it is in normal flow). */
       .suffo-dir-floating-preview {
-        position: static; width: 100%; height: 190px;
+        position: static; width: 100%; aspect-ratio: 4 / 3; height: auto;
         transform: none; opacity: 0; visibility: hidden;
         margin-bottom: 12px; border-width: 3px;
       }
@@ -4918,8 +4924,9 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
 .suffo-dir-row:hover .suffo-dir-col-desc, .suffo-dir-row.active .suffo-dir-col-desc { color: var(--text-sub) !important; }
 [data-theme="light"] .suffo-dir-row:hover, [data-theme="light"] .suffo-dir-row.active { background-color: rgba(2,132,199,.10) !important; color: var(--text-pure) !important; border-inline-start-color: var(--brand-sky); }
 [data-theme="light"] .suffo-dir-row:hover .suffo-dir-col-desc, [data-theme="light"] .suffo-dir-row.active .suffo-dir-col-desc { color: var(--text-sub) !important; }
-/* 7) Floating directory preview: no polaroid tilt, no heavy white frame. */
-.suffo-dir-floating-preview { transform: translate3d(0,0,0) rotate(0deg) scale(1) !important; border: 1px solid rgba(255,255,255,.16) !important; box-shadow: 0 18px 40px rgba(0,0,0,.45) !important; }
+/* 7) Floating directory preview: REMOVED 2026-11-09 — the owner wants the
+   original slightly-tilted polaroid card (rotate 8deg, white frame) back;
+   the base stylesheet already carries it, so no override here. */
 /* 8) Guide tag pills: soft pink tint, not vivid off-palette blue. */
 .guide-card-badge { background: rgba(236,72,153,.16) !important; color: #F9A8D4 !important; border: 1px solid rgba(249,168,212,.45); }
 /* 9) Facilities + booking + map panels: deep sea instead of a flat saturated teal block (dark theme only). */
@@ -8296,7 +8303,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           var tableRect = dirTable.getBoundingClientRect();
           var relTop = (rowRect.top - tableRect.top) - 30;
           dirPreview.style.top = relTop + 'px';
-          dirPreview.style.left = '42%';
+          dirPreview.style.left = '12px';
           dirPreview.classList.add('is-active');
         });
 
@@ -8558,9 +8565,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     }
 
       /* v10: lift the fixed WhatsApp pill while a sticky section with a
-         bottom dock (facilities / packages) is on screen */
+         bottom dock (facilities / packages) is on screen, and while the
+         directory is on screen (the pill would otherwise cover the rows'
+         text at the bottom-left on phones) */
       if ('IntersectionObserver' in window) {
-        var waLiftSections = [document.getElementById('facilities'), document.getElementById('packages')].filter(Boolean);
+        var waLiftSections = [document.getElementById('facilities'), document.getElementById('packages'), document.getElementById('suffo-directory')].filter(Boolean);
         var waLiftState = {};
         var waLiftObserver = new IntersectionObserver(function (entries) {
           entries.forEach(function (e) { waLiftState[e.target.id] = e.isIntersecting; });
@@ -8582,6 +8591,15 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           if (dirPreview && dirPreviewImg && row.getAttribute('data-img')) {
             dirPreviewImg.setAttribute('src', row.getAttribute('data-img'));
             dirPreview.classList.add('is-active');
+            /* keep the preview on the empty left side, next to the row
+               (same placement as the hover handler; harmless on mobile,
+               where the preview is a static strip) */
+            if (dirTable) {
+              var rowRect = row.getBoundingClientRect();
+              var tableRect = dirTable.getBoundingClientRect();
+              dirPreview.style.top = ((rowRect.top - tableRect.top) - 30) + 'px';
+              dirPreview.style.left = '12px';
+            }
           }
         }
         if ('IntersectionObserver' in window) {
