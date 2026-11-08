@@ -4856,15 +4856,27 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
       .lifestyle-palm-showcase-card { height: 320px; }
       .botanical-palm { width: 170px !important; bottom: -20px !important; right: -10px !important; opacity: 0.75 !important; }
       .botanical-rose { width: 150px !important; bottom: -15px !important; left: -5px !important; opacity: 0.75 !important; }
-      /* the shared floating preview becomes a static strip above the table.
-         4:3 shows the photo with far less cropping than the old 190px band,
-         and it never overlaps the rows (it is in normal flow). */
+      /* the directory preview on phones is the same small tilted card as on
+         desktop (shrunk), floating at the left edge next to the active row —
+         not a strip at the top of the section that scrolls away before the
+         user reaches the rows. The rows reserve the left ~134px for it;
+         title + area share one line and the description sits below in a
+         smaller font, so the whole row reads fully while scrolling. */
       .suffo-dir-floating-preview {
-        position: static; width: 100%; aspect-ratio: 4 / 3; height: auto;
-        transform: none; opacity: 0; visibility: hidden;
-        margin-bottom: 12px; border-width: 3px;
+        position: absolute; width: 112px; height: 84px;
+        transform: translate3d(0,0,0) rotate(6deg) scale(1);
+        opacity: 0; visibility: hidden;
+        margin-bottom: 0; border-width: 3px;
       }
-      .suffo-dir-floating-preview.is-active { opacity: 1; visibility: visible; transform: none; }
+      .suffo-dir-floating-preview.is-active { opacity: 1; visibility: visible; transform: translate3d(0,0,0) rotate(6deg) scale(1); }
+      .suffo-dir-row { grid-template-columns: 1fr auto; gap: 2px 10px; padding: 14px 10px 14px 134px; }
+      .suffo-dir-row:hover, .suffo-dir-row.active { padding: 14px 10px 14px 134px; }
+      .suffo-dir-col-name { font-size: 1rem; }
+      /* area sits on the same line as the title (row 1, second column);
+         without the explicit placement the auto-placement cursor leaves it
+         on its own row below the full-width description */
+      .suffo-dir-col-area { grid-column: 2; grid-row: 1; font-size: 0.8125rem; }
+      .suffo-dir-col-desc { display: block; grid-column: 1 / -1; font-size: 0.75rem; line-height: 1.7; }
       .suffo-dir-row.active .suffo-dir-col-desc { grid-column: 1 / -1; }
       /* morph fan: tighter wings so the centre card is fully visible */
       .package-morph-card.is-right { transform: translate3d(calc(-50% + 64px), 12px, 0) scale(0.92) rotate(2deg); }
@@ -8592,13 +8604,14 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
             dirPreviewImg.setAttribute('src', row.getAttribute('data-img'));
             dirPreview.classList.add('is-active');
             /* keep the preview on the empty left side, next to the row
-               (same placement as the hover handler; harmless on mobile,
-               where the preview is a static strip) */
+               (same placement as the hover handler). On phones the card is
+               shrunk, so it sits a little lower and closer to the edge. */
             if (dirTable) {
               var rowRect = row.getBoundingClientRect();
               var tableRect = dirTable.getBoundingClientRect();
-              dirPreview.style.top = ((rowRect.top - tableRect.top) - 30) + 'px';
-              dirPreview.style.left = '12px';
+              var isPhone = window.innerWidth < 900;
+              dirPreview.style.top = ((rowRect.top - tableRect.top) + (isPhone ? 8 : -30)) + 'px';
+              dirPreview.style.left = isPhone ? '6px' : '12px';
             }
           }
         }
