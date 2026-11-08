@@ -1,0 +1,16 @@
+<!--
+  REST brand asset v1 — Compact symbol, standalone.
+  Two open ripple arcs cut by one horizon line, champagne light point.
+  Pure vector (no text): safe at any size. Strokes use currentColor so the
+  symbol adapts: set color to #F3EEE3 on dark backgrounds, #0C1F24 on light.
+  Clear space: at least one arc-height on all sides. Minimum size: 24px.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-label="REST symbol">
+  <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="48" y1="60" x2="192" y2="60"/>
+    <ellipse cx="120" cy="60" rx="40" ry="10"/>
+    <ellipse cx="120" cy="60" rx="72" ry="18" opacity="0.6"/>
+    <ellipse cx="120" cy="60" rx="104" ry="26" opacity="0.35"/>
+  </g>
+  <circle cx="120" cy="60" r="5" fill="#B9976B"/>
+</svg>

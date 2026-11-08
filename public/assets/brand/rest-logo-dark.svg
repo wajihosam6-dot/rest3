@@ -1,0 +1,29 @@
+<!--
+  REST brand asset v1 — Primary lockup, DARK background version.
+  Approved direction: "The Horizon Ripple" (REST_DESIGN_APPROVAL.md §2).
+  Symbol: two open ripple arcs cut by one horizon line, champagne light point.
+  Wordmark: REST in Cormorant Garamond, wide letterspacing.
+  Ripple line beneath the wordmark breaks into one wave at its center.
+  NOTE: the wordmark is live text and requires Cormorant Garamond at render
+  time (Google Fonts, OFL). Convert the wordmark to outlined paths for the
+  final production logo. No trademark uniqueness is claimed.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" aria-label="REST — The Living Water">
+  <g fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round">
+    <line x1="288" y1="84" x2="432" y2="84"/>
+    <ellipse cx="360" cy="84" rx="46" ry="12"/>
+    <ellipse cx="360" cy="84" rx="86" ry="22" opacity="0.6"/>
+    <ellipse cx="360" cy="84" rx="126" ry="32" opacity="0.35"/>
+  </g>
+  <circle cx="360" cy="84" r="5" fill="#B9976B"/>
+  <text x="360" y="218" text-anchor="middle"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="96" font-weight="500" letter-spacing="30"
+        fill="#F3EEE3">REST</text>
+  <path d="M 240 252 H 336 Q 348 244 360 252 Q 372 260 384 252 H 480"
+        fill="none" stroke="#F3EEE3" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="360" y="292" text-anchor="middle"
+        font-family="Jost, Futura, sans-serif"
+        font-size="16" letter-spacing="9"
+        fill="#F3EEE3" opacity="0.8">THE LIVING WATER</text>
+</svg>
