@@ -1,0 +1,19 @@
+<!--
+  REST brand asset v1 — Horizontal lockup for navigation, DARK background.
+  Symbol + small REST wordmark. No tagline, no ripple line under the wordmark
+  (the symbol already carries the ripple). Live-text wordmark: Cormorant
+  Garamond; convert to outlines for final production.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" role="img" aria-label="REST">
+  <g fill="none" stroke="#F3EEE3" stroke-width="2.5" stroke-linecap="round">
+    <line x1="40" y1="80" x2="140" y2="80"/>
+    <ellipse cx="90" cy="80" rx="26" ry="7"/>
+    <ellipse cx="90" cy="80" rx="48" ry="12" opacity="0.6"/>
+    <ellipse cx="90" cy="80" rx="70" ry="18" opacity="0.35"/>
+  </g>
+  <circle cx="90" cy="80" r="4" fill="#B9976B"/>
+  <text x="180" y="104"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="64" font-weight="500" letter-spacing="18"
+        fill="#F3EEE3">REST</text>
+</svg>
