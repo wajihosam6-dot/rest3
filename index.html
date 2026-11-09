@@ -5176,13 +5176,29 @@ html.admin-mode { scroll-padding-top: 110px; }
 /* ---- sidebar drawer (the side window) ---- */
 #rest-admin-sidebar {
   position: fixed; top: 0; bottom: 0; inset-inline-start: 0; z-index: 99989;
-  width: 420px; max-width: 94vw; display: flex; flex-direction: column;
+  width: 420px; max-width: 94vw; display: flex; flex-direction: row;
   background: #fff; color: #0b2b36; font-family: inherit;
   border-inline-end: 1px solid #d7e6ea; box-shadow: 0 0 60px rgba(0,0,0,.35);
   transform: translateX(0); transition: transform .32s ease;
 }
 #rest-admin-sidebar.closed { transform: translateX(105%); }
 [dir="ltr"] #rest-admin-sidebar.closed { transform: translateX(-105%); }
+/* ---- icon rail: slim vertical strip with one icon button per page ---- */
+#rest-admin-sidebar .ras-rail {
+  width: 60px; flex: none; display: flex; flex-direction: column; align-items: center;
+  gap: 4px; padding: 10px 0; background: #073B4C; overflow-y: auto;
+}
+#rest-admin-sidebar .ras-rail-btn {
+  width: 46px; height: 46px; flex: none; border: 0; border-radius: 12px;
+  background: transparent; color: rgba(255,255,255,.75); font-size: 20px; line-height: 1;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+}
+#rest-admin-sidebar .ras-rail-btn small { font-size: 8.5px; font-weight: 700; color: rgba(255,255,255,.6); }
+#rest-admin-sidebar .ras-rail-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
+#rest-admin-sidebar .ras-rail-btn.active { background: #F9A8D4; color: #073B4C; }
+#rest-admin-sidebar .ras-rail-btn.active small { color: #073B4C; }
+#rest-admin-sidebar .ras-rail-sep { width: 28px; border-top: 1px solid rgba(255,255,255,.2); margin: 4px 0; }
+#rest-admin-sidebar .ras-main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 #rest-admin-sidebar .ras-head {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 16px 16px 12px; border-bottom: 1px solid #e3eef1;
@@ -5353,7 +5369,57 @@ html.admin-mode { scroll-padding-top: 110px; }
 #rest-admin-sidebar .rap-media-meta span { font-size: 11.5px; color: #5b7a85; }
 #rest-admin-sidebar .rap-media-actions { display: flex; flex-direction: column; gap: 4px; flex: none; }
 
-/* ---- inline-editing hints on the page ---- */
+/* ---- dashboard hero: big visual-edit entry + site status ---- */
+#rest-admin-sidebar .ras-hero {
+  margin: 12px 16px 4px; padding: 14px; border-radius: 16px; flex: none;
+  background: linear-gradient(135deg, #073B4C, #0E7490); color: #fff; text-align: center;
+}
+#rest-admin-sidebar .ras-hero b { display: block; font-size: 16px; margin-bottom: 2px; }
+#rest-admin-sidebar .ras-hero p { margin: 0 0 10px; font-size: 12px; opacity: .85; }
+#rest-admin-sidebar .ras-hero-btn {
+  width: 100%; background: #F9A8D4; color: #073B4C; border: 0; border-radius: 999px;
+  padding: 11px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+#rest-admin-sidebar .ras-status {
+  margin: 8px 16px 0; padding: 9px 12px; border-radius: 12px; flex: none;
+  background: #eef6f8; border: 1px solid #e3eef1; font-size: 12px; color: #33565f; line-height: 1.8;
+}
+#rest-admin-sidebar .ras-status b { color: #073B4C; }
+#rest-admin-sidebar .ras-status .ok { color: #0a7a4d; font-weight: 700; }
+#rest-admin-sidebar .ras-status .warn { color: #b45309; font-weight: 700; }
+#rest-admin-sidebar .ras-latest {
+  margin: 8px 16px 0; padding: 9px 12px; border-radius: 12px; flex: none;
+  background: #fdf2f7; border: 1px solid #f9a8d4; font-size: 12px; color: #7a2b4d; line-height: 1.8;
+}
+#rest-admin-sidebar .ras-latest b { color: #073B4C; }
+
+/* ---- visual edit mode: floating toolbar over the live site ---- */
+#rest-visual-bar[hidden] { display: none !important; }
+#rest-visual-bar {
+  position: fixed; top: 12px; right: 50%; transform: translateX(50%);
+  z-index: 99995; display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+  width: min(680px, calc(100vw - 24px));
+  background: rgba(7, 59, 76, .96); color: #fff; border: 1px solid rgba(255,255,255,.22);
+  border-radius: 18px; padding: 10px 12px; backdrop-filter: blur(14px);
+  box-shadow: 0 16px 50px rgba(0,0,0,.5); font-family: inherit;
+}
+#rest-visual-bar .rv-hint { font-size: 13px; font-weight: 700; text-align: center; }
+#rest-visual-bar .rv-hint small { display: block; font-weight: 400; font-size: 11.5px; opacity: .85; margin-top: 2px; }
+#rest-visual-bar .rv-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+#rest-visual-bar .rv-actions button {
+  border: 0; border-radius: 999px; padding: 9px 16px; font: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+#rest-visual-bar #rv-confirm { background: #F9A8D4; color: #073B4C; }
+#rest-visual-bar #rv-revert { background: rgba(255,255,255,.16); color: #fff; }
+#rest-visual-bar #rv-exit { background: rgba(255,255,255,.1); color: #fff; }
+#rest-visual-bar .rv-actions button:disabled { opacity: .45; cursor: default; }
+#rest-visual-bar #rv-status { font-size: 12px; text-align: center; min-height: 16px; opacity: .9; }
+#rest-visual-bar #rv-draft { font-size: 12px; text-align: center; font-weight: 700; color: #F9A8D4; }
+html.ras-visual-edit #rest-admin-bar { display: none; }
+/* in visual edit mode every editable element is clearly clickable */
+html.ras-visual-edit [data-admin-id] { cursor: pointer; }
+html.ras-visual-edit [data-admin-id]:hover { outline: 2px dashed #EC4899; outline-offset: 3px; }
 html.admin-mode [data-admin-id].rest-admin-hover { outline: 2px dashed #0E7490; outline-offset: 3px; cursor: pointer; }
 html.admin-mode [data-admin-id].rest-admin-selected { outline: 2px solid #EC4899; outline-offset: 3px; }
 html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC4899; outline-offset: 3px; background: rgba(236,72,153,.06); }
@@ -5362,6 +5428,12 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
   /* on phones the drawer has its own close button, so the top bar steps aside while it is open */
   html.ras-drawer-open #rest-admin-bar { display: none; }
   #rest-admin-sidebar { width: 100vw; max-width: 100vw; }
+  #rest-admin-sidebar .ras-rail { width: 54px; }
+  #rest-admin-sidebar .ras-rail-btn { width: 44px; height: 44px; font-size: 18px; }
+  #rest-admin-sidebar .ras-quick { flex-wrap: wrap; }
+  #rest-admin-sidebar .ras-quick > div { flex: 1 1 40%; }
+  #rest-visual-bar { top: 8px; padding: 8px 10px; }
+  #rest-visual-bar .rv-actions button { padding: 8px 12px; font-size: 12.5px; }
 }
 
         /* ---- v10 §22: professional packages + booking confirmation ---- */
@@ -9575,6 +9647,69 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   var publishTimer = null;
   var publishState = 'idle';
+  /* Visual edit mode: the live site itself is the editor. Edits are kept as
+     drafts (local only) until the owner confirms, so nothing reaches the
+     public before they press «تأكيد التعديل ونشره». */
+  var visualEdit = false;
+  var visualSnapshot = null;   // overrides at the moment edit mode was entered (revert target)
+  var visualPublished = null;  // overrides at the last successful publish (draft-count baseline)
+  function visualDraftCount() {
+    if (!visualPublished) return 0;
+    var ovs = getOverrides();
+    var n = 0;
+    var keys = {};
+    Object.keys(ovs).forEach(function (k) { keys[k] = true; });
+    Object.keys(visualPublished).forEach(function (k) { keys[k] = true; });
+    Object.keys(keys).forEach(function (k) {
+      var a = ovs[k] ? ovs[k].value : null;
+      var b = visualPublished[k] ? visualPublished[k].value : null;
+      if (a !== b) n++;
+    });
+    return n;
+  }
+  /* Restore the page DOM from a snapshot (including elements whose override
+     was removed entirely — applyOverrides alone only touches ids that still
+     have an override, so a removed override would leave the edited text). */
+  function restoreDomFromSnapshot(snapshot) {
+    var before = getOverrides();
+    var ids = {};
+    Object.keys(before).forEach(function (k) { ids[k] = true; });
+    Object.keys(snapshot).forEach(function (k) { ids[k] = true; });
+    Object.keys(ids).forEach(function (id) {
+      var o = originals[id];
+      if (!o) return;
+      var el = document.querySelector('[data-admin-id="' + id + '"]');
+      if (!el) return;
+      var snapVal = snapshot[id] ? snapshot[id].value : null;
+      if (snapVal == null) {
+        if (o.type === 'text') el.innerHTML = o.original;
+        else if (o.type === 'img') { if (o.original) el.setAttribute('src', o.original); }
+        else if (o.type === 'video') {
+          var s = el.querySelector('source');
+          if (s) { if (o.original) s.setAttribute('src', o.original); } else if (o.original) el.setAttribute('src', o.original);
+          if (o.poster) el.setAttribute('poster', o.poster); else el.removeAttribute('poster');
+          el.load && el.load();
+        }
+      } else if (o.type === 'text') el.innerHTML = snapVal;
+      else if (o.type === 'img') el.setAttribute('src', snapVal);
+      else if (o.type === 'video') {
+        var s2 = el.querySelector('source');
+        if (s2) s2.setAttribute('src', snapVal); else el.setAttribute('src', snapVal);
+        el.load && el.load();
+      }
+    });
+  }
+  function updateVisualBar() {
+    var d = document.getElementById('rv-draft');
+    if (d) {
+      var n = visualDraftCount();
+      d.textContent = n > 0 ? 'لديك ' + n + ' تعديل غير منشور — اضغط «تأكيد التعديل ونشره» لنشرها للجميع' : 'لا توجد تعديلات غير منشورة';
+    }
+    var cf = document.getElementById('rv-confirm');
+    if (cf) cf.disabled = visualDraftCount() === 0;
+    var rv = document.getElementById('rv-revert');
+    if (rv) rv.disabled = visualDraftCount() === 0;
+  }
   function setPublishState(s, msg) {
     publishState = s;
     // Update every status line (tools page top, tools page under the
@@ -9586,6 +9721,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (el2) el2.textContent = msg || '';
     var el3 = document.getElementById('rap-edit-status');
     if (el3) el3.textContent = msg || '';
+    var el4 = document.getElementById('rv-status');
+    if (el4) el4.textContent = msg || '';
     var pn = document.getElementById('rap-publish-now');
     if (pn) {
       if (s === 'publishing') { pn.disabled = true; pn.textContent = 'جارٍ النشر…'; }
@@ -9763,7 +9900,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     lsSet(OV_KEY, ovs);
     refreshNavCounts();
     touchLocal();
-    schedulePublish();
+    if (visualEdit) updateVisualBar(); // draft: publish only on «تأكيد التعديل ونشره»
+    else schedulePublish();
   }
   function resetOne(id) {
     var o = originals[id];
@@ -9772,7 +9910,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     delete ovs[id];
     lsSet(OV_KEY, ovs);
     touchLocal();
-    schedulePublish();
+    if (visualEdit) updateVisualBar();
+    else schedulePublish();
     var el = document.querySelector('[data-admin-id="' + id + '"]');
     if (el) {
       if (o.type === 'text') el.innerHTML = o.original;
@@ -9850,6 +9989,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     set('ras-quick-wa', c.wa);
     set('ras-quick-bookings', c.bookings);
     set('ras-quick-views', c.views);
+    var st = document.getElementById('ras-status-line');
+    if (st) st.innerHTML = dashboardStatusHtml();
+    var lb = document.getElementById('ras-latest-line');
+    if (lb) lb.innerHTML = dashboardLatestHtml();
     var b = document.getElementById('ras-reset-all');
     if (b) b.disabled = c.edits === 0;
   }
@@ -9887,11 +10030,97 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     currentPage = '';
     var nav = document.getElementById('ras-nav');
     if (nav) nav.querySelectorAll('.ras-item').forEach(function (b) { b.classList.remove('active'); });
+    var rail = document.getElementById('ras-rail');
+    if (rail) rail.querySelectorAll('.ras-rail-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.page === 'home'); });
     var pages = document.getElementById('ras-pages');
     var pv = document.getElementById('ras-pageview');
     if (pages) pages.hidden = false;
     if (pv) pv.hidden = true;
     refreshNavCounts();
+  }
+  /* ---------- Visual edit mode: the live site is the editor ---------- */
+  function buildVisualBar() {
+    var bar = document.createElement('div');
+    bar.id = 'rest-visual-bar';
+    bar.className = 'rest-admin-ui';
+    bar.setAttribute('dir', 'rtl');
+    bar.hidden = true;
+    bar.innerHTML =
+      '<div class="rv-hint">وضع التحرير — انقر أي نص أو صورة أو فيديو في الموقع لتعديله مباشرة' +
+      '<small>انقر على النص فاكتب، وعلى الصورة فاختر بديلاً. التعديلات تبقى مسودة حتى تؤكدها.</small></div>' +
+      '<div id="rv-draft"></div>' +
+      '<div class="rv-actions">' +
+      '<button type="button" id="rv-confirm">✓ تأكيد التعديل ونشره</button>' +
+      '<button type="button" id="rv-revert">↺ إعادة إلى الحالة السابقة</button>' +
+      '<button type="button" id="rv-exit">خروج من التحرير</button></div>' +
+      '<div id="rv-status"></div>';
+    document.body.appendChild(bar);
+    document.getElementById('rv-confirm').addEventListener('click', confirmVisualEdits);
+    document.getElementById('rv-revert').addEventListener('click', revertVisualEdits);
+    document.getElementById('rv-exit').addEventListener('click', exitVisualEdit);
+  }
+  function enterVisualEdit() {
+    visualSnapshot = JSON.parse(JSON.stringify(getOverrides()));
+    visualPublished = JSON.parse(JSON.stringify(getOverrides()));
+    visualEdit = true;
+    closeDrawer();
+    document.documentElement.classList.add('ras-visual-edit');
+    var bar = document.getElementById('rest-visual-bar');
+    if (bar) bar.hidden = false;
+    setPublishState('idle', '');
+    updateVisualBar();
+  }
+  function exitVisualEdit() {
+    visualEdit = false;
+    visualSnapshot = null;
+    visualPublished = null;
+    document.documentElement.classList.remove('ras-visual-edit');
+    var bar = document.getElementById('rest-visual-bar');
+    if (bar) bar.hidden = true;
+    clearSelection();
+    openDrawer();
+    showPages();
+  }
+  function confirmVisualEdits() {
+    if (visualDraftCount() === 0) { setPublishState('idle', 'لا توجد تعديلات جديدة للنشر.'); return; }
+    publishNow().then(function (ok) {
+      if (ok) { visualPublished = JSON.parse(JSON.stringify(getOverrides())); updateVisualBar(); refreshDashboard(); }
+    });
+  }
+  function revertVisualEdits() {
+    if (!visualSnapshot) return;
+    if (visualDraftCount() === 0 && JSON.stringify(getOverrides()) === JSON.stringify(visualSnapshot)) { setPublishState('idle', 'لا توجد تعديلات للتراجع عنها — الموقع على الحالة السابقة أصلاً.'); return; }
+    var snap = JSON.parse(JSON.stringify(visualSnapshot));
+    restoreDomFromSnapshot(snap);
+    lsSet(OV_KEY, snap);
+    touchLocal();
+    // Publish the revert itself, so every visitor sees the previous state.
+    publishNow().then(function (ok) {
+      if (ok) { visualPublished = JSON.parse(JSON.stringify(snap)); updateVisualBar(); refreshNavCounts(); refreshDashboard(); }
+    });
+  }
+  function refreshDashboard() {
+    // Re-render the home status strip + quick stats + latest booking.
+    var st = document.getElementById('ras-status-line');
+    if (st) st.innerHTML = dashboardStatusHtml();
+    var lb = document.getElementById('ras-latest-line');
+    if (lb) lb.innerHTML = dashboardLatestHtml();
+    refreshNavCounts();
+  }
+  function dashboardStatusHtml() {
+    var wa = getWaNumber();
+    var pub = publishState === 'published' ? '<span class="ok">منشور ✓</span>'
+      : publishState === 'publishing' ? '<span class="warn">جارٍ النشر…</span>'
+      : publishState === 'error' ? '<span class="warn">تعذّر النشر — راجع صفحة «إعادة تعيين وتصدير»</span>'
+      : '<span class="ok">النشر التلقائي مفعّل عبر الخادم</span>';
+    return '<b>حالة النشر:</b> ' + pub + '<br><b>رقم واتساب الاستقبال:</b> <span dir="ltr">+' + wa + '</span>';
+  }
+  function dashboardLatestHtml() {
+    var list = lsGet(BOOK_KEY, []);
+    if (!list.length) return 'لا توجد حجوزات مرسلة بعد في هذا المتصفح.';
+    var b = list[list.length - 1];
+    var d = b && b.ts ? new Date(b.ts).toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+    return '<b>آخر حجز:</b> ' + (b && b.ref ? b.ref : '') + (b && b.pkg ? ' — ' + b.pkg : '') + (d ? ' — ' + d : '') + '<br><small>إجمالي الحجوزات في هذا المتصفح: ' + list.length + '</small>';
   }
   function buildBar() {
     var bar = document.createElement('div');
@@ -9923,10 +10152,32 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     sb.className = 'rest-admin-ui closed';
     sb.setAttribute('dir', 'rtl');
     sb.innerHTML =
+      '<div class="ras-rail" id="ras-rail">' +
+      '<button type="button" class="ras-rail-btn active" data-page="home" title="الرئيسية — لوحة التحكم والتقارير">⌂<small>الرئيسية</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="edit" title="تحرير المحتوى — يظهر الموقع حياً، انقر أي نص أو صورة لتعديلها">✎<small>تحرير</small></button>' +
+      '<div class="ras-rail-sep"></div>' +
+      '<button type="button" class="ras-rail-btn" data-page="media" title="مكتبة الوسائط — كل الصور والفيديوهات واستبدالها">▦<small>وسائط</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="texts" title="كل النصوص — ابحث عن أي نص وانتقل إليه">≡<small>نصوص</small></button>' +
+      '<div class="ras-rail-sep"></div>' +
+      '<button type="button" class="ras-rail-btn" data-page="overview" title="نظرة عامة — ملخص حالة الموقع والتعديلات">▤<small>نظرة</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="wa" title="نقرات واتساب — من ضغط على واتساب ومتى">✆<small>واتساب</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="bookings" title="الحجوزات — طلبات الحجز المرسلة عبر واتساب">▣<small>حجوزات</small></button>' +
+      '<div class="ras-rail-sep"></div>' +
+      '<button type="button" class="ras-rail-btn" data-page="tools" title="إعادة تعيين وتصدير — تنزيل الموقع المحدّث والنسخ الاحتياطي">⚙<small>أدوات</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="wa-link" title="ربط واتساب — رقم استقبال الحجوزات وقالب الرسالة">🔗<small>ربط</small></button>' +
+      '<button type="button" class="ras-rail-btn" data-page="about" title="حول اللوحة — كيف تعمل وكيف تنشر تعديلاتك">ⓘ<small>حول</small></button>' +
+      '</div>' +
+      '<div class="ras-main">' +
       '<div class="ras-head">' +
       '<div class="ras-brand"><span class="ras-logo">R</span><div><b>لوحة تحكم REST</b><small>إدارة محتوى الموقع والتقارير</small></div></div>' +
       '<button type="button" id="ras-close" aria-label="إغلاق النافذة الجانبية">✕</button></div>' +
       '<div class="ras-view-pages" id="ras-pages">' +
+      '<div class="ras-hero">' +
+      '<b>تحرير الموقع مباشرة</b>' +
+      '<p>يظهر الموقع كما يراه الزوار — انقر أي نص أو صورة لتعديلها، ثم أكّد النشر.</p>' +
+      '<button type="button" class="ras-hero-btn" id="ras-hero-edit">✎ تحرير الموقع</button></div>' +
+      '<div class="ras-status" id="ras-status-line">' + dashboardStatusHtml() + '</div>' +
+      '<div class="ras-latest" id="ras-latest-line">' + dashboardLatestHtml() + '</div>' +
       '<div class="ras-quick">' +
       '<div><b id="ras-quick-edits">0</b><span>تعديل محفوظ</span></div>' +
       '<div><b id="ras-quick-bookings">0</b><span>حجز مرسل</span></div>' +
@@ -9934,7 +10185,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<div><b id="ras-quick-views">0</b><span>مشاهدة صفحة</span></div></div>' +
       '<nav class="ras-nav" id="ras-nav">' +
       '<div class="ras-group">المحتوى</div>' +
-      '<button type="button" class="ras-item" data-page="edit"><span class="ras-ico">✎</span><span class="ras-txt"><b>تحرير المحتوى</b><small>انقر أي نص أو صورة في الصفحة لتعديلها</small></span><span class="ras-badge" id="ras-count-edits">0</span><span class="ras-chev">‹</span></button>' +
+      '<button type="button" class="ras-item" data-page="edit"><span class="ras-ico">✎</span><span class="ras-txt"><b>تحرير المحتوى</b><small>الموقع حياً — انقر أي نص أو صورة لتعديلها</small></span><span class="ras-badge" id="ras-count-edits">0</span><span class="ras-chev">‹</span></button>' +
       '<button type="button" class="ras-item" data-page="media"><span class="ras-ico">▦</span><span class="ras-txt"><b>مكتبة الوسائط</b><small>كل الصور والفيديوهات واستبدالها</small></span><span class="ras-badge" id="ras-count-media">0</span><span class="ras-chev">‹</span></button>' +
       '<button type="button" class="ras-item" data-page="texts"><span class="ras-ico">≡</span><span class="ras-txt"><b>كل النصوص</b><small>ابحث عن أي نص وانتقل إليه</small></span><span class="ras-badge" id="ras-count-texts">0</span><span class="ras-chev">‹</span></button>' +
       '<div class="ras-group">التقارير</div>' +
@@ -9951,11 +10202,24 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<div class="ras-view-page" id="ras-pageview" hidden>' +
       '<div class="ras-pagebar"><button type="button" id="ras-back">› الصفحات</button><b id="ras-page-title"></b></div>' +
       '<div class="ras-content" id="ras-content"></div>' +
+      '</div>' +
       '</div>';
     document.body.appendChild(sb);
     sb.querySelectorAll('.ras-item').forEach(function (btn) {
-      btn.addEventListener('click', function () { showPage(btn.dataset.page); });
+      btn.addEventListener('click', function () {
+        if (btn.dataset.page === 'edit') enterVisualEdit();
+        else showPage(btn.dataset.page);
+      });
     });
+    sb.querySelectorAll('.ras-rail-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.dataset.page === 'home') showPages();
+        else if (btn.dataset.page === 'edit') enterVisualEdit();
+        else showPage(btn.dataset.page);
+      });
+    });
+    var heroEdit = document.getElementById('ras-hero-edit');
+    if (heroEdit) heroEdit.addEventListener('click', function () { enterVisualEdit(); });
     document.getElementById('ras-close').addEventListener('click', function () { closeDrawer(); });
     document.getElementById('ras-back').addEventListener('click', function () { showPages(); });
     document.getElementById('ras-view-site').addEventListener('click', function () {
@@ -9969,6 +10233,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     currentPage = page;
     var nav = document.getElementById('ras-nav');
     if (nav) nav.querySelectorAll('.ras-item').forEach(function (b) { b.classList.toggle('active', b.dataset.page === page); });
+    var rail = document.getElementById('ras-rail');
+    if (rail) rail.querySelectorAll('.ras-rail-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.page === page); });
     var pages = document.getElementById('ras-pages');
     var pv = document.getElementById('ras-pageview');
     var title = document.getElementById('ras-page-title');
@@ -9998,9 +10264,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       return pageHead('تحرير المحتوى', 'انقر على أي نص أو صورة في الصفحة لتعديلها مباشرة.') +
         '<p class="rap-hint">مرّر فوق أي نص فيظهر بإطار أزرق، وانقر عليه للكتابة مباشرة. وانقر على أي صورة أو فيديو لاستبداله بملف من جهازك.</p>' +
         '<p class="rap-hint">القيمة الأصلية التي بُني عليها الموقع محفوظة دائماً: إذا حذفت محتوى عنصر يعود تلقائياً إلى أصله.</p>' +
-        '<div class="rap-row"><button type="button" class="rap-btn" data-goto="texts">تصفح كل النصوص</button>' +
+        '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-enter-visual">تحرير الموقع مباشرة ✎</button>' +
+        '<button type="button" class="rap-btn" data-goto="texts">تصفح كل النصوص</button>' +
         '<button type="button" class="rap-btn" data-goto="media">تصفح مكتبة الوسائط</button></div>' +
-        (c.edits ? '<p class="rap-hint"><b>' + c.edits + ' تعديل محفوظ</b> في هذا المتصفح. لنشرها للجميع نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع.</p>' : '');
+        (c.edits ? '<p class="rap-hint"><b>' + c.edits + ' تعديل محفوظ</b> في هذا المتصفح. التعديلات تُنشر تلقائياً للجميع عبر الخادم — لا حاجة لأي رمز أو رفع يدوي.</p>' : '');
     }
     var o = originals[selectedId];
     var ovs = getOverrides();
@@ -10031,6 +10298,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.querySelectorAll('#ras-content [data-goto]').forEach(function (b) {
       b.addEventListener('click', function () { showPage(b.dataset.goto); });
     });
+    var ev = document.getElementById('rap-enter-visual');
+    if (ev) ev.addEventListener('click', function () { enterVisualEdit(); });
     if (!selectedId || !originals[selectedId]) return;
     var id = selectedId, o = originals[id];
     var saveBtn = document.getElementById('rap-save');
@@ -10362,9 +10631,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   /* ----- page: about ----- */
   function renderAbout() {
     return pageHead('حول اللوحة', 'كيف تعمل لوحة التحكم وكيف تنشر تعديلاتك.') +
-      '<p class="rap-hint"><b>1 — حرّر:</b> انقر أي نص أو صورة في الصفحة، أو اخترها من «كل النصوص» و«مكتبة الوسائط». التعديلات تُحفظ فوراً في هذا المتصفح.</p>' +
-      '<p class="rap-hint"><b>2 — الأصل محفوظ:</b> القيمة التي بُني عليها الموقع تظهر دائماً تحت كل عنصر. حذف المحتوى يعيده إلى أصله، و«إعادة كل شيء إلى الأصل» تلغي كل التعديلات.</p>' +
-      '<p class="rap-hint"><b>3 — انشر تلقائياً:</b> كل تعديل تحفظه يُنشر تلقائياً لكل الزوار خلال دقيقة تقريباً — بلا رمز وبلا تنزيل ولا رفع. زر «حفظ ونشر» في المحرر ينشر فوراً مع تأكيد. وإن تعذّر النشر نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع مكان <code>index.html</code>.</p>' +
+      '<p class="rap-hint"><b>1 — تحرير الموقع مباشرة:</b> اضغط «تحرير الموقع» في الرئيسية أو أيقونة ✎ في الشريط الجانبي، فيظهر الموقع كما يراه الزوار. انقر أي نص فاكتب مباشرة، وانقر أي صورة أو فيديو فاختر بديلاً من جهازك. التعديلات تبقى مسودة في هذا المتصفح حتى تؤكدها.</p>' +
+      '<p class="rap-hint"><b>2 — تأكيد أو إعادة:</b> بعد الانتهاء اضغط «✓ تأكيد التعديل ونشره» في الشريط العلوي فيُنشر كل شيء فوراً لكل الزوار — بلا رمز وبلا صفحة إعدادات. وإن أردت التراجع اضغط «↺ إعادة إلى الحالة السابقة» فيعود الموقع كما كان قبل بدء التحرير، ويُنشر التراجع أيضاً.</p>' +
+      '<p class="rap-hint"><b>3 — الأصل محفوظ:</b> القيمة التي بُني عليها الموقع تظهر دائماً تحت كل عنصر. حذف المحتوى يعيده إلى أصله، و«إعادة كل شيء إلى الأصل» تلغي كل التعديلات.</p>' +
+      '<p class="rap-hint"><b>4 — النشر التلقائي:</b> التعديلات من صفحات «كل النصوص» و«مكتبة الوسائط» و«ربط واتساب» تُنشر تلقائياً لكل الزوار خلال دقيقة تقريباً عبر الخادم — بلا رمز في المتصفح. وإن تعذّر النشر نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع مكان <code>index.html</code>.</p>' +
       '<p class="rap-hint"><b>التقارير:</b> نقرات واتساب ومشاهدات الصفحة تُسجَّل في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>' +
       '<p class="rap-hint">الدخول إلى اللوحة من رابط «لوحة التحكم» في أسفل الموقع، أو بإضافة <code>?admin=1</code> إلى رابط الموقع.</p>';
   }
@@ -10388,6 +10658,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     clone.querySelectorAll('.rest-admin-ui').forEach(function (e) { e.remove(); });
     clone.classList.remove('admin-mode');
     clone.classList.remove('ras-drawer-open');
+    clone.classList.remove('ras-visual-edit');
+    clone.querySelectorAll('.rest-admin-hover').forEach(function (e) { e.classList.remove('rest-admin-hover'); });
     clone.querySelectorAll('[contenteditable]').forEach(function (e) { e.removeAttribute('contenteditable'); });
     clone.querySelectorAll('.rest-admin-selected').forEach(function (e) { e.classList.remove('rest-admin-selected'); });
     clone.querySelectorAll('a[href*="admin=1"]').forEach(function (a) {
@@ -10437,7 +10709,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         saveOverride(id, dataUrl);
         var now = document.getElementById('rap-media-now');
         if (now) now.src = dataUrl;
-        showPage(currentPage);
+        if (visualEdit) updateVisualBar(); else showPage(currentPage);
       };
       r.readAsDataURL(f);
       fileInput.value = '';
@@ -10457,6 +10729,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (!id || !originals[id]) return;
     selectedId = id;
     el.classList.add('rest-admin-selected');
+    if (visualEdit) return; // visual mode: edit inline on the live site, no drawer
     openDrawer();
     showPage('edit');
   }
@@ -10464,6 +10737,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.documentElement.classList.add('admin-mode');
     buildBar();
     buildSidebar();
+    buildVisualBar();
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeDrawer();
     });
