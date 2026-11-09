@@ -5069,44 +5069,51 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
     }
 
     
-    /* ---- mobile settings gear + panel (v10 §15) ---- */
-    .settings-btn { display: none; }
-    .settings-panel { display: none; }
+    /* ---- settings gear + panel (v10 §15/§16) ---- */
+    .settings-btn {
+      display: none; align-items: center; justify-content: center;
+      width: 38px; height: 38px; flex: 0 0 auto; border-radius: 999px; cursor: pointer;
+      color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .settings-btn:hover { background: rgba(255,255,255,0.20); }
+    .settings-btn svg { width: 18px; height: 18px; flex: none; }
+    .nav-pill.scrolled .settings-btn {
+      color: var(--text-pure); background: rgba(128,128,128,0.12); border-color: var(--border-subtle);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+    }
+    .nav-pill.scrolled .settings-btn:hover { background: rgba(128,128,128,0.20); }
+    .settings-panel {
+      display: block; position: fixed; top: 88px; inset-inline-end: 16px; z-index: 1200;
+      min-width: 250px; padding: 14px 16px 16px; border-radius: 18px;
+      background: rgba(8,22,30,0.85); backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    }
+    .settings-panel.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    [data-theme="light"] .settings-panel {
+      background: rgba(255,255,255,0.94); border-color: rgba(7,59,76,0.12);
+      box-shadow: 0 16px 40px rgba(7,59,76,0.18);
+    }
+    .settings-panel-title { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; }
+    .settings-panel-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .settings-panel-label { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; color: var(--text-pure); }
+    /* ---- scrolled (condensed) pill: gear replaces the wide theme pill, the
+       redundant Home link hides (the logo is Home), gaps tighten — so brand +
+       5 links + gear + EN + CTA all fit inside the 980px pill at every width. */
+    .nav-pill.scrolled #theme-toggle-btn { display: none !important; }
+    .nav-pill.scrolled .settings-btn { display: inline-flex; }
+    .nav-pill.scrolled .nav-menu > li:first-child { display: none; }
+    .nav-pill.scrolled .nav-menu { gap: 12px; }
+    .nav-holder .nav-pill.scrolled { padding: 0 16px; }
     @media (max-width: 980px) {
       #theme-toggle-btn { display: none !important; }
-      .settings-btn {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 38px; height: 38px; flex: 0 0 auto; border-radius: 999px; cursor: pointer;
-        color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.18);
-        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        transition: background-color .2s ease, border-color .2s ease, color .2s ease;
-      }
-      .settings-btn:hover { background: rgba(255,255,255,0.20); }
-      .settings-btn svg { width: 18px; height: 18px; flex: none; }
-      .nav-pill.scrolled .settings-btn {
-        color: var(--text-pure); background: rgba(128,128,128,0.12); border-color: var(--border-subtle);
-        backdrop-filter: none; -webkit-backdrop-filter: none;
-      }
-      .nav-pill.scrolled .settings-btn:hover { background: rgba(128,128,128,0.20); }
-      .settings-panel {
-        display: block; position: fixed; top: 88px; inset-inline-end: 16px; z-index: 1200;
-        min-width: 250px; padding: 14px 16px 16px; border-radius: 18px;
-        background: rgba(8,22,30,0.85); backdrop-filter: blur(20px) saturate(1.4);
-        -webkit-backdrop-filter: blur(20px) saturate(1.4);
-        border: 1px solid rgba(255,255,255,0.14);
-        box-shadow: 0 16px 40px rgba(0,0,0,0.45);
-        opacity: 0; visibility: hidden; transform: translateY(-6px);
-        transition: opacity .25s ease, transform .25s ease, visibility .25s;
-      }
-      .settings-panel.open { opacity: 1; visibility: visible; transform: translateY(0); }
-      [data-theme="light"] .settings-panel {
-        background: rgba(255,255,255,0.94); border-color: rgba(7,59,76,0.12);
-        box-shadow: 0 16px 40px rgba(7,59,76,0.18);
-      }
-      .settings-panel-title { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; }
-      .settings-panel-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .settings-panel-label { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; color: var(--text-pure); }
+      .settings-btn { display: inline-flex; }
     }
 
   </style>
