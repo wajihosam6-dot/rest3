@@ -4041,8 +4041,8 @@
     /* Interactive Floating Preview Card (Rotated 8deg) */
     .suffo-dir-floating-preview {
       position: absolute;
-      width: 280px;
-      height: 190px;
+      width: 250px;
+      height: 170px;
       border-radius: 14px;
       overflow: hidden;
       border: 4px solid #FFFFFF;
@@ -5059,13 +5059,13 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
     [dir="ltr"] .mobile-nav-drawer { transform: translateX(-100%); }
     [dir="ltr"] .mobile-nav-drawer.open { transform: translateX(0); }
     [dir="ltr"] .floating-wa-pill { left: auto; right: var(--sp-300); }
-    [dir="ltr"] .suffo-dir-floating-preview { left: auto !important; right: 12px !important; }
+    /* (v10 §18) the directory preview is positioned by JS (positionDirPreview) in both directions */
     [dir="ltr"] .hero-text-block { text-align: left; }
     [dir="ltr"] .nav-submenu { inset-inline-start: auto; inset-inline-end: 0; }
     /* English nav labels are longer: give the floating pill more room */
     [dir="ltr"] .nav-holder .nav-pill.scrolled { max-width: 1080px; }
     @media (max-width: 900px) {
-      [dir="ltr"] .suffo-dir-floating-preview { right: 6px !important; }
+      /* (v10 §18) the directory preview is positioned by JS (positionDirPreview) in both directions */
     }
 
     
@@ -5116,7 +5116,19 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
       .settings-btn { display: inline-flex; }
     }
 
-  </style>
+  
+    /* ---- v10 §18: short viewports — keep the hero CTAs clear of the scene tracker ---- */
+    @media (max-height: 760px) {
+      .h-hero { font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.12; }
+      .hero-scene-content { padding-top: calc(64px + var(--sp-250)); }
+      .hero-desc { margin-bottom: var(--sp-200); }
+    }
+    /* ---- v10 §18: directory preview — smaller on narrower desktops so it fits the gap ---- */
+    @media (max-width: 1280px) and (min-width: 981px) {
+      .suffo-dir-floating-preview { width: 200px; height: 140px; }
+    }
+
+    </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
 /* 0) Hero text visible immediately: never wait for the reveal observer or the
@@ -8488,6 +8500,60 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       suffoHotspots.forEach(function (s) { s.classList.remove('is-active'); });
     });
 
+    /* v10 §18: centre the directory preview in the gap between the area number
+       and the description (never covering either). Works in both directions.
+       Attached to window: the scroll-activation lives in a later <script> block. */
+    function dirTextRect(el) {
+      if (!el) return null;
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      if (typeof range.getClientRects !== 'function') return null; // no layout engine (jsdom)
+      var rects = range.getClientRects();
+      if (!rects.length) return null;
+      var l = Infinity, r = -Infinity;
+      for (var i = 0; i < rects.length; i++) {
+        if (rects[i].width > 0) { l = Math.min(l, rects[i].left); r = Math.max(r, rects[i].right); }
+      }
+      return (l === Infinity) ? null : { left: l, right: r };
+    }
+    window.positionDirPreview = function (row) {
+      if (!dirPreview || !dirTable) return;
+      var isPhone = window.innerWidth < 900;
+      var isRTL = document.documentElement.dir !== 'ltr';
+      var rowRect = row.getBoundingClientRect();
+      var tableRect = dirTable.getBoundingClientRect();
+      dirPreview.style.top = ((rowRect.top - tableRect.top) + (isPhone ? 8 : -30)) + 'px';
+      dirPreview.style.right = 'auto';
+      if (isPhone) {
+        if (isRTL) { dirPreview.style.left = '6px'; }
+        else { dirPreview.style.left = Math.max(6, tableRect.width - dirPreview.getBoundingClientRect().width - 6) + 'px'; }
+        return;
+      }
+      var areaR = dirTextRect(row.querySelector('.suffo-dir-col-area'));
+      var descR = dirTextRect(row.querySelector('.suffo-dir-col-desc'));
+      var pw = dirPreview.getBoundingClientRect().width || 250;
+      if (areaR && descR) {
+        var gapL, gapR;
+        if (isRTL) { gapL = areaR.right; gapR = descR.left; }
+        else { gapL = descR.right; gapR = areaR.left; }
+        if (gapR > gapL + 20) {
+          var left = (gapL + gapR) / 2 - tableRect.left - pw / 2;
+          if (pw + 16 <= gapR - gapL) {
+            left = Math.max(left, gapL - tableRect.left + 8);
+            left = Math.min(left, gapR - tableRect.left - pw - 8);
+          }
+          dirPreview.style.left = left + 'px';
+          return;
+        }
+        // (no secondary gap: in EN mode the description runs right up to the area
+        // number, so centring in the name/description gap would cover the
+        // description's first words. The fallback below keeps the description and
+        // the area number fully clear; only the facility name may sit partly
+        // behind the card in EN mode.)
+      }
+      dirPreview.style.left = '100px';
+    };
+
     // 3. Suffo Architectural Directory Floating Preview (Frame 36-40)
     var dirTable = document.getElementById('suffo-dir-table');
     var dirPreview = document.getElementById('suffo-dir-preview');
@@ -8504,12 +8570,9 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           dirRows.forEach(function (r) { r.classList.remove('active'); });
           row.classList.add('active');
 
-          // Position floating preview card relative to table
-          var rowRect = row.getBoundingClientRect();
-          var tableRect = dirTable.getBoundingClientRect();
-          var relTop = (rowRect.top - tableRect.top) - 30;
-          dirPreview.style.top = relTop + 'px';
-          dirPreview.style.left = '12px';
+          // Position floating preview card relative to table (v10 §18: centred
+          // in the gap between the area number and the description)
+          positionDirPreview(row);
           dirPreview.classList.add('is-active');
         });
 
@@ -8800,13 +8863,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
             /* keep the preview on the empty left side, next to the row
                (same placement as the hover handler). On phones the card is
                shrunk, so it sits a little lower and closer to the edge. */
-            if (dirTable) {
-              var rowRect = row.getBoundingClientRect();
-              var tableRect = dirTable.getBoundingClientRect();
-              var isPhone = window.innerWidth < 900;
-              dirPreview.style.top = ((rowRect.top - tableRect.top) + (isPhone ? 8 : -30)) + 'px';
-              dirPreview.style.left = isPhone ? '6px' : '12px';
-            }
+            if (dirTable) { positionDirPreview(row); }
           }
         }
         if ('IntersectionObserver' in window) {
@@ -8875,9 +8932,12 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
             el.childNodes[0].nodeValue = lead + DICT[key] + trail;
           }
         } else if (el.childNodes.length > 1) {
-          // mixed content (e.g. hero H1 with an accent span): try the whole text as one key
+          // mixed content (e.g. hero H1 with an accent span): try the whole text as one key.
+          // NEVER replace the innerHTML of an element that holds media (svg/img/video):
+          // its text is only a caption, and the media would be destroyed (the palm
+          // showcase card lost its whole SVG this way in EN mode).
           var fullKey = el.textContent.trim();
-          if (fullKey && DICT[fullKey] !== undefined) {
+          if (fullKey && DICT[fullKey] !== undefined && !el.querySelector('svg, img, video, canvas, iframe, picture, source')) {
             if (!el.dataset.restArHtml) el.dataset.restArHtml = el.innerHTML;
             var en = DICT[fullKey];
             var accent = el.querySelector('.hero-accent');
