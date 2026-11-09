@@ -5140,88 +5140,177 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
 
     
     /* ---- v10 §20: admin dashboard ---- */
-/* REST Admin — toolbar, editor panel, hover hints, reports. Only visible in ?admin=1. */
+/* REST Admin — top bar, slide-in sidebar with pages, hover hints. Only in ?admin=1. */
 html.admin-mode { scroll-padding-top: 110px; }
+
+/* ---- top bar (compact pill) ---- */
 #rest-admin-bar {
   position: fixed; top: 12px; right: 50%; transform: translateX(50%);
-  z-index: 99990; display: flex; align-items: center; gap: 14px;
-  background: rgba(7, 59, 76, .92); color: #fff; border: 1px solid rgba(255,255,255,.22);
-  border-radius: 999px; padding: 8px 10px 8px 18px; backdrop-filter: blur(14px);
+  z-index: 99990; display: flex; align-items: center; gap: 10px;
+  background: rgba(7, 59, 76, .94); color: #fff; border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px; padding: 7px 8px 7px 14px; backdrop-filter: blur(14px);
   box-shadow: 0 12px 40px rgba(0,0,0,.45); font-family: inherit; max-width: calc(100vw - 24px);
+}
+#rest-admin-bar .rab-menu {
+  background: rgba(255,255,255,.14); color: #fff; border: 0; border-radius: 50%;
+  width: 32px; height: 32px; font-size: 16px; line-height: 1; cursor: pointer;
 }
 #rest-admin-bar .rab-title { font-weight: 700; font-size: 14px; white-space: nowrap; }
 #rest-admin-bar .rab-title span { font-weight: 400; font-size: 12px; opacity: .8; }
-#rest-admin-bar .rab-tabs { display: flex; gap: 4px; }
-#rest-admin-bar .rab-tab {
-  background: transparent; color: #cfe8ef; border: 0; border-radius: 999px;
-  padding: 7px 12px; font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap;
-}
-#rest-admin-bar .rab-tab.active { background: #0E7490; color: #fff; }
-#rest-admin-bar .rab-tab:hover { color: #fff; }
 #rest-admin-bar .rab-actions button {
   background: #F9A8D4; color: #073B4C; border: 0; border-radius: 999px;
   padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
 }
-#rest-admin-panel {
-  position: fixed; top: 76px; inset-inline-start: 14px; z-index: 99989; width: 340px; max-width: calc(100vw - 28px);
-  background: #fff; color: #0b2b36; border-radius: 16px; border: 1px solid #d7e6ea;
-  box-shadow: 0 18px 50px rgba(0,0,0,.35); font-family: inherit; display: none;
-  max-height: calc(100vh - 100px); overflow: auto;
+
+/* ---- sidebar drawer ---- */
+#rest-admin-sidebar {
+  position: fixed; top: 0; bottom: 0; inset-inline-start: 0; z-index: 99989;
+  width: 380px; max-width: 94vw; display: flex; flex-direction: column;
+  background: #fff; color: #0b2b36; font-family: inherit;
+  border-inline-end: 1px solid #d7e6ea; box-shadow: 0 0 60px rgba(0,0,0,.35);
+  transform: translateX(0); transition: transform .32s ease;
 }
-#rest-admin-panel.open { display: block; }
-#rest-admin-panel .rap-head {
+#rest-admin-sidebar.closed { transform: translateX(105%); }
+[dir="ltr"] #rest-admin-sidebar.closed { transform: translateX(-105%); }
+#rest-admin-sidebar .ras-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 16px 16px 12px; border-bottom: 1px solid #e3eef1;
+  background: linear-gradient(135deg, #073B4C, #0E7490); color: #fff;
+}
+#rest-admin-sidebar .ras-brand { display: flex; align-items: center; gap: 10px; }
+#rest-admin-sidebar .ras-logo {
+  width: 38px; height: 38px; border-radius: 50%; background: #F9A8D4; color: #073B4C;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; flex: none;
+}
+#rest-admin-sidebar .ras-brand b { display: block; font-size: 15px; }
+#rest-admin-sidebar .ras-brand small { display: block; font-size: 11.5px; opacity: .85; }
+#rest-admin-sidebar #ras-close {
+  background: rgba(255,255,255,.16); color: #fff; border: 0; border-radius: 50%;
+  width: 30px; height: 30px; font-size: 14px; cursor: pointer; flex: none;
+}
+#rest-admin-sidebar .ras-nav {
+  padding: 10px 12px 6px; border-bottom: 1px solid #e3eef1; flex: none;
+  max-height: 46vh; overflow: auto;
+}
+#rest-admin-sidebar .ras-group {
+  font-size: 11px; font-weight: 700; color: #5b7a85; letter-spacing: .04em;
+  margin: 10px 6px 4px;
+}
+#rest-admin-sidebar .ras-group:first-child { margin-top: 2px; }
+#rest-admin-sidebar .ras-item {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 12px 14px; border-bottom: 1px solid #e3eef1; font-weight: 700; font-size: 14px;
-  position: sticky; top: 0; background: #fff; z-index: 1;
+  width: 100%; background: transparent; border: 0; border-radius: 10px;
+  padding: 9px 10px; font: inherit; font-size: 13.5px; font-weight: 600; color: #0b2b36;
+  cursor: pointer; text-align: start;
 }
-#rest-admin-panel .rap-head button { background: none; border: 0; font-size: 16px; cursor: pointer; color: #5b7a85; }
-#rest-admin-panel .rap-body { padding: 14px; font-size: 13.5px; line-height: 1.7; }
-#rest-admin-panel .rap-hint { margin: 0 0 10px; color: #33565f; }
-#rest-admin-panel .rap-note {
+#rest-admin-sidebar .ras-item:hover { background: #eef6f8; }
+#rest-admin-sidebar .ras-item.active { background: #073B4C; color: #fff; }
+#rest-admin-sidebar .ras-item.active .ras-badge { background: rgba(255,255,255,.22); color: #fff; }
+#rest-admin-sidebar .ras-badge {
+  background: #eef6f8; color: #0b2b36; border-radius: 999px; padding: 1px 9px;
+  font-size: 11.5px; font-weight: 700; flex: none;
+}
+#rest-admin-sidebar .ras-content {
+  flex: 1; overflow: auto; padding: 16px; font-size: 13.5px; line-height: 1.7;
+}
+#rest-admin-sidebar .ras-foot {
+  padding: 12px 16px; border-top: 1px solid #e3eef1; flex: none;
+}
+#rest-admin-sidebar .ras-foot-btn {
+  width: 100%; background: #0E7490; color: #fff; border: 0; border-radius: 999px;
+  padding: 10px; font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+
+/* ---- page content inside the sidebar ---- */
+#rest-admin-sidebar .rap-page-head { margin-bottom: 12px; }
+#rest-admin-sidebar .rap-page-head h2 { margin: 0 0 2px; font-size: 17px; color: #073B4C; }
+#rest-admin-sidebar .rap-page-head p { margin: 0; font-size: 12.5px; color: #5b7a85; }
+#rest-admin-sidebar .rap-hint { margin: 0 0 10px; color: #33565f; }
+#rest-admin-sidebar .rap-note {
   margin: 0 0 12px; background: #fdf2f7; border: 1px solid #f9a8d4; color: #7a2b4d;
   padding: 9px 11px; border-radius: 10px; font-size: 12.5px;
 }
-#rest-admin-panel .rap-field { margin-bottom: 12px; }
-#rest-admin-panel .rap-field label { display: block; font-weight: 700; font-size: 12.5px; margin-bottom: 5px; color: #0b2b36; }
-#rest-admin-panel .rap-label { background: #eef6f8; border-radius: 8px; padding: 8px 10px; }
-#rest-admin-panel .rap-kind { background: #0E7490; color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 11px; }
-#rest-admin-panel textarea {
+#rest-admin-sidebar .rap-field { margin-bottom: 12px; }
+#rest-admin-sidebar .rap-field label { display: block; font-weight: 700; font-size: 12.5px; margin-bottom: 5px; color: #0b2b36; }
+#rest-admin-sidebar .rap-label { background: #eef6f8; border-radius: 8px; padding: 8px 10px; }
+#rest-admin-sidebar .rap-kind { background: #0E7490; color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 11px; }
+#rest-admin-sidebar .rap-kind.edited { background: #EC4899; }
+#rest-admin-sidebar textarea {
   width: 100%; box-sizing: border-box; font: inherit; font-size: 13.5px; line-height: 1.7;
-  border: 1px solid #b9d2d9; border-radius: 10px; padding: 9px 10px; resize: vertical; direction: inherit;
+  border: 1px solid #b9d2d9; border-radius: 10px; padding: 9px 10px; resize: vertical;
 }
-#rest-admin-panel .rap-original {
+#rest-admin-sidebar .rap-original {
   background: #f4f8f9; border: 1px dashed #b9d2d9; border-radius: 10px; padding: 9px 10px;
   color: #33565f; white-space: pre-wrap; word-break: break-word; max-height: 120px; overflow: auto;
 }
-#rest-admin-panel .rap-media { margin-bottom: 8px; }
-#rest-admin-panel .rap-media img { width: 100%; border-radius: 10px; display: block; background: #0b2b36; }
-#rest-admin-panel .rap-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-#rest-admin-panel .rap-btn {
+#rest-admin-sidebar .rap-media { margin-bottom: 8px; }
+#rest-admin-sidebar .rap-media img { width: 100%; border-radius: 10px; display: block; background: #0b2b36; }
+#rest-admin-sidebar .rap-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+#rest-admin-sidebar .rap-btn {
   background: #eef6f8; color: #0b2b36; border: 1px solid #b9d2d9; border-radius: 999px;
   padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
 }
-#rest-admin-panel .rap-btn.primary { background: #0E7490; border-color: #0E7490; color: #fff; }
-#rest-admin-panel .rap-btn.danger { background: #fdecec; border-color: #f3b0b0; color: #8f1d1d; }
-#rest-admin-panel .rap-btn:disabled { opacity: .45; cursor: default; }
-#rest-admin-panel .rap-stats { display: flex; gap: 8px; margin-bottom: 12px; }
-#rest-admin-panel .rap-stats > div {
+#rest-admin-sidebar .rap-btn.primary { background: #0E7490; border-color: #0E7490; color: #fff; }
+#rest-admin-sidebar .rap-btn.danger { background: #fdecec; border-color: #f3b0b0; color: #8f1d1d; }
+#rest-admin-sidebar .rap-btn.sm { padding: 5px 10px; font-size: 12px; }
+#rest-admin-sidebar .rap-btn:disabled { opacity: .45; cursor: default; }
+#rest-admin-sidebar .rap-stats { display: flex; gap: 8px; margin-bottom: 12px; }
+#rest-admin-sidebar .rap-stats > div {
   flex: 1; background: #eef6f8; border-radius: 12px; padding: 10px 6px; text-align: center;
 }
-#rest-admin-panel .rap-stats b { display: block; font-size: 20px; color: #073B4C; }
-#rest-admin-panel .rap-stats span { font-size: 11.5px; color: #33565f; }
-#rest-admin-panel .rap-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
-#rest-admin-panel .rap-table th, #rest-admin-panel .rap-table td {
+#rest-admin-sidebar .rap-stats b { display: block; font-size: 20px; color: #073B4C; }
+#rest-admin-sidebar .rap-stats span { font-size: 11.5px; color: #33565f; }
+#rest-admin-sidebar .rap-stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px;
+}
+#rest-admin-sidebar .rap-stat {
+  background: #eef6f8; border-radius: 12px; padding: 12px 6px; text-align: center;
+}
+#rest-admin-sidebar .rap-stat b { display: block; font-size: 22px; color: #073B4C; }
+#rest-admin-sidebar .rap-stat span { font-size: 11.5px; color: #33565f; }
+#rest-admin-sidebar .rap-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
+#rest-admin-sidebar .rap-table th, #rest-admin-sidebar .rap-table td {
   border-bottom: 1px solid #e3eef1; padding: 6px 4px; text-align: start; vertical-align: top;
 }
-#rest-admin-panel .rap-table th { color: #0b2b36; }
-#rest-admin-panel .rap-table code { font-size: 11px; background: #eef6f8; padding: 1px 5px; border-radius: 6px; }
-#rest-admin-panel .rap-table small { color: #5b7a85; }
+#rest-admin-sidebar .rap-table th { color: #0b2b36; }
+#rest-admin-sidebar .rap-table code { font-size: 11px; background: #eef6f8; padding: 1px 5px; border-radius: 6px; }
+#rest-admin-sidebar .rap-table small { color: #5b7a85; }
+#rest-admin-sidebar .rap-list { margin: 0 0 10px; padding-inline-start: 18px; color: #33565f; }
+#rest-admin-sidebar .rap-search { margin-bottom: 10px; }
+#rest-admin-sidebar .rap-search input {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 13.5px;
+  border: 1px solid #b9d2d9; border-radius: 999px; padding: 9px 14px;
+}
+#rest-admin-sidebar .rap-text-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; background: #f8fbfc; border: 1px solid #e3eef1; border-radius: 10px;
+  padding: 8px 10px; margin-bottom: 6px; font: inherit; font-size: 13px; color: #0b2b36;
+  cursor: pointer; text-align: start;
+}
+#rest-admin-sidebar .rap-text-item:hover { background: #eef6f8; }
+#rest-admin-sidebar .rap-text-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#rest-admin-sidebar .rap-media-item {
+  display: flex; align-items: center; gap: 10px; background: #f8fbfc;
+  border: 1px solid #e3eef1; border-radius: 12px; padding: 8px; margin-bottom: 8px; cursor: pointer;
+}
+#rest-admin-sidebar .rap-media-item:hover { background: #eef6f8; }
+#rest-admin-sidebar .rap-media-thumb {
+  width: 56px; height: 42px; flex: none; border-radius: 8px; overflow: hidden;
+  background: #0b2b36; display: flex; align-items: center; justify-content: center; color: #fff;
+}
+#rest-admin-sidebar .rap-media-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#rest-admin-sidebar .rap-media-meta { flex: 1; min-width: 0; }
+#rest-admin-sidebar .rap-media-meta b { display: block; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#rest-admin-sidebar .rap-media-meta span { font-size: 11.5px; color: #5b7a85; }
+#rest-admin-sidebar .rap-media-actions { display: flex; flex-direction: column; gap: 4px; flex: none; }
+
+/* ---- inline-editing hints on the page ---- */
 html.admin-mode [data-admin-id].rest-admin-hover { outline: 2px dashed #0E7490; outline-offset: 3px; cursor: pointer; }
 html.admin-mode [data-admin-id].rest-admin-selected { outline: 2px solid #EC4899; outline-offset: 3px; }
 html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC4899; outline-offset: 3px; background: rgba(236,72,153,.06); }
 @media (max-width: 640px) {
   #rest-admin-bar { flex-wrap: wrap; border-radius: 18px; justify-content: center; padding: 8px 10px; }
-  #rest-admin-panel { top: auto; bottom: 12px; max-height: 52vh; }
+  #rest-admin-sidebar { width: 100vw; max-width: 100vw; }
 }
 
     </style>
@@ -9218,6 +9307,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
 /* REST Admin — visual inline editor + WhatsApp reports.
    Runs on every load (to apply saved overrides + track WhatsApp clicks).
    The editing UI only activates when ?admin=1 is present.
+   UI: a top bar + a slide-in sidebar with pages (Edit / Media library / All texts /
+   Overview / WhatsApp clicks / Reset & export / About).
    Overrides live in localStorage (rest_admin_overrides_v1). The built-in HTML is
    always the "original": an empty/cleared value reverts to it, and "Reset all"
    removes every override. Use "Download updated site" to bake the edits into a
@@ -9251,15 +9342,14 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
 
   /* ---------- 1. assign stable ids + apply saved overrides (every load) ---------- */
-  var originals = {}; // id -> {type, original, label}
+  var originals = {}; // id -> {type, original, label, poster?}
   function isEditableText(el) {
     if (!el || el.nodeType !== 1) return false;
     var tag = el.tagName;
     if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'SVG' || tag === 'PATH') return false;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON') return false;
     if (el.closest && (el.closest('button') || el.closest('select') || el.closest('input') || el.closest('textarea'))) return false;
-    if (el.closest && el.closest('#rest-admin-bar, #rest-admin-panel, .rest-admin-ui')) return false;
-    // needs a direct non-empty text node
+    if (el.closest && el.closest('#rest-admin-bar, #rest-admin-sidebar, .rest-admin-ui')) return false;
     for (var i = 0; i < el.childNodes.length; i++) {
       var n = el.childNodes[i];
       if (n.nodeType === 3 && n.nodeValue && n.nodeValue.trim()) return true;
@@ -9278,7 +9368,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     var all = document.body ? document.body.querySelectorAll('*') : [];
     for (var k = 0; k < all.length; k++) {
       var el = all[k];
-      if (el.closest && el.closest('#rest-admin-bar, #rest-admin-panel, .rest-admin-ui')) continue;
+      if (el.closest && el.closest('#rest-admin-bar, #rest-admin-sidebar, .rest-admin-ui')) continue;
       var tag = el.tagName;
       if (tag === 'IMG') {
         // the brand logo lives in the nav/footer brand blocks — not a replaceable asset.
@@ -9295,7 +9385,6 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         var vsrc = el.getAttribute('src') || (el.querySelector('source') ? el.querySelector('source').getAttribute('src') : '') || '';
         originals[el.dataset.adminId] = { type: 'video', original: vsrc, label: labelFor(el, 'video'), poster: el.getAttribute('poster') || '' };
       } else if (isEditableText(el)) {
-        // skip ancestors that also qualify (edit the leaf, not the wrapper)
         el.dataset.adminId = 't' + (++ti);
         originals[el.dataset.adminId] = { type: 'text', original: el.innerHTML, label: labelFor(el, 'text') };
       }
@@ -9309,10 +9398,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var id = ids[i], ov = ovs[id];
       var el = document.querySelector('[data-admin-id="' + id + '"]');
       if (!el || !originals[id]) continue;
-      // stale check: the element must still hold the recorded original
       var cur = originals[id].type === 'text' ? el.innerHTML : (el.getAttribute('src') || '');
       if (cur !== ov.original && originals[id].type === 'text') {
-        // allow a match on plain text too (i18n may have re-rendered the HTML)
         if (el.textContent.trim() !== (ov.original || '').replace(/<[^>]+>/g, '').trim()) continue;
       }
       if (originals[id].type === 'text') {
@@ -9339,7 +9426,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       ovs[id] = { type: o.type, value: value, original: o.original };
     }
     lsSet(OV_KEY, ovs);
-    updateCounts();
+    refreshNavCounts();
   }
   function resetOne(id) {
     var o = originals[id];
@@ -9358,7 +9445,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         el.load && el.load();
       }
     }
-    updateCounts();
+    refreshNavCounts();
   }
 
   /* ---------- 2. WhatsApp click tracking (every load) ---------- */
@@ -9367,6 +9454,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     list.push({ ts: Date.now(), label: label || '', href: href || '', pkg: pkg || '', uid: uid() });
     if (list.length > 2000) list = list.slice(-2000);
     lsSet(WA_KEY, list);
+    refreshNavCounts(); // keep the sidebar WhatsApp badge live
   }
   function trackWa() {
     document.addEventListener('click', function (e) {
@@ -9375,12 +9463,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var label = (a.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 60) || a.getAttribute('aria-label') || 'WhatsApp';
       logWaClick(label, a.getAttribute('href') || '', '');
     }, true);
-    // booking submit opens WhatsApp via window.open — hook it too
     var origOpen = window.open;
     window.open = function (url) {
       try {
         if (typeof url === 'string' && url.indexOf('wa.me') !== -1) {
-          var sel = document.querySelector('#booking select, select[name="package"]');
           var pkg = '';
           try {
             var summary = document.querySelector('#booking-summary, .booking-summary');
@@ -9391,7 +9477,6 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       } catch (e3) {}
       return origOpen.apply(window, arguments);
     };
-    // page view (once per load)
     try {
       var v = lsGet(VIEW_KEY, 0);
       lsSet(VIEW_KEY, v + 1);
@@ -9400,17 +9485,29 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
 
   /* ---------- 3. admin UI (only when ?admin=1) ---------- */
   var selectedId = null;
+  var currentPage = 'edit';
   var fileInput = null;
   function fmtDate(ts) {
     try { return new Date(ts).toLocaleString('ar', { dateStyle: 'medium', timeStyle: 'short' }); } catch (e) { return new Date(ts).toString(); }
   }
-  function updateCounts() {
+  function counts() {
     var ovs = getOverrides();
-    var n = Object.keys(ovs).length;
-    var el = document.getElementById('rest-admin-count');
-    if (el) el.textContent = n ? ('• ' + n + ' تعديل محفوظ') : '';
-    var b = document.getElementById('rest-admin-reset-all');
-    if (b) b.disabled = n === 0;
+    var n = { edits: Object.keys(ovs).length, wa: lsGet(WA_KEY, []).length, views: lsGet(VIEW_KEY, 0), media: 0, texts: 0 };
+    Object.keys(originals).forEach(function (id) {
+      if (originals[id].type === 'text') n.texts++;
+      else n.media++;
+    });
+    return n;
+  }
+  function refreshNavCounts() {
+    var c = counts();
+    var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+    set('ras-count-edits', c.edits);
+    set('ras-count-media', c.media);
+    set('ras-count-texts', c.texts);
+    set('ras-count-wa', c.wa);
+    var b = document.getElementById('ras-reset-all');
+    if (b) b.disabled = c.edits === 0;
   }
   function buildBar() {
     var bar = document.createElement('div');
@@ -9418,67 +9515,91 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     bar.className = 'rest-admin-ui';
     bar.setAttribute('dir', 'rtl');
     bar.innerHTML =
-      '<div class="rab-title">🛠 لوحة تحكم REST <span id="rest-admin-count"></span></div>' +
-      '<div class="rab-tabs">' +
-      '<button type="button" class="rab-tab active" data-tab="edit">تحرير المحتوى</button>' +
-      '<button type="button" class="rab-tab" data-tab="reports">التقارير</button>' +
-      '<button type="button" class="rab-tab" data-tab="tools">إعادة تعيين وتصدير</button>' +
-      '</div>' +
-      '<div class="rab-actions">' +
-      '<button type="button" id="rest-admin-done">عرض الموقع</button>' +
-      '</div>';
+      '<button type="button" class="rab-menu" id="rest-admin-menu" aria-label="فتح لوحة التحكم">☰</button>' +
+      '<div class="rab-title">لوحة تحكم REST <span id="rest-admin-count"></span></div>' +
+      '<div class="rab-actions"><button type="button" id="rest-admin-done">عرض الموقع</button></div>';
     document.body.appendChild(bar);
-    var panel = document.createElement('div');
-    panel.id = 'rest-admin-panel';
-    panel.className = 'rest-admin-ui';
-    panel.setAttribute('dir', 'rtl');
-    panel.innerHTML =
-      '<div class="rap-head"><span id="rap-title">انقر على أي نص أو صورة في الصفحة لتعديلها</span>' +
-      '<button type="button" id="rap-close" aria-label="إغلاق">✕</button></div>' +
-      '<div class="rap-body" id="rap-body"></div>';
-    document.body.appendChild(panel);
-    bar.querySelectorAll('.rab-tab').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        bar.querySelectorAll('.rab-tab').forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        showTab(btn.dataset.tab);
-      });
+    document.getElementById('rest-admin-menu').addEventListener('click', function () {
+      var sb = document.getElementById('rest-admin-sidebar');
+      if (sb) sb.classList.toggle('closed');
     });
     document.getElementById('rest-admin-done').addEventListener('click', function () {
       var u = new URL(location.href);
       u.searchParams.delete('admin');
       location.href = u.toString();
     });
-    document.getElementById('rap-close').addEventListener('click', function () {
-      panel.classList.remove('open');
-      clearSelection();
+  }
+  function buildSidebar() {
+    var sb = document.createElement('div');
+    sb.id = 'rest-admin-sidebar';
+    sb.className = 'rest-admin-ui';
+    sb.setAttribute('dir', 'rtl');
+    sb.innerHTML =
+      '<div class="ras-head">' +
+      '<div class="ras-brand"><span class="ras-logo">R</span><div><b>لوحة تحكم REST</b><small>إدارة محتوى الموقع والتقارير</small></div></div>' +
+      '<button type="button" id="ras-close" aria-label="إغلاق">✕</button></div>' +
+      '<nav class="ras-nav" id="ras-nav">' +
+      '<div class="ras-group">المحتوى</div>' +
+      '<button type="button" class="ras-item active" data-page="edit">تحرير المحتوى<span class="ras-badge" id="ras-count-edits">0</span></button>' +
+      '<button type="button" class="ras-item" data-page="media">مكتبة الوسائط<span class="ras-badge" id="ras-count-media">0</span></button>' +
+      '<button type="button" class="ras-item" data-page="texts">كل النصوص<span class="ras-badge" id="ras-count-texts">0</span></button>' +
+      '<div class="ras-group">التقارير</div>' +
+      '<button type="button" class="ras-item" data-page="overview">نظرة عامة</button>' +
+      '<button type="button" class="ras-item" data-page="wa">نقرات واتساب<span class="ras-badge" id="ras-count-wa">0</span></button>' +
+      '<div class="ras-group">النظام</div>' +
+      '<button type="button" class="ras-item" data-page="tools">إعادة تعيين وتصدير</button>' +
+      '<button type="button" class="ras-item" data-page="about">حول اللوحة</button>' +
+      '</nav>' +
+      '<div class="ras-content" id="ras-content"></div>' +
+      '<div class="ras-foot"><button type="button" class="ras-foot-btn" id="ras-view-site">عرض الموقع الحي ↗</button></div>';
+    document.body.appendChild(sb);
+    sb.querySelectorAll('.ras-item').forEach(function (btn) {
+      btn.addEventListener('click', function () { showPage(btn.dataset.page); });
     });
-    showTab('edit');
-    updateCounts();
+    document.getElementById('ras-close').addEventListener('click', function () { sb.classList.add('closed'); });
+    document.getElementById('ras-view-site').addEventListener('click', function () {
+      var u = new URL(location.href);
+      u.searchParams.delete('admin');
+      location.href = u.toString();
+    });
+    showPage('edit');
+    refreshNavCounts();
   }
-  function showTab(tab) {
-    var body = document.getElementById('rap-body');
-    var title = document.getElementById('rap-title');
-    if (tab === 'reports') { title.textContent = 'تقارير واتساب والزيارات'; body.innerHTML = renderReports(); wireReports(); return; }
-    if (tab === 'tools') { title.textContent = 'إعادة تعيين وتصدير'; body.innerHTML = renderTools(); wireTools(); return; }
-    title.textContent = selectedId ? 'تحرير العنصر المحدد' : 'انقر على أي نص أو صورة في الصفحة لتعديلها';
-    body.innerHTML = selectedId ? renderEditor(selectedId) : renderEditHint();
-    if (selectedId) wireEditor(selectedId);
+  function showPage(page) {
+    currentPage = page;
+    var nav = document.getElementById('ras-nav');
+    if (nav) nav.querySelectorAll('.ras-item').forEach(function (b) { b.classList.toggle('active', b.dataset.page === page); });
+    var content = document.getElementById('ras-content');
+    if (!content) return;
+    if (page === 'media') { content.innerHTML = renderMedia(); wireMedia(); }
+    else if (page === 'texts') { content.innerHTML = renderTexts(); wireTexts(); }
+    else if (page === 'overview') { content.innerHTML = renderOverview(); wireOverview(); }
+    else if (page === 'wa') { content.innerHTML = renderWa(); wireWa(); }
+    else if (page === 'tools') { content.innerHTML = renderTools(); wireTools(); }
+    else if (page === 'about') { content.innerHTML = renderAbout(); }
+    else { content.innerHTML = renderEdit(); wireEdit(); }
   }
-  function renderEditHint() {
+  function pageHead(title, sub) {
+    return '<div class="rap-page-head"><h2>' + esc(title) + '</h2>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
+  }
+  /* ----- page: edit (selected element) ----- */
+  function renderEdit() {
+    if (!selectedId || !originals[selectedId]) {
+      var c = counts();
+      return pageHead('تحرير المحتوى', 'انقر على أي نص أو صورة في الصفحة لتعديلها مباشرة.') +
+        '<p class="rap-hint">مرّر فوق أي نص فيظهر بإطار أزرق، وانقر عليه للكتابة مباشرة. وانقر على أي صورة أو فيديو لاستبداله بملف من جهازك.</p>' +
+        '<p class="rap-hint">القيمة الأصلية التي بُني عليها الموقع محفوظة دائماً: إذا حذفت محتوى عنصر يعود تلقائياً إلى أصله.</p>' +
+        '<div class="rap-row"><button type="button" class="rap-btn" data-goto="texts">تصفح كل النصوص</button>' +
+        '<button type="button" class="rap-btn" data-goto="media">تصفح مكتبة الوسائط</button></div>' +
+        (c.edits ? '<p class="rap-hint"><b>' + c.edits + ' تعديل محفوظ</b> في هذا المتصفح. لنشرها للجميع نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع.</p>' : '');
+    }
+    var o = originals[selectedId];
     var ovs = getOverrides();
-    var n = Object.keys(ovs).length;
-    return '<p class="rap-hint">مرّر فوق أي نص فيظهر بإطار أزرق، وانقر عليه للكتابة مباشرة. وانقر على أي صورة أو فيديو لاستبداله بملف من جهازك.</p>' +
-      '<p class="rap-hint">القيمة الأصلية التي بُني عليها الموقع محفوظة دائماً: إذا حذفت محتوى عنصر يعود تلقائياً إلى أصله، ويمكنك إعادته من زر «إعادة الأصل».</p>' +
-      (n ? '<p class="rap-hint"><b>' + n + ' تعديل محفوظ</b> في هذا المتصفح. لنشرها للجميع نزّل «الموقع المحدّث» من تبويب «إعادة تعيين وتصدير» وارفع الملف إلى المستودع.</p>' : '');
-  }
-  function renderEditor(id) {
-    var o = originals[id];
-    if (!o) return '<p>لم يعد هذا العنصر موجوداً.</p>';
-    var ovs = getOverrides();
-    var cur = ovs[id] ? ovs[id].value : o.original;
+    var cur = ovs[selectedId] ? ovs[selectedId].value : o.original;
     var isText = o.type === 'text';
-    var h = '<div class="rap-field"><label>العنصر</label><div class="rap-label">' + esc(o.label) + ' <span class="rap-kind">' + (isText ? 'نص' : o.type === 'img' ? 'صورة' : 'فيديو') + '</span></div></div>';
+    var h = pageHead('تحرير العنصر المحدد', o.label) +
+      '<div class="rap-field"><label>العنصر</label><div class="rap-label">' + esc(o.label) + ' <span class="rap-kind">' + (isText ? 'نص' : o.type === 'img' ? 'صورة' : 'فيديو') + '</span>' +
+      (ovs[selectedId] ? ' <span class="rap-kind edited">معدَّل</span>' : '') + '</div></div>';
     if (isText) {
       var plain = (cur || '').replace(/<[^>]+>/g, '');
       h += '<div class="rap-field"><label>النص الحالي (عدّله هنا أو مباشرة في الصفحة)</label>' +
@@ -9495,32 +9616,29 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<button type="button" class="rap-btn" id="rap-reset-one">إعادة الأصل</button></div>';
     return h;
   }
-  function wireEditor(id) {
-    var o = originals[id];
-    if (!o) return;
+  function wireEdit() {
+    document.querySelectorAll('#ras-content [data-goto]').forEach(function (b) {
+      b.addEventListener('click', function () { showPage(b.dataset.goto); });
+    });
+    if (!selectedId || !originals[selectedId]) return;
+    var id = selectedId, o = originals[id];
     var saveBtn = document.getElementById('rap-save');
     if (saveBtn) saveBtn.addEventListener('click', function () {
       var ta = document.getElementById('rap-text');
       var val = ta ? ta.value.trim() : '';
       var el = document.querySelector('[data-admin-id="' + id + '"]');
-      if (el) {
-        if (!val) { resetOne(id); }
-        else {
-          // keep any accent span: replace text nodes, preserve element children
-          applyTextValue(el, val);
-          saveOverride(id, el.innerHTML);
-        }
-        clearSelection();
-        showTab('edit');
-      }
+      if (!el) return;
+      if (!val) { resetOne(id); }
+      else { applyTextValue(el, val); saveOverride(id, el.innerHTML); }
+      clearSelection();
+      showPage('edit');
     });
     var pick = document.getElementById('rap-pick');
     if (pick) pick.addEventListener('click', function () { openFilePicker(id); });
     var rst = document.getElementById('rap-reset-one');
-    if (rst) rst.addEventListener('click', function () { resetOne(id); clearSelection(); showTab('edit'); });
+    if (rst) rst.addEventListener('click', function () { resetOne(id); clearSelection(); showPage('edit'); });
   }
   function applyTextValue(el, plain) {
-    // if the element has an accent span (hero H1), keep it on the last word
     var accent = el.querySelector('.hero-accent');
     if (accent) {
       var words = plain.split(/\s+/).filter(Boolean);
@@ -9534,27 +9652,117 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     } else if (el.children.length === 0) {
       el.textContent = plain;
     } else {
-      // mixed content: put the whole text in the first text node, clear the rest
       var done = false;
       for (var i = 0; i < el.childNodes.length; i++) {
         var n = el.childNodes[i];
-        if (n.nodeType === 3) {
-          n.nodeValue = done ? '' : plain;
-          done = true;
-        }
+        if (n.nodeType === 3) { n.nodeValue = done ? '' : plain; done = true; }
       }
       if (!done) el.textContent = plain;
     }
   }
-  function renderReports() {
+  /* ----- page: media library ----- */
+  function renderMedia() {
+    var ovs = getOverrides();
+    var items = Object.keys(originals).filter(function (id) { return originals[id].type !== 'text'; });
+    var h = pageHead('مكتبة الوسائط', items.length + ' عنصراً — صورة أو فيديو. انقر أي عنصر للانتقال إليه في الصفحة.') +
+      '<p class="rap-hint">استبدال أي عنصر يتم من جهازك، ويُحفظ في هذا المتصفح حتى تنزّل «الموقع المحدّث» وتنشره.</p>';
+    items.forEach(function (id) {
+      var o = originals[id];
+      var cur = ovs[id] ? ovs[id].value : o.original;
+      var thumb = o.type === 'img' ? cur : (o.poster || cur);
+      h += '<div class="rap-media-item" data-id="' + id + '">' +
+        '<div class="rap-media-thumb">' + (thumb ? '<img src="' + esc(thumb) + '" alt="">' : '<span>🎬</span>') + '</div>' +
+        '<div class="rap-media-meta"><b>' + esc(o.label) + '</b><span>' + (o.type === 'img' ? 'صورة' : 'فيديو') + (ovs[id] ? ' • معدَّل' : '') + '</span></div>' +
+        '<div class="rap-media-actions"><button type="button" class="rap-btn sm" data-replace="' + id + '">استبدال</button>' +
+        (ovs[id] ? '<button type="button" class="rap-btn sm" data-reset="' + id + '">إعادة الأصل</button>' : '') + '</div></div>';
+    });
+    return h;
+  }
+  function wireMedia() {
+    document.querySelectorAll('#ras-content [data-replace]').forEach(function (b) {
+      b.addEventListener('click', function (e) { e.stopPropagation(); openFilePicker(b.dataset.replace); });
+    });
+    document.querySelectorAll('#ras-content [data-reset]').forEach(function (b) {
+      b.addEventListener('click', function (e) { e.stopPropagation(); resetOne(b.dataset.reset); showPage('media'); });
+    });
+    document.querySelectorAll('#ras-content .rap-media-item').forEach(function (row) {
+      row.addEventListener('click', function () { jumpTo(row.dataset.id); });
+    });
+  }
+  /* ----- page: all texts ----- */
+  function renderTexts() {
+    var ovs = getOverrides();
+    var items = Object.keys(originals).filter(function (id) { return originals[id].type === 'text'; });
+    var h = pageHead('كل النصوص', items.length + ' نصاً قابلاً للتحرير. ابحث وانقر أي نص للانتقال إليه وتعديله.') +
+      '<div class="rap-search"><input type="search" id="rap-search" placeholder="ابحث عن نص…"></div>' +
+      '<div id="rap-text-list">';
+    items.forEach(function (id) {
+      var o = originals[id];
+      var cur = ovs[id] ? ovs[id].value : o.original;
+      var plain = (cur || '').replace(/<[^>]+>/g, '').trim();
+      h += '<button type="button" class="rap-text-item" data-id="' + id + '" data-search="' + esc(plain) + '">' +
+        '<span class="rap-text-label">' + esc(plain.length > 64 ? plain.slice(0, 64) + '…' : plain) + '</span>' +
+        (ovs[id] ? '<span class="rap-kind edited">معدَّل</span>' : '') + '</button>';
+    });
+    h += '</div>';
+    return h;
+  }
+  function wireTexts() {
+    var input = document.getElementById('rap-search');
+    if (input) input.addEventListener('input', function () {
+      var q = input.value.trim();
+      document.querySelectorAll('#rap-text-list .rap-text-item').forEach(function (it) {
+        it.style.display = (!q || it.dataset.search.indexOf(q) !== -1) ? '' : 'none';
+      });
+    });
+    document.querySelectorAll('#rap-text-list .rap-text-item').forEach(function (it) {
+      it.addEventListener('click', function () { jumpTo(it.dataset.id); });
+    });
+  }
+  function jumpTo(id) {
+    var el = document.querySelector('[data-admin-id="' + id + '"]');
+    if (!el) return;
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    selectElement(el);
+  }
+  /* ----- page: overview ----- */
+  function renderOverview() {
+    var c = counts();
+    var clicks = lsGet(WA_KEY, []).slice(-3).reverse();
+    var h = pageHead('نظرة عامة', 'ملخص سريع لحالة الموقع ولوحة التحكم.') +
+      '<div class="rap-stats-grid">' +
+      '<div class="rap-stat"><b>' + c.edits + '</b><span>تعديل محفوظ</span></div>' +
+      '<div class="rap-stat"><b>' + c.wa + '</b><span>نقرة واتساب</span></div>' +
+      '<div class="rap-stat"><b>' + c.views + '</b><span>مشاهدة صفحة</span></div>' +
+      '<div class="rap-stat"><b>' + c.media + '</b><span>صورة / فيديو</span></div>' +
+      '<div class="rap-stat"><b>' + c.texts + '</b><span>نص قابل للتحرير</span></div></div>';
+    h += '<div class="rap-field"><label>أحدث نقرات واتساب</label>';
+    if (!clicks.length) h += '<p class="rap-hint">لا توجد نقرات مسجلة بعد في هذا المتصفح.</p>';
+    else {
+      h += '<ul class="rap-list">';
+      clicks.forEach(function (cl) { h += '<li>' + esc(fmtDate(cl.ts)) + ' — ' + esc(cl.label || 'واتساب') + '</li>'; });
+      h += '</ul>';
+    }
+    h += '</div><div class="rap-row"><button type="button" class="rap-btn primary" data-goto="tools">تنزيل الموقع المحدّث</button>' +
+      '<button type="button" class="rap-btn" data-goto="wa">كل نقرات واتساب</button></div>';
+    return h;
+  }
+  function wireOverview() {
+    document.querySelectorAll('#ras-content [data-goto]').forEach(function (b) {
+      b.addEventListener('click', function () { showPage(b.dataset.goto); });
+    });
+  }
+  /* ----- page: WhatsApp clicks ----- */
+  function renderWa() {
     var clicks = lsGet(WA_KEY, []).slice().reverse();
     var views = lsGet(VIEW_KEY, 0);
     var byPkg = {};
     clicks.forEach(function (c) { var k = c.label || 'واتساب'; byPkg[k] = (byPkg[k] || 0) + 1; });
-    var h = '<div class="rap-stats"><div><b>' + clicks.length + '</b><span>نقرة واتساب</span></div>' +
+    var h = pageHead('نقرات واتساب', 'كل من ضغط على رابط واتساب أو أرسل حجزاً عبره.') +
+      '<div class="rap-stats"><div><b>' + clicks.length + '</b><span>نقرة واتساب</span></div>' +
       '<div><b>' + views + '</b><span>مشاهدة صفحة (هذا المتصفح)</span></div>' +
-      '<div><b>' + Object.keys(byPkg).length + '</b><span>زر/باقة مختلفة</span></div></div>';
-    h += '<p class="rap-note">هذه النقرات مسجَّلة في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>';
+      '<div><b>' + Object.keys(byPkg).length + '</b><span>زر/باقة مختلفة</span></div></div>' +
+      '<p class="rap-note">هذه النقرات مسجَّلة في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>';
     if (!clicks.length) {
       h += '<p class="rap-hint">لا توجد نقرات واتساب مسجلة بعد في هذا المتصفح. جرّب الضغط على زر واتساب ثم عد هنا.</p>';
     } else {
@@ -9567,21 +9775,23 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     h += '<div class="rap-row"><button type="button" class="rap-btn" id="rap-clear-wa">مسح سجل النقرات</button></div>';
     return h;
   }
-  function wireReports() {
+  function wireWa() {
     var b = document.getElementById('rap-clear-wa');
     if (b) b.addEventListener('click', function () {
       if (!confirm('مسح كل سجل نقرات واتساب؟')) return;
       lsSet(WA_KEY, []);
-      showTab('reports');
+      showPage('wa');
+      refreshNavCounts();
     });
   }
+  /* ----- page: reset & export ----- */
   function renderTools() {
     var n = Object.keys(getOverrides()).length;
-    return '<p class="rap-hint">التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). لنشرها لكل الزوار، نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان <code>index.html</code> — وسيصبح هو النسخة الأصلية الجديدة.</p>' +
+    return pageHead('إعادة تعيين وتصدير', 'التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). لنشرها لكل الزوار، نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان index.html — وسيصبح هو النسخة الأصلية الجديدة.') +
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-download">تنزيل الموقع المحدّث (HTML)</button></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn" id="rap-export">تصدير التعديلات (JSON)</button>' +
       '<button type="button" class="rap-btn" id="rap-import">استيراد تعديلات</button></div>' +
-      '<div class="rap-row"><button type="button" class="rap-btn danger" id="rap-reset-all" ' + (n ? '' : 'disabled') + '>إعادة كل شيء إلى الأصل (' + n + ')</button></div>' +
+      '<div class="rap-row"><button type="button" class="rap-btn danger" id="ras-reset-all" ' + (n ? '' : 'disabled') + '>إعادة كل شيء إلى الأصل (' + n + ')</button></div>' +
       '<input type="file" id="rap-import-file" accept="application/json,.json" hidden>';
   }
   function wireTools() {
@@ -9600,21 +9810,26 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (!f) return;
         var r = new FileReader();
         r.onload = function () {
-          try {
-            var data = JSON.parse(r.result);
-            lsSet(OV_KEY, data);
-            location.reload();
-          } catch (e) { alert('ملف غير صالح'); }
+          try { lsSet(OV_KEY, JSON.parse(r.result)); location.reload(); } catch (e) { alert('ملف غير صالح'); }
         };
         r.readAsText(f);
       });
     }
-    var ra = document.getElementById('rap-reset-all');
+    var ra = document.getElementById('ras-reset-all');
     if (ra) ra.addEventListener('click', function () {
       if (!confirm('إعادة كل المحتوى إلى الحالة الأصلية التي بُني عليها الموقع؟')) return;
       lsSet(OV_KEY, {});
       location.reload();
     });
+  }
+  /* ----- page: about ----- */
+  function renderAbout() {
+    return pageHead('حول اللوحة', 'كيف تعمل لوحة التحكم وكيف تنشر تعديلاتك.') +
+      '<p class="rap-hint"><b>1 — حرّر:</b> انقر أي نص أو صورة في الصفحة، أو اخترها من «كل النصوص» و«مكتبة الوسائط». التعديلات تُحفظ فوراً في هذا المتصفح.</p>' +
+      '<p class="rap-hint"><b>2 — الأصل محفوظ:</b> القيمة التي بُني عليها الموقع تظهر دائماً تحت كل عنصر. حذف المحتوى يعيده إلى أصله، و«إعادة كل شيء إلى الأصل» تلغي كل التعديلات.</p>' +
+      '<p class="rap-hint"><b>3 — انشر:</b> من صفحة «إعادة تعيين وتصدير» نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان <code>index.html</code> — فيراه كل الزوار.</p>' +
+      '<p class="rap-hint"><b>التقارير:</b> نقرات واتساب ومشاهدات الصفحة تُسجَّل في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>' +
+      '<p class="rap-hint">الدخول إلى اللوحة من رابط «لوحة التحكم» في أسفل الموقع، أو بإضافة <code>?admin=1</code> إلى رابط الموقع.</p>';
   }
   function downloadBlob(content, name, type) {
     var blob = content instanceof Blob ? content : new Blob([content], { type: type || 'text/plain' });
@@ -9626,17 +9841,15 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
   }
   function downloadSite() {
-    // clone, strip the admin UI + editing hooks, bake the current (edited) DOM in
     var clone = document.documentElement.cloneNode(true);
     var bar = clone.querySelector('#rest-admin-bar');
     if (bar) bar.remove();
-    var panel = clone.querySelector('#rest-admin-panel');
-    if (panel) panel.remove();
+    var sb = clone.querySelector('#rest-admin-sidebar');
+    if (sb) sb.remove();
     clone.querySelectorAll('.rest-admin-ui').forEach(function (e) { e.remove(); });
     clone.classList.remove('admin-mode');
     clone.querySelectorAll('[contenteditable]').forEach(function (e) { e.removeAttribute('contenteditable'); });
     clone.querySelectorAll('.rest-admin-selected').forEach(function (e) { e.classList.remove('rest-admin-selected'); });
-    // drop the ?admin=1 from any admin link
     clone.querySelectorAll('a[href*="admin=1"]').forEach(function (a) {
       try {
         var u = new URL(a.getAttribute('href'), location.href);
@@ -9677,7 +9890,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         }
         var now = document.getElementById('rap-media-now');
         if (now) now.src = dataUrl;
-        showTab('edit');
+        showPage(currentPage);
       };
       r.readAsDataURL(f);
       fileInput.value = '';
@@ -9697,23 +9910,17 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (!id || !originals[id]) return;
     selectedId = id;
     el.classList.add('rest-admin-selected');
-    var panel = document.getElementById('rest-admin-panel');
-    if (panel) panel.classList.add('open');
-    var tabBtn = document.querySelector('.rab-tab[data-tab="edit"]');
-    if (tabBtn) {
-      document.querySelectorAll('.rab-tab').forEach(function (b) { b.classList.remove('active'); });
-      tabBtn.classList.add('active');
-    }
-    showTab('edit');
+    var sb = document.getElementById('rest-admin-sidebar');
+    if (sb) sb.classList.remove('closed');
+    showPage('edit');
   }
   function enableEditing() {
     document.documentElement.classList.add('admin-mode');
     buildBar();
-    // click to select / edit (capture so links/buttons do not navigate while editing)
+    buildSidebar();
     document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('#rest-admin-bar, #rest-admin-panel, .rest-admin-ui')) return;
+      if (e.target.closest && e.target.closest('#rest-admin-bar, #rest-admin-sidebar, .rest-admin-ui')) return;
       var t = e.target;
-      // media first
       var media = t.closest ? t.closest('img[data-admin-id], video[data-admin-id]') : null;
       if (media) {
         e.preventDefault(); e.stopPropagation();
@@ -9736,7 +9943,6 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         } catch (e2) {}
       }
     }, true);
-    // save text on blur
     document.addEventListener('focusout', function (e) {
       var el = e.target;
       if (!el || !el.dataset || !el.dataset.adminId) return;
@@ -9749,15 +9955,14 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (!plain) { resetOne(el.dataset.adminId); }
         else if (val !== o.original) { saveOverride(el.dataset.adminId, val); }
         el.removeAttribute('contenteditable');
-        // do NOT touch the panel textarea here: this fires when the user moves
-        // focus into the panel to type, and rewriting it would wipe their input.
+        // do NOT touch the sidebar textarea here: this fires when the user moves
+        // focus into the sidebar to type, and rewriting it would wipe their input.
       }, 120);
     });
-    // hover hint
     document.addEventListener('mouseover', function (e) {
       var t = e.target;
       if (!t || !t.closest) return;
-      if (t.closest('#rest-admin-bar, #rest-admin-panel, .rest-admin-ui')) return;
+      if (t.closest('#rest-admin-bar, #rest-admin-sidebar, .rest-admin-ui')) return;
       var el = t.closest('[data-admin-id]');
       if (el) el.classList.add('rest-admin-hover');
     });
