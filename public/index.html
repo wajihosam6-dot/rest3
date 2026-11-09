@@ -9589,8 +9589,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   var publishState = 'idle';
   function setPublishState(s, msg) {
     publishState = s;
+    // Update BOTH status lines (one above the token field, one right under
+    // the buttons where the user's eye is after tapping) and the button
+    // itself, so the feedback is impossible to miss on a phone.
     var el = document.getElementById('rap-publish-status');
     if (el) el.textContent = msg || '';
+    var el2 = document.getElementById('rap-publish-status2');
+    if (el2) el2.textContent = msg || '';
+    var pn = document.getElementById('rap-publish-now');
+    if (pn) {
+      if (s === 'publishing') { pn.disabled = true; pn.textContent = 'جارٍ النشر…'; }
+      else { pn.disabled = false; pn.textContent = 'نشر الآن'; }
+    }
   }
   function schedulePublish() {
     if (publishTimer) clearTimeout(publishTimer);
@@ -10290,7 +10300,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<input type="password" id="rap-gh-token" class="rap-input" dir="ltr" placeholder="github_pat_..." autocomplete="off">' +
       '<p class="rap-hint">الرمز هو رمز وصول شخصي (Fine-grained PAT) من GitHub — أنشئه من <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">إعدادات GitHub ← Developer settings ← Personal access tokens</a>، بصلاحية Contents: Read and write على مستودع rest3 فقط، والصقه هنا. يُحفظ في هذا المتصفح فقط ولا يظهر في الموقع.</p>' +
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-gh-save">حفظ الرمز وتفعيل النشر</button>' +
-      '<button type="button" class="rap-btn" id="rap-publish-now">نشر الآن</button></div></div>' +
+      '<button type="button" class="rap-btn" id="rap-publish-now">نشر الآن</button></div>' +
+      '<p class="rap-hint" id="rap-publish-status2" style="font-weight:700;"></p></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-download">تنزيل الموقع المحدّث (HTML)</button></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn" id="rap-export">تصدير التعديلات (JSON)</button>' +
       '<button type="button" class="rap-btn" id="rap-import">استيراد تعديلات</button></div>' +
