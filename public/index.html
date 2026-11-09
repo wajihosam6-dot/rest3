@@ -9616,6 +9616,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     return fetch(GH_API_URL, { headers: ghHeaders() })
       .then(function (r) {
         if (r.status === 404) return null;
+        if (r.status === 401) throw new Error('read-401');
+        if (r.status === 403) throw new Error('read-403');
         if (!r.ok) throw new Error('قراءة الملف: ' + r.status);
         return r.json();
       })
@@ -9625,6 +9627,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         return fetch(GH_API_URL, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(req) });
       })
       .then(function (r) {
+        if (r.status === 401) throw new Error('write-401');
+        if (r.status === 403) throw new Error('write-403');
         if (!r.ok) throw new Error('النشر: ' + r.status);
         return r.json();
       })
@@ -9634,7 +9638,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         return true;
       })
       .catch(function (err) {
-        setPublishState('error', 'تعذّر النشر التلقائي (' + (err && err.message ? err.message : 'خطأ') + ') — التعديلات محفوظة في هذا المتصفح، جرّب «نشر الآن» أو التنزيل اليدوي.');
+        var m = err && err.message ? err.message : 'خطأ';
+        var msg;
+        if (m === 'write-403' || m === 'read-403') {
+          msg = 'الرمز لا يملك صلاحية الكتابة في المستودع — في GitHub أنشئ رمزاً جديداً بصلاحية Contents: Read and write على مستودع rest3 فقط، والصقه هنا ثم اضغط «نشر الآن».';
+        } else if (m === 'write-401' || m === 'read-401') {
+          msg = 'الرمز غير صالح أو منتهٍ — أنشئ رمزاً جديداً من GitHub والصقه هنا.';
+        } else if (m === 'Failed to fetch' || m.indexOf('Network') !== -1 || m.indexOf('network') !== -1) {
+          msg = 'تعذّر الاتصال بـ GitHub (مشكلة شبكة مؤقتة) — تحقق من الإنترنت ثم اضغط «نشر الآن» مجدداً.';
+        } else {
+          msg = 'تعذّر النشر التلقائي (' + m + ') — التعديلات محفوظة في هذا المتصفح، جرّب «نشر الآن» أو التنزيل اليدوي.';
+        }
+        setPublishState('error', msg);
         return false;
       });
   }
