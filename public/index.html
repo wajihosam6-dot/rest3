@@ -5161,11 +5161,22 @@ html.admin-mode { scroll-padding-top: 110px; }
   background: #F9A8D4; color: #073B4C; border: 0; border-radius: 999px;
   padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
 }
+#rest-admin-bar #rest-admin-pages { background: rgba(255,255,255,.14); color: #fff; }
 
-/* ---- sidebar drawer ---- */
+/* the two drawer views are toggled with [hidden]; author display rules must not override it */
+#rest-admin-sidebar [hidden] { display: none !important; }
+
+/* ---- backdrop behind the side window ---- */
+#rest-admin-backdrop {
+  position: fixed; inset: 0; z-index: 99988; background: rgba(4, 32, 42, .45);
+  backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .3s ease;
+}
+#rest-admin-backdrop.show { opacity: 1; pointer-events: auto; }
+
+/* ---- sidebar drawer (the side window) ---- */
 #rest-admin-sidebar {
   position: fixed; top: 0; bottom: 0; inset-inline-start: 0; z-index: 99989;
-  width: 380px; max-width: 94vw; display: flex; flex-direction: column;
+  width: 420px; max-width: 94vw; display: flex; flex-direction: column;
   background: #fff; color: #0b2b36; font-family: inherit;
   border-inline-end: 1px solid #d7e6ea; box-shadow: 0 0 60px rgba(0,0,0,.35);
   transform: translateX(0); transition: transform .32s ease;
@@ -5188,37 +5199,69 @@ html.admin-mode { scroll-padding-top: 110px; }
   background: rgba(255,255,255,.16); color: #fff; border: 0; border-radius: 50%;
   width: 30px; height: 30px; font-size: 14px; cursor: pointer; flex: none;
 }
+/* ---- pages menu (home view of the side window) ---- */
+#rest-admin-sidebar .ras-view-pages { flex: 1; display: flex; flex-direction: column; overflow: auto; }
+#rest-admin-sidebar .ras-quick {
+  display: flex; gap: 8px; padding: 14px 16px 4px; flex: none;
+}
+#rest-admin-sidebar .ras-quick > div {
+  flex: 1; background: #eef6f8; border-radius: 12px; padding: 10px 6px; text-align: center;
+}
+#rest-admin-sidebar .ras-quick b { display: block; font-size: 20px; color: #073B4C; }
+#rest-admin-sidebar .ras-quick span { font-size: 11.5px; color: #33565f; }
 #rest-admin-sidebar .ras-nav {
-  padding: 10px 12px 6px; border-bottom: 1px solid #e3eef1; flex: none;
-  max-height: 46vh; overflow: auto;
+  padding: 6px 12px 10px; flex: 1;
 }
 #rest-admin-sidebar .ras-group {
   font-size: 11px; font-weight: 700; color: #5b7a85; letter-spacing: .04em;
-  margin: 10px 6px 4px;
+  margin: 12px 6px 6px;
 }
-#rest-admin-sidebar .ras-group:first-child { margin-top: 2px; }
+#rest-admin-sidebar .ras-group:first-child { margin-top: 6px; }
 #rest-admin-sidebar .ras-item {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  width: 100%; background: transparent; border: 0; border-radius: 10px;
-  padding: 9px 10px; font: inherit; font-size: 13.5px; font-weight: 600; color: #0b2b36;
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; background: #f8fbfc; border: 1px solid #e3eef1; border-radius: 14px;
+  padding: 11px 12px; margin-bottom: 8px; font: inherit; color: #0b2b36;
   cursor: pointer; text-align: start;
 }
-#rest-admin-sidebar .ras-item:hover { background: #eef6f8; }
-#rest-admin-sidebar .ras-item.active { background: #073B4C; color: #fff; }
+#rest-admin-sidebar .ras-item:hover { background: #eef6f8; border-color: #b9d2d9; }
+#rest-admin-sidebar .ras-item.active { background: #073B4C; border-color: #073B4C; color: #fff; }
+#rest-admin-sidebar .ras-item.active .ras-txt small { color: rgba(255,255,255,.75); }
 #rest-admin-sidebar .ras-item.active .ras-badge { background: rgba(255,255,255,.22); color: #fff; }
+#rest-admin-sidebar .ras-item.active .ras-chev { color: rgba(255,255,255,.8); }
+#rest-admin-sidebar .ras-ico {
+  width: 38px; height: 38px; flex: none; border-radius: 12px; background: #e0f0f4; color: #0E7490;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700;
+}
+#rest-admin-sidebar .ras-item.active .ras-ico { background: rgba(255,255,255,.18); color: #fff; }
+#rest-admin-sidebar .ras-txt { flex: 1; min-width: 0; }
+#rest-admin-sidebar .ras-txt b { display: block; font-size: 14px; }
+#rest-admin-sidebar .ras-txt small { display: block; font-size: 12px; color: #5b7a85; }
 #rest-admin-sidebar .ras-badge {
   background: #eef6f8; color: #0b2b36; border-radius: 999px; padding: 1px 9px;
   font-size: 11.5px; font-weight: 700; flex: none;
 }
-#rest-admin-sidebar .ras-content {
-  flex: 1; overflow: auto; padding: 16px; font-size: 13.5px; line-height: 1.7;
-}
+#rest-admin-sidebar .ras-chev { font-size: 18px; color: #8fb0ba; flex: none; }
 #rest-admin-sidebar .ras-foot {
   padding: 12px 16px; border-top: 1px solid #e3eef1; flex: none;
 }
 #rest-admin-sidebar .ras-foot-btn {
   width: 100%; background: #0E7490; color: #fff; border: 0; border-radius: 999px;
   padding: 10px; font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+
+/* ---- one page inside the side window ---- */
+#rest-admin-sidebar .ras-view-page { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+#rest-admin-sidebar .ras-pagebar {
+  display: flex; align-items: center; gap: 10px; flex: none;
+  padding: 12px 16px; border-bottom: 1px solid #e3eef1; background: #f8fbfc;
+}
+#rest-admin-sidebar .ras-pagebar #ras-back {
+  background: #eef6f8; border: 1px solid #b9d2d9; border-radius: 999px;
+  padding: 6px 12px; font: inherit; font-size: 12.5px; font-weight: 700; color: #073B4C; cursor: pointer;
+}
+#rest-admin-sidebar .ras-pagebar #ras-page-title { font-size: 15px; color: #073B4C; }
+#rest-admin-sidebar .ras-content {
+  flex: 1; overflow: auto; padding: 16px; font-size: 13.5px; line-height: 1.7;
 }
 
 /* ---- page content inside the sidebar ---- */
@@ -5310,6 +5353,8 @@ html.admin-mode [data-admin-id].rest-admin-selected { outline: 2px solid #EC4899
 html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC4899; outline-offset: 3px; background: rgba(236,72,153,.06); }
 @media (max-width: 640px) {
   #rest-admin-bar { flex-wrap: wrap; border-radius: 18px; justify-content: center; padding: 8px 10px; }
+  /* on phones the drawer has its own close button, so the top bar steps aside while it is open */
+  html.ras-drawer-open #rest-admin-bar { display: none; }
   #rest-admin-sidebar { width: 100vw; max-width: 100vw; }
 }
 
@@ -9307,8 +9352,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
 /* REST Admin — visual inline editor + WhatsApp reports.
    Runs on every load (to apply saved overrides + track WhatsApp clicks).
    The editing UI only activates when ?admin=1 is present.
-   UI: a top bar + a slide-in sidebar with pages (Edit / Media library / All texts /
-   Overview / WhatsApp clicks / Reset & export / About).
+   UI: a compact top bar with a button that opens a side window (drawer);
+   the side window first shows the admin pages menu (content editing,
+   media library, all texts, overview, WhatsApp clicks, reset & export,
+   about) and opening a page shows that page inside the same side window,
+   with a back button to the pages menu. A backdrop dims the site behind it.
    Overrides live in localStorage (rest_admin_overrides_v1). The built-in HTML is
    always the "original": an empty/cleared value reverts to it, and "Reset all"
    removes every override. Use "Download updated site" to bake the edits into a
@@ -9506,8 +9554,49 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     set('ras-count-media', c.media);
     set('ras-count-texts', c.texts);
     set('ras-count-wa', c.wa);
+    set('ras-quick-edits', c.edits);
+    set('ras-quick-wa', c.wa);
+    set('ras-quick-views', c.views);
     var b = document.getElementById('ras-reset-all');
     if (b) b.disabled = c.edits === 0;
+  }
+  var PAGES = {
+    edit: 'تحرير المحتوى',
+    media: 'مكتبة الوسائط',
+    texts: 'كل النصوص',
+    overview: 'نظرة عامة',
+    wa: 'نقرات واتساب',
+    tools: 'إعادة تعيين وتصدير',
+    about: 'حول اللوحة'
+  };
+  function openDrawer() {
+    var sb = document.getElementById('rest-admin-sidebar');
+    var bd = document.getElementById('rest-admin-backdrop');
+    if (sb) sb.classList.remove('closed');
+    if (bd) bd.classList.add('show');
+    document.documentElement.classList.add('ras-drawer-open');
+  }
+  function closeDrawer() {
+    var sb = document.getElementById('rest-admin-sidebar');
+    var bd = document.getElementById('rest-admin-backdrop');
+    if (sb) sb.classList.add('closed');
+    if (bd) bd.classList.remove('show');
+    document.documentElement.classList.remove('ras-drawer-open');
+  }
+  function toggleDrawer() {
+    var sb = document.getElementById('rest-admin-sidebar');
+    if (sb && sb.classList.contains('closed')) openDrawer(); else closeDrawer();
+  }
+  /* Pages menu (home view of the side window) <-> one page (page view). */
+  function showPages() {
+    currentPage = '';
+    var nav = document.getElementById('ras-nav');
+    if (nav) nav.querySelectorAll('.ras-item').forEach(function (b) { b.classList.remove('active'); });
+    var pages = document.getElementById('ras-pages');
+    var pv = document.getElementById('ras-pageview');
+    if (pages) pages.hidden = false;
+    if (pv) pv.hidden = true;
+    refreshNavCounts();
   }
   function buildBar() {
     var bar = document.createElement('div');
@@ -9515,14 +9604,12 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     bar.className = 'rest-admin-ui';
     bar.setAttribute('dir', 'rtl');
     bar.innerHTML =
-      '<button type="button" class="rab-menu" id="rest-admin-menu" aria-label="فتح لوحة التحكم">☰</button>' +
+      '<button type="button" class="rab-menu" id="rest-admin-menu" aria-label="فتح صفحات لوحة التحكم" title="صفحات لوحة التحكم">☰</button>' +
       '<div class="rab-title">لوحة تحكم REST <span id="rest-admin-count"></span></div>' +
-      '<div class="rab-actions"><button type="button" id="rest-admin-done">عرض الموقع</button></div>';
+      '<div class="rab-actions"><button type="button" id="rest-admin-pages">الصفحات</button><button type="button" id="rest-admin-done">عرض الموقع</button></div>';
     document.body.appendChild(bar);
-    document.getElementById('rest-admin-menu').addEventListener('click', function () {
-      var sb = document.getElementById('rest-admin-sidebar');
-      if (sb) sb.classList.toggle('closed');
-    });
+    document.getElementById('rest-admin-menu').addEventListener('click', function () { toggleDrawer(); });
+    document.getElementById('rest-admin-pages').addEventListener('click', function () { openDrawer(); showPages(); });
     document.getElementById('rest-admin-done').addEventListener('click', function () {
       var u = new URL(location.href);
       u.searchParams.delete('admin');
@@ -9530,45 +9617,66 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     });
   }
   function buildSidebar() {
+    var bd = document.createElement('div');
+    bd.id = 'rest-admin-backdrop';
+    bd.className = 'rest-admin-ui';
+    bd.setAttribute('dir', 'rtl');
+    document.body.appendChild(bd);
+    bd.addEventListener('click', function () { closeDrawer(); });
     var sb = document.createElement('div');
     sb.id = 'rest-admin-sidebar';
-    sb.className = 'rest-admin-ui';
+    sb.className = 'rest-admin-ui closed';
     sb.setAttribute('dir', 'rtl');
     sb.innerHTML =
       '<div class="ras-head">' +
       '<div class="ras-brand"><span class="ras-logo">R</span><div><b>لوحة تحكم REST</b><small>إدارة محتوى الموقع والتقارير</small></div></div>' +
-      '<button type="button" id="ras-close" aria-label="إغلاق">✕</button></div>' +
+      '<button type="button" id="ras-close" aria-label="إغلاق النافذة الجانبية">✕</button></div>' +
+      '<div class="ras-view-pages" id="ras-pages">' +
+      '<div class="ras-quick">' +
+      '<div><b id="ras-quick-edits">0</b><span>تعديل محفوظ</span></div>' +
+      '<div><b id="ras-quick-wa">0</b><span>نقرة واتساب</span></div>' +
+      '<div><b id="ras-quick-views">0</b><span>مشاهدة صفحة</span></div></div>' +
       '<nav class="ras-nav" id="ras-nav">' +
       '<div class="ras-group">المحتوى</div>' +
-      '<button type="button" class="ras-item active" data-page="edit">تحرير المحتوى<span class="ras-badge" id="ras-count-edits">0</span></button>' +
-      '<button type="button" class="ras-item" data-page="media">مكتبة الوسائط<span class="ras-badge" id="ras-count-media">0</span></button>' +
-      '<button type="button" class="ras-item" data-page="texts">كل النصوص<span class="ras-badge" id="ras-count-texts">0</span></button>' +
+      '<button type="button" class="ras-item" data-page="edit"><span class="ras-ico">✎</span><span class="ras-txt"><b>تحرير المحتوى</b><small>انقر أي نص أو صورة في الصفحة لتعديلها</small></span><span class="ras-badge" id="ras-count-edits">0</span><span class="ras-chev">‹</span></button>' +
+      '<button type="button" class="ras-item" data-page="media"><span class="ras-ico">▦</span><span class="ras-txt"><b>مكتبة الوسائط</b><small>كل الصور والفيديوهات واستبدالها</small></span><span class="ras-badge" id="ras-count-media">0</span><span class="ras-chev">‹</span></button>' +
+      '<button type="button" class="ras-item" data-page="texts"><span class="ras-ico">≡</span><span class="ras-txt"><b>كل النصوص</b><small>ابحث عن أي نص وانتقل إليه</small></span><span class="ras-badge" id="ras-count-texts">0</span><span class="ras-chev">‹</span></button>' +
       '<div class="ras-group">التقارير</div>' +
-      '<button type="button" class="ras-item" data-page="overview">نظرة عامة</button>' +
-      '<button type="button" class="ras-item" data-page="wa">نقرات واتساب<span class="ras-badge" id="ras-count-wa">0</span></button>' +
+      '<button type="button" class="ras-item" data-page="overview"><span class="ras-ico">▤</span><span class="ras-txt"><b>نظرة عامة</b><small>ملخص حالة الموقع والتعديلات</small></span><span class="ras-chev">‹</span></button>' +
+      '<button type="button" class="ras-item" data-page="wa"><span class="ras-ico">✆</span><span class="ras-txt"><b>نقرات واتساب</b><small>من ضغط على واتساب ومتى</small></span><span class="ras-badge" id="ras-count-wa">0</span><span class="ras-chev">‹</span></button>' +
       '<div class="ras-group">النظام</div>' +
-      '<button type="button" class="ras-item" data-page="tools">إعادة تعيين وتصدير</button>' +
-      '<button type="button" class="ras-item" data-page="about">حول اللوحة</button>' +
+      '<button type="button" class="ras-item" data-page="tools"><span class="ras-ico">⚙</span><span class="ras-txt"><b>إعادة تعيين وتصدير</b><small>تنزيل الموقع المحدّث والنسخ الاحتياطي</small></span><span class="ras-chev">‹</span></button>' +
+      '<button type="button" class="ras-item" data-page="about"><span class="ras-ico">ⓘ</span><span class="ras-txt"><b>حول اللوحة</b><small>كيف تعمل وكيف تنشر تعديلاتك</small></span><span class="ras-chev">‹</span></button>' +
       '</nav>' +
+      '<div class="ras-foot"><button type="button" class="ras-foot-btn" id="ras-view-site">عرض الموقع الحي ↗</button></div>' +
+      '</div>' +
+      '<div class="ras-view-page" id="ras-pageview" hidden>' +
+      '<div class="ras-pagebar"><button type="button" id="ras-back">› الصفحات</button><b id="ras-page-title"></b></div>' +
       '<div class="ras-content" id="ras-content"></div>' +
-      '<div class="ras-foot"><button type="button" class="ras-foot-btn" id="ras-view-site">عرض الموقع الحي ↗</button></div>';
+      '</div>';
     document.body.appendChild(sb);
     sb.querySelectorAll('.ras-item').forEach(function (btn) {
       btn.addEventListener('click', function () { showPage(btn.dataset.page); });
     });
-    document.getElementById('ras-close').addEventListener('click', function () { sb.classList.add('closed'); });
+    document.getElementById('ras-close').addEventListener('click', function () { closeDrawer(); });
+    document.getElementById('ras-back').addEventListener('click', function () { showPages(); });
     document.getElementById('ras-view-site').addEventListener('click', function () {
       var u = new URL(location.href);
       u.searchParams.delete('admin');
       location.href = u.toString();
     });
-    showPage('edit');
-    refreshNavCounts();
+    showPages();
   }
   function showPage(page) {
     currentPage = page;
     var nav = document.getElementById('ras-nav');
     if (nav) nav.querySelectorAll('.ras-item').forEach(function (b) { b.classList.toggle('active', b.dataset.page === page); });
+    var pages = document.getElementById('ras-pages');
+    var pv = document.getElementById('ras-pageview');
+    var title = document.getElementById('ras-page-title');
+    if (pages) pages.hidden = true;
+    if (pv) pv.hidden = false;
+    if (title) title.textContent = PAGES[page] || '';
     var content = document.getElementById('ras-content');
     if (!content) return;
     if (page === 'media') { content.innerHTML = renderMedia(); wireMedia(); }
@@ -9578,6 +9686,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     else if (page === 'tools') { content.innerHTML = renderTools(); wireTools(); }
     else if (page === 'about') { content.innerHTML = renderAbout(); }
     else { content.innerHTML = renderEdit(); wireEdit(); }
+    openDrawer();
   }
   function pageHead(title, sub) {
     return '<div class="rap-page-head"><h2>' + esc(title) + '</h2>' + (sub ? '<p>' + esc(sub) + '</p>' : '') + '</div>';
@@ -9846,8 +9955,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (bar) bar.remove();
     var sb = clone.querySelector('#rest-admin-sidebar');
     if (sb) sb.remove();
+    var bd = clone.querySelector('#rest-admin-backdrop');
+    if (bd) bd.remove();
     clone.querySelectorAll('.rest-admin-ui').forEach(function (e) { e.remove(); });
     clone.classList.remove('admin-mode');
+    clone.classList.remove('ras-drawer-open');
     clone.querySelectorAll('[contenteditable]').forEach(function (e) { e.removeAttribute('contenteditable'); });
     clone.querySelectorAll('.rest-admin-selected').forEach(function (e) { e.classList.remove('rest-admin-selected'); });
     clone.querySelectorAll('a[href*="admin=1"]').forEach(function (a) {
@@ -9910,14 +10022,16 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (!id || !originals[id]) return;
     selectedId = id;
     el.classList.add('rest-admin-selected');
-    var sb = document.getElementById('rest-admin-sidebar');
-    if (sb) sb.classList.remove('closed');
+    openDrawer();
     showPage('edit');
   }
   function enableEditing() {
     document.documentElement.classList.add('admin-mode');
     buildBar();
     buildSidebar();
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeDrawer();
+    });
     document.addEventListener('click', function (e) {
       if (e.target.closest && e.target.closest('#rest-admin-bar, #rest-admin-sidebar, .rest-admin-ui')) return;
       var t = e.target;
