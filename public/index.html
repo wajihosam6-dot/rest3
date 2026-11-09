@@ -9557,6 +9557,99 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     });
   }
 
+  /* ---------- Auto-publish (GitHub) ---------- */
+  /* Every save commits the overrides to public/overrides.json in the repo
+     (Vercel auto-deploys on push), and every visit loads that file so ALL
+     visitors see the latest published edits — no manual download/upload.
+     The GitHub token is the owner's own fine-grained PAT (Contents: Read +
+     Write, rest3 repo only), stored ONLY in this browser's localStorage —
+     never in the site code and never sent anywhere except GitHub's API.
+     Remote wins on load only when it is newer than this browser's last
+     local save, so an unpublished local edit is never wiped by a reload. */
+  var GH_OWNER = 'wajihosam6-dot';
+  var GH_REPO = 'rest3';
+  var GH_PATH = 'public/overrides.json';
+  var GH_RAW_URL = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/' + GH_PATH;
+  var GH_API_URL = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_PATH;
+  var GH_TOKEN_KEY = 'rest_gh_token_v1';
+  var LOCAL_TS_KEY = 'rest_local_updated_v1';
+  function getGhToken() { try { return (localStorage.getItem(GH_TOKEN_KEY) || '').trim(); } catch (e) { return ''; } }
+  function touchLocal() { try { localStorage.setItem(LOCAL_TS_KEY, String(Date.now())); } catch (e) {} }
+  function localTs() { try { return parseInt(localStorage.getItem(LOCAL_TS_KEY) || '0', 10) || 0; } catch (e) { return 0; } }
+  function remotePayload() {
+    return { v: 1, updatedAt: Date.now(), overrides: getOverrides(), waNumber: getWaNumber() };
+  }
+  function ghHeaders() {
+    return { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + getGhToken(), 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' };
+  }
+  function b64encode(str) {
+    return btoa(unescape(encodeURIComponent(str))); // UTF-8 safe (btoa alone mangles non-Latin text)
+  }
+  var publishTimer = null;
+  var publishState = 'idle';
+  function setPublishState(s, msg) {
+    publishState = s;
+    var el = document.getElementById('rap-publish-status');
+    if (el) el.textContent = msg || '';
+  }
+  function schedulePublish() {
+    if (publishTimer) clearTimeout(publishTimer);
+    publishTimer = setTimeout(publishRemote, 1500); // batch rapid saves into one commit
+  }
+  function publishRemote() {
+    var token = getGhToken();
+    if (!token) { setPublishState('no-token', 'النشر التلقائي غير مفعّل — أدخل رمز GitHub في الأسفل لينشر تلقائياً.'); return Promise.resolve(false); }
+    if (typeof fetch !== 'function') { setPublishState('error', 'تعذّر النشر التلقائي — هذا المتصفح لا يدعم النشر. استخدم التنزيل اليدوي.'); return Promise.resolve(false); }
+    setPublishState('publishing', 'جارٍ نشر التعديلات للجميع…');
+    var payload = remotePayload();
+    var body = JSON.stringify(payload, null, 2);
+    return fetch(GH_API_URL, { headers: ghHeaders() })
+      .then(function (r) {
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error('قراءة الملف: ' + r.status);
+        return r.json();
+      })
+      .then(function (cur) {
+        var req = { message: 'chore(admin): auto-publish overrides', content: b64encode(body) };
+        if (cur && cur.sha) req.sha = cur.sha;
+        return fetch(GH_API_URL, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(req) });
+      })
+      .then(function (r) {
+        if (!r.ok) throw new Error('النشر: ' + r.status);
+        return r.json();
+      })
+      .then(function () {
+        try { localStorage.setItem(LOCAL_TS_KEY, String(payload.updatedAt)); } catch (e) {}
+        setPublishState('published', 'تم النشر تلقائياً ✓ — ستظهر التعديلات لكل الزوار خلال دقيقة تقريباً.');
+        return true;
+      })
+      .catch(function (err) {
+        setPublishState('error', 'تعذّر النشر التلقائي (' + (err && err.message ? err.message : 'خطأ') + ') — التعديلات محفوظة في هذا المتصفح، جرّب «نشر الآن» أو التنزيل اليدوي.');
+        return false;
+      });
+  }
+  function fetchRemote() {
+    // Load the published overrides on every visit so all visitors see the
+    // latest edits. Remote wins only when newer than this browser's last
+    // local save (so an unpublished local edit survives a reload).
+    if (typeof fetch !== 'function') return Promise.resolve(false);
+    return fetch(GH_RAW_URL + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('remote ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data || typeof data !== 'object' || !data.updatedAt) return false;
+        if (data.updatedAt <= localTs()) return false;
+        if (data.overrides && typeof data.overrides === 'object') { lsSet(OV_KEY, data.overrides); applyOverrides(); }
+        if (data.waNumber && normalizeWaNumber(data.waNumber)) {
+          try { localStorage.setItem(WA_NUM_KEY, normalizeWaNumber(data.waNumber)); } catch (e) {}
+          applyWaNumber();
+        }
+        try { localStorage.setItem(LOCAL_TS_KEY, String(data.updatedAt)); } catch (e) {}
+        refreshNavCounts();
+        return true;
+      })
+      .catch(function () { return false; }); // offline / not published yet: keep the local copy
+  }
+
   /* ---------- 1. assign stable ids + apply saved overrides (every load) ---------- */
   var originals = {}; // id -> {type, original, label, poster?}
   function isEditableText(el) {
@@ -9614,9 +9707,15 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var id = ids[i], ov = ovs[id];
       var el = document.querySelector('[data-admin-id="' + id + '"]');
       if (!el || !originals[id]) continue;
-      var cur = originals[id].type === 'text' ? el.innerHTML : (el.getAttribute('src') || '');
-      if (cur !== ov.original && originals[id].type === 'text') {
-        if (el.textContent.trim() !== (ov.original || '').replace(/<[^>]+>/g, '').trim()) continue;
+      // Stale check: apply only when the override's recorded original still
+      // matches the element's built-in original (the site was not rebuilt
+      // with new content). Compare against the built-in original, not the
+      // current content, so a newer remote override can replace an older
+      // local value already on the page.
+      if (originals[id].type === 'text' && ov.original != null) {
+        var built = originals[id].original || '';
+        var rec = ov.original || '';
+        if (built !== rec && built.replace(/<[^>]+>/g, '').trim() !== rec.replace(/<[^>]+>/g, '').trim()) continue;
       }
       if (originals[id].type === 'text') {
         if (ov.value != null && ov.value !== '') el.innerHTML = ov.value;
@@ -9643,6 +9742,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     }
     lsSet(OV_KEY, ovs);
     refreshNavCounts();
+    touchLocal();
+    schedulePublish();
   }
   function resetOne(id) {
     var o = originals[id];
@@ -9650,6 +9751,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     var ovs = getOverrides();
     delete ovs[id];
     lsSet(OV_KEY, ovs);
+    touchLocal();
+    schedulePublish();
     var el = document.querySelector('[data-admin-id="' + id + '"]');
     if (el) {
       if (o.type === 'text') el.innerHTML = o.original;
@@ -10143,7 +10246,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<div class="rap-field"><label>قالب رسالة الحجز الذي يصلك على واتساب (مثال)</label>' +
       '<pre class="rap-original" style="white-space: pre-wrap;">' + esc(sample) + '</pre>' +
       '<p class="rap-hint">عندما يملأ الزائر بيانات الحجز (الاسم والجوال والباقة والتاريخ والوقت والضيوف والإضافات والسعر) ويضغط «إرسال»، تُفتح واتساب بهذه الرسالة كاملة إلى الرقم أعلاه، جاهزة للإرسال.</p></div>' +
-      '<p class="rap-hint"><b>لنشر الرقم لكل الزوار:</b> من صفحة «إعادة تعيين وتصدير» نزّل «الموقع المحدّث» — يُضمَّن فيه الرقم الجديد كرقم مدمج — وارفع الملف إلى المستودع مكان index.html.</p>';
+      '<p class="rap-hint"><b>النشر التلقائي:</b> مع تفعيله من صفحة «إعادة تعيين وتصدير» يُنشر الرقم الجديد لكل الزوار تلقائياً عند الحفظ.</p>';
     return h;
   }
   function wireWaLink() {
@@ -10156,7 +10259,9 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       if (num.length < 9 || num.length > 15) { say('رقم غير صالح — أدخل 9 إلى 15 رقماً بالصيغة الدولية بدون +.'); return; }
       try { localStorage.setItem(WA_NUM_KEY, num); } catch (e) {}
       applyWaNumber();
-      say('تم حفظ الرقم وربطه: ' + num + ' — كل أزرار واتساب والحجوزات تصل إليه الآن.');
+      touchLocal();
+      schedulePublish();
+      say('تم حفظ الرقم وربطه: ' + num + ' — كل أزرار واتساب والحجوزات تصل إليه الآن.' + (getGhToken() ? ' وسيُنشر تلقائياً لكل الزوار.' : ''));
       showPage('wa-link');
     });
     var test = document.getElementById('rap-wa-test');
@@ -10169,13 +10274,23 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (reset) reset.addEventListener('click', function () {
       try { localStorage.removeItem(WA_NUM_KEY); } catch (e) {}
       applyWaNumber();
+      touchLocal();
+      schedulePublish();
       showPage('wa-link');
     });
   }
   /* ----- page: reset & export ----- */
   function renderTools() {
     var n = Object.keys(getOverrides()).length;
-    return pageHead('إعادة تعيين وتصدير', 'التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). لنشرها لكل الزوار، نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان index.html — وسيصبح هو النسخة الأصلية الجديدة.') +
+    var hasTok = !!getGhToken();
+    return pageHead('إعادة تعيين وتصدير', 'التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). مع النشر التلقائي المفعّل أدناه تُنشر للجميع تلقائياً عند كل حفظ؛ وبدونه نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان index.html.') +
+      '<div class="rap-field"><label>النشر التلقائي</label>' +
+      '<p class="rap-hint">عند تفعيله، يُنشر كل تعديل تحفظه تلقائياً لكل الزوار خلال دقيقة تقريباً — بلا تنزيل ولا رفع يدوي.</p>' +
+      '<p class="rap-hint" id="rap-publish-status">' + (hasTok ? 'النشر التلقائي مفعّل — كل حفظ يُنشر تلقائياً.' : 'النشر التلقائي غير مفعّل — أدخل رمز GitHub أدناه.') + '</p>' +
+      '<input type="password" id="rap-gh-token" class="rap-input" dir="ltr" placeholder="github_pat_..." autocomplete="off">' +
+      '<p class="rap-hint">الرمز هو رمز وصول شخصي (Fine-grained PAT) من GitHub — أنشئه من <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">إعدادات GitHub ← Developer settings ← Personal access tokens</a>، بصلاحية Contents: Read and write على مستودع rest3 فقط، والصقه هنا. يُحفظ في هذا المتصفح فقط ولا يظهر في الموقع.</p>' +
+      '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-gh-save">حفظ الرمز وتفعيل النشر</button>' +
+      '<button type="button" class="rap-btn" id="rap-publish-now">نشر الآن</button></div></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-download">تنزيل الموقع المحدّث (HTML)</button></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn" id="rap-export">تصدير التعديلات (JSON)</button>' +
       '<button type="button" class="rap-btn" id="rap-import">استيراد تعديلات</button></div>' +
@@ -10183,6 +10298,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<input type="file" id="rap-import-file" accept="application/json,.json" hidden>';
   }
   function wireTools() {
+    var tok = document.getElementById('rap-gh-token');
+    if (tok && getGhToken()) tok.value = getGhToken();
+    var gs = document.getElementById('rap-gh-save');
+    if (gs) gs.addEventListener('click', function () {
+      var v = tok ? tok.value.trim() : '';
+      if (!v) { setPublishState('no-token', 'أدخل الرمز أولاً.'); return; }
+      try { localStorage.setItem(GH_TOKEN_KEY, v); } catch (e) {}
+      setPublishState('idle', 'تم حفظ الرمز — جرّب «نشر الآن» للتأكد من عمل النشر التلقائي.');
+      publishRemote();
+    });
+    var pn = document.getElementById('rap-publish-now');
+    if (pn) pn.addEventListener('click', function () { publishRemote(); });
     var dl = document.getElementById('rap-download');
     if (dl) dl.addEventListener('click', downloadSite);
     var ex = document.getElementById('rap-export');
@@ -10198,7 +10325,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (!f) return;
         var r = new FileReader();
         r.onload = function () {
-          try { lsSet(OV_KEY, JSON.parse(r.result)); location.reload(); } catch (e) { alert('ملف غير صالح'); }
+          try { lsSet(OV_KEY, JSON.parse(r.result)); touchLocal(); publishRemote().then(function () { location.reload(); }); } catch (e) { alert('ملف غير صالح'); }
         };
         r.readAsText(f);
       });
@@ -10207,7 +10334,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (ra) ra.addEventListener('click', function () {
       if (!confirm('إعادة كل المحتوى إلى الحالة الأصلية التي بُني عليها الموقع؟')) return;
       lsSet(OV_KEY, {});
-      location.reload();
+      touchLocal();
+      publishRemote().then(function () { location.reload(); });
     });
   }
   /* ----- page: about ----- */
@@ -10215,7 +10343,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     return pageHead('حول اللوحة', 'كيف تعمل لوحة التحكم وكيف تنشر تعديلاتك.') +
       '<p class="rap-hint"><b>1 — حرّر:</b> انقر أي نص أو صورة في الصفحة، أو اخترها من «كل النصوص» و«مكتبة الوسائط». التعديلات تُحفظ فوراً في هذا المتصفح.</p>' +
       '<p class="rap-hint"><b>2 — الأصل محفوظ:</b> القيمة التي بُني عليها الموقع تظهر دائماً تحت كل عنصر. حذف المحتوى يعيده إلى أصله، و«إعادة كل شيء إلى الأصل» تلغي كل التعديلات.</p>' +
-      '<p class="rap-hint"><b>3 — انشر:</b> من صفحة «إعادة تعيين وتصدير» نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان <code>index.html</code> — فيراه كل الزوار.</p>' +
+      '<p class="rap-hint"><b>3 — انشر تلقائياً:</b> فعّل النشر التلقائي من صفحة «إعادة تعيين وتصدير» (رمز GitHub)، فيُنشر كل تعديل تحفظه لكل الزوار خلال دقيقة تقريباً — بلا تنزيل ولا رفع. وبدونه نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان <code>index.html</code>.</p>' +
       '<p class="rap-hint"><b>التقارير:</b> نقرات واتساب ومشاهدات الصفحة تُسجَّل في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>' +
       '<p class="rap-hint">الدخول إلى اللوحة من رابط «لوحة التحكم» في أسفل الموقع، أو بإضافة <code>?admin=1</code> إلى رابط الموقع.</p>';
   }
@@ -10377,6 +10505,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     assignIds();
     applyOverrides();
     applyWaNumber();
+    fetchRemote();
     trackWa();
     if (isAdmin) enableEditing();
   }
