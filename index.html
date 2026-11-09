@@ -5125,7 +5125,17 @@ h1, h2 { font-family: var(--font-display); letter-spacing: 0; }
     }
     /* ---- v10 §18: directory preview — smaller on narrower desktops so it fits the gap ---- */
     @media (max-width: 1280px) and (min-width: 981px) {
-      .suffo-dir-floating-preview { width: 200px; height: 140px; }
+      .suffo-dir-floating-preview { width: 170px; height: 125px; }
+    }
+
+    
+    /* ---- v10 §19: EN directory — a real gap between description and area number ---- */
+    [dir="ltr"] .suffo-dir-col-area { text-align: right; }
+    /* in LTR the description runs right up to the area number, so the gap is only
+       ~230px at 1440px / ~175px at 1024px — too small for the 250px card. Give the
+       description less room and the area more, so a real gap opens. Desktop only. */
+    @media (min-width: 981px) {
+      [dir="ltr"] .suffo-dir-row { grid-template-columns: 1.5fr 1.7fr 1.3fr; }
     }
 
     </style>
@@ -8524,14 +8534,40 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var tableRect = dirTable.getBoundingClientRect();
       dirPreview.style.top = ((rowRect.top - tableRect.top) + (isPhone ? 8 : -30)) + 'px';
       dirPreview.style.right = 'auto';
+      // active (scale 1) bounding-box width: measure from the computed size, not
+      // getBoundingClientRect — the card is still at scale 0.85 when this runs
+      // (is-active is added after), so a live rect would under-measure by ~20px
+      // and the card would grow into the area number once it scales up.
+      var cs = window.getComputedStyle(dirPreview);
+      var cw = parseFloat(cs.width) || 250, ch = parseFloat(cs.height) || 170;
+      var rad = 8 * Math.PI / 180;
+      var pw = cw * Math.cos(rad) + ch * Math.sin(rad);
       if (isPhone) {
         if (isRTL) { dirPreview.style.left = '6px'; }
-        else { dirPreview.style.left = Math.max(6, tableRect.width - dirPreview.getBoundingClientRect().width - 6) + 'px'; }
+        else { dirPreview.style.left = Math.max(6, tableRect.width - pw - 6) + 'px'; }
         return;
       }
       var areaR = dirTextRect(row.querySelector('.suffo-dir-col-area'));
       var descR = dirTextRect(row.querySelector('.suffo-dir-col-desc'));
-      var pw = dirPreview.getBoundingClientRect().width || 250;
+      // the card is ~200px tall, so it also spans the rows around the active one;
+      // a neighbour's description can be longer than the active row's, so take the
+      // most restrictive gap across the rows the card covers (active, one above,
+      // two below). Otherwise the card can clip a neighbour's description.
+      if (areaR && descR) {
+        var rows = row.parentElement ? row.parentElement.querySelectorAll('.suffo-dir-row') : null;
+        var idx = rows ? Array.prototype.indexOf.call(rows, row) : -1;
+        if (rows && idx >= 0) {
+          for (var k = Math.max(0, idx - 1); k <= Math.min(rows.length - 1, idx + 2); k++) {
+            if (k === idx) continue;
+            var a2 = dirTextRect(rows[k].querySelector('.suffo-dir-col-area'));
+            var d2 = dirTextRect(rows[k].querySelector('.suffo-dir-col-desc'));
+            if (a2 && d2) {
+              areaR = { left: Math.min(areaR.left, a2.left), right: Math.max(areaR.right, a2.right) };
+              descR = { left: Math.min(descR.left, d2.left), right: Math.max(descR.right, d2.right) };
+            }
+          }
+        }
+      }
       if (areaR && descR) {
         var gapL, gapR;
         if (isRTL) { gapL = areaR.right; gapR = descR.left; }
@@ -8539,8 +8575,15 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (gapR > gapL + 20) {
           var left = (gapL + gapR) / 2 - tableRect.left - pw / 2;
           if (pw + 16 <= gapR - gapL) {
+            // fits: keep it fully inside the gap
             left = Math.max(left, gapL - tableRect.left + 8);
             left = Math.min(left, gapR - tableRect.left - pw - 8);
+          } else {
+            // does not fit: never centre it in the tiny gap (that would cover
+            // both sides). Clamp it so it cannot cover the area number, which
+            // sits on the gap's left edge in RTL and its right edge in LTR.
+            if (isRTL) { left = Math.max(left, gapL - tableRect.left + 8); }
+            else { left = Math.min(left, gapR - tableRect.left - pw - 8); }
           }
           dirPreview.style.left = left + 'px';
           return;
