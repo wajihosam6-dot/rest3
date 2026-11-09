@@ -9715,7 +9715,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         '<textarea id="rap-text" rows="4">' + esc(plain) + '</textarea></div>';
     } else {
       h += '<div class="rap-field"><label>الصورة / الفيديو الحالي</label>' +
-        '<div class="rap-media"><img id="rap-media-now" src="' + esc(o.type === 'img' ? cur : (o.poster || cur)) + '" alt=""></div>' +
+        '<div class="rap-media"><img id="rap-media-now" src="' + esc(o.type === 'img' ? cur : (o.poster || cur)) + '" alt="" onerror="this.style.display=\'none\'"></div>' +
         '<button type="button" class="rap-btn" id="rap-pick">استبدال من جهازي</button></div>';
     }
     h += '<div class="rap-field"><label>القيمة الأصلية (التي بُني عليها الموقع)</label>' +
@@ -9780,7 +9780,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var cur = ovs[id] ? ovs[id].value : o.original;
       var thumb = o.type === 'img' ? cur : (o.poster || cur);
       h += '<div class="rap-media-item" data-id="' + id + '">' +
-        '<div class="rap-media-thumb">' + (thumb ? '<img src="' + esc(thumb) + '" alt="">' : '<span>🎬</span>') + '</div>' +
+        '<div class="rap-media-thumb">' + (thumb ? '<img src="' + esc(thumb) + '" alt="" onerror="this.outerHTML=\'<span>🎬</span>\'">' : '<span>🎬</span>') + '</div>' +
         '<div class="rap-media-meta"><b>' + esc(o.label) + '</b><span>' + (o.type === 'img' ? 'صورة' : 'فيديو') + (ovs[id] ? ' • معدَّل' : '') + '</span></div>' +
         '<div class="rap-media-actions"><button type="button" class="rap-btn sm" data-replace="' + id + '">استبدال</button>' +
         (ovs[id] ? '<button type="button" class="rap-btn sm" data-reset="' + id + '">إعادة الأصل</button>' : '') + '</div></div>';
@@ -9830,7 +9830,16 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function jumpTo(id) {
     var el = document.querySelector('[data-admin-id="' + id + '"]');
-    if (!el) return;
+    if (!el) {
+      // The element left the page (the cinematic intro is removed from the
+      // DOM ~4s after load) — still open its editor so it can be replaced.
+      if (!originals[id]) return;
+      clearSelection();
+      selectedId = id;
+      openDrawer();
+      showPage('edit');
+      return;
+    }
     el.scrollIntoView({ block: 'center', behavior: 'smooth' });
     selectElement(el);
   }
@@ -9990,16 +9999,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       r.onload = function () {
         var dataUrl = r.result;
         var el = document.querySelector('[data-admin-id="' + id + '"]');
-        if (!el) return;
-        if (o.type === 'img') {
-          el.setAttribute('src', dataUrl);
-          saveOverride(id, dataUrl);
-        } else if (o.type === 'video') {
-          var s = el.querySelector('source');
-          if (s) s.setAttribute('src', dataUrl); else el.setAttribute('src', dataUrl);
-          el.load && el.load();
-          saveOverride(id, dataUrl);
+        if (el) {
+          if (o.type === 'img') {
+            el.setAttribute('src', dataUrl);
+          } else if (o.type === 'video') {
+            var s = el.querySelector('source');
+            if (s) s.setAttribute('src', dataUrl); else el.setAttribute('src', dataUrl);
+            el.load && el.load();
+          }
         }
+        // Save even when the element left the page (cinematic intro): the
+        // override applies on the next load, while the intro still exists.
+        saveOverride(id, dataUrl);
         var now = document.getElementById('rap-media-now');
         if (now) now.src = dataUrl;
         showPage(currentPage);
