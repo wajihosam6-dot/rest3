@@ -5473,7 +5473,7 @@ html.admin-mode { scroll-padding-top: 110px; }
   touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
 }
 #rest-visual-fab button { border: 0; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: none; }
-#rest-visual-fab .rvf-grip { color: rgba(255,255,255,.75); font-size: 15px; line-height: 1; padding: 0 2px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+#rest-visual-fab .rvf-grip { flex: 0 0 auto; align-self: center; color: rgba(255,255,255,.8); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
 #rest-visual-fab #rvf-expand { background: none; color: #fff; padding: 6px 8px; }
 #rest-visual-fab #rvf-expand #rvf-count { color: #F9A8D4; }
 #rest-visual-fab #rvf-confirm { background: #F9A8D4; color: #073B4C; padding: 7px 12px; }
@@ -10515,7 +10515,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     fab.setAttribute('dir', 'rtl');
     fab.hidden = true;
     fab.innerHTML =
-      '<span class="rvf-grip" title="اسحب لتحريك الزر">⠿</span>' +
+      '<svg class="rvf-grip" width="12" height="18" viewBox="0 0 12 18" fill="currentColor" aria-hidden="true" title="اسحب لتحريك الزر"><circle cx="3" cy="3" r="1.7"/><circle cx="9" cy="3" r="1.7"/><circle cx="3" cy="9" r="1.7"/><circle cx="9" cy="9" r="1.7"/><circle cx="3" cy="15" r="1.7"/><circle cx="9" cy="15" r="1.7"/></svg>' +
       '<button type="button" id="rvf-expand" title="إظهار شريط التحرير">✎ <span id="rvf-count">وضع التحرير</span></button>' +
       '<button type="button" id="rvf-confirm">✓ حفظ ونشر</button>' +
       '<button type="button" id="rvf-revert" title="عدم الحفظ وإبقاء النسخة السابقة">↺ إبقاء السابقة</button>';
