@@ -6227,7 +6227,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 01 • تجربة مائية دافئة</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/pool_waterfall_fountain.webp', 'المسبح الداخلي الدافئ والشلال الانسيابي')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -6256,7 +6256,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 02 • سمر عائلي حول الموقد</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/hikaya_sunken_lounge.webp', 'جلسة حكاية الغائرة وموقد النار')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -6285,7 +6285,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 03 • ضيافة ملكية وسينما</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/majlis_golden_sunlight.webp', 'المجلس الملكي والديوان الفاخر')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -6314,7 +6314,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 04 • طراز أندلسي ريفي</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/bustan_stone_terrace.webp', 'جلسة بستان والشرفة الأندلسية')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -6343,7 +6343,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 05 • ترفيه وألعاب آمنة</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/courtyard_cabin_cabana.webp', 'الكوخ الأبيض وملاعب الأطفال')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -6372,7 +6372,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                   <span class="badge-dot"></span>
                   <span>المرفق 06 • توثيق ولحظات تذكارية</span>
                 </div>
-                <button type="button" class="f-photo-zoom-btn" onclick="openLightboxDirect('assets/real/neon_rest_floral_swing.webp', 'أركان التصوير وشعار نيون ريست')" aria-label="تكبير الصورة">
+                <button type="button" class="f-photo-zoom-btn" aria-label="تكبير الصورة">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   تكبير الصورة
                 </button>
@@ -9795,6 +9795,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   function lsSet(k, v) {
     try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
   }
+  /* Corrupted localStorage must never crash the site: list reads return []
+     unless the stored value really is an array, number reads return the
+     fallback unless the stored value really is a finite number. */
+  function lsList(k) { var v = lsGet(k, []); return Array.isArray(v) ? v : []; }
+  function lsNum(k, fallback) { var v = lsGet(k, fallback); return typeof v === 'number' && isFinite(v) ? v : fallback; }
   function uid() {
     var id = null;
     try { id = localStorage.getItem(UID_KEY); } catch (e) {}
@@ -9806,6 +9811,60 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* ---------- HTML sanitizer (defense in depth for overrides) ---------- */
+  /* Override text values are applied with innerHTML, so a malicious value
+     (e.g. `<img src=x onerror=...>` smuggled into /overrides.json) would run
+     on every visitor. The server now requires an admin token to publish, but
+     the client still sanitizes every value before it touches the DOM:
+     dangerous tags are removed, event-handler attributes are stripped, and
+     javascript:/data:text/html/vbscript: URLs are dropped. Safe formatting
+     (b, i, strong, em, a[href], span, br, small) is preserved. */
+  var SANITIZE_BAD_TAGS = { SCRIPT: 1, STYLE: 1, IFRAME: 1, OBJECT: 1, EMBED: 1, FORM: 1, LINK: 1, META: 1, BASE: 1, TITLE: 1, VIDEO: 1, AUDIO: 1, SOURCE: 1, TRACK: 1 };
+  function sanitizeHtml(html) {
+    var div = document.createElement('div');
+    div.innerHTML = String(html || '');
+    var els = div.querySelectorAll('*');
+    for (var i = els.length - 1; i >= 0; i--) {
+      var el = els[i];
+      if (SANITIZE_BAD_TAGS[el.tagName]) { if (el.parentNode) el.parentNode.removeChild(el); continue; }
+      var attrs = el.attributes;
+      for (var j = attrs.length - 1; j >= 0; j--) {
+        var a = attrs[j];
+        var name = (a.name || '').toLowerCase();
+        var val = String(a.value || '').trim().toLowerCase();
+        if (name.indexOf('on') === 0) { el.removeAttribute(a.name); continue; }
+        if ((name === 'href' || name === 'src' || name === 'action' || name === 'xlink:href' || name === 'poster') &&
+            (val.indexOf('javascript:') === 0 || val.indexOf('data:text/html') === 0 || val.indexOf('data:text/javascript') === 0 || val.indexOf('vbscript:') === 0)) {
+          el.removeAttribute(a.name); continue;
+        }
+        if (name === 'style' && /expression\s*\(|javascript\s*:/i.test(a.value || '')) el.removeAttribute(a.name);
+      }
+    }
+    return div.innerHTML;
+  }
+  /* Media URLs (img/video src, poster): allow relative paths, http/https,
+     and data:image/* / data:video/* only. javascript:, data:text/html,
+     vbscript: and other schemes are rejected. */
+  function isSafeMediaUrl(u) {
+    var s = String(u || '').trim();
+    if (!s) return false;
+    var low = s.toLowerCase();
+    if (low.indexOf('javascript:') === 0 || low.indexOf('vbscript:') === 0 || low.indexOf('data:text/html') === 0 || low.indexOf('data:text/javascript') === 0) return false;
+    if (low.indexOf('data:') === 0) return low.indexOf('data:image/') === 0 || low.indexOf('data:video/') === 0;
+    if (/^[a-z][a-z0-9+.-]*:/.test(low)) return low.indexOf('http://') === 0 || low.indexOf('https://') === 0;
+    return true; // relative path
+  }
+  /* Is this a well-formed override entry? Used to ignore corrupted or
+     malicious localStorage / imported data instead of crashing or trusting it. */
+  function validOverrideEntry(ov) {
+    if (!ov || typeof ov !== 'object' || Array.isArray(ov)) return false;
+    if (ov.type !== 'text' && ov.type !== 'img' && ov.type !== 'video') return false;
+    if (typeof ov.value !== 'string') return false;
+    if (typeof ov.original !== 'string') return false;
+    if (ov.poster != null && typeof ov.poster !== 'string') return false;
+    return true;
   }
 
   /* ---------- WhatsApp receiving number (admin-configured) ---------- */
@@ -9849,6 +9908,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function setAuthed(v) {
     try { if (v) sessionStorage.setItem(AUTH_KEY, '1'); else sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
+  }
+  /* Publish token: issued by /api/admin-auth on a successful login (24h
+     HMAC token). Sent as `Authorization: Bearer <token>` on every
+     /api/publish call — the server rejects unauthenticated publishes, so
+     nobody but a logged-in admin can deface the site. Kept in
+     sessionStorage (cleared when the tab closes), never in localStorage. */
+  var TOKEN_KEY = 'rest_admin_token_v1';
+  function getPublishToken() {
+    try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setPublishToken(t) {
+    try { if (t) sessionStorage.setItem(TOKEN_KEY, t); else sessionStorage.removeItem(TOKEN_KEY); } catch (e) {}
   }
 
   /* ---------- Auto-publish (server) ---------- */
@@ -9948,12 +10019,14 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           if (o.poster) el.setAttribute('poster', o.poster); else el.removeAttribute('poster');
           el.load && el.load();
         }
-      } else if (o.type === 'text') el.innerHTML = snapVal;
-      else if (o.type === 'img') el.setAttribute('src', snapVal);
+      } else if (o.type === 'text') el.innerHTML = sanitizeHtml(snapVal);
+      else if (o.type === 'img') { if (isSafeMediaUrl(snapVal)) el.setAttribute('src', snapVal); }
       else if (o.type === 'video') {
         var s2 = el.querySelector('source');
-        if (s2) s2.setAttribute('src', snapVal); else el.setAttribute('src', snapVal);
-        el.load && el.load();
+        if (isSafeMediaUrl(snapVal)) {
+          if (s2) s2.setAttribute('src', snapVal); else el.setAttribute('src', snapVal);
+          el.load && el.load();
+        }
       }
     });
   }
@@ -10016,7 +10089,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (typeof fetch !== 'function') { setPublishState('error', 'تعذّر النشر — هذا المتصفح لا يدعم النشر. استخدم التنزيل اليدوي.'); return Promise.resolve(false); }
     setPublishState('publishing', 'جارٍ نشر التعديلات للجميع…');
     var payload = remotePayload();
-    return fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+    var headers = { 'Content-Type': 'application/json' };
+    var tok = getPublishToken();
+    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+    return fetch('/api/publish', { method: 'POST', headers: headers, body: JSON.stringify(payload) })
       .then(function (r) {
         if (!r.ok) {
           return r.json().catch(function () { return {}; }).then(function (j) {
@@ -10036,7 +10112,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       .catch(function (err) {
         var m = err && err.message ? err.message : 'خطأ';
         var msg;
-        if (m === 'no-token-configured') {
+        if (m === 'unauthorized') {
+          setPublishToken('');
+          msg = 'انتهت جلسة النشر — سجّل خروجك من لوحة التحكم ثم دخولك مجدداً، ثم اضغط «تأكيد ونشر».';
+        } else if (m === 'no-token-configured') {
           msg = 'النشر غير مفعّل بعد — أضف متغير GITHUB_TOKEN في إعدادات مشروع Vercel (مرة واحدة)، ثم أعد المحاولة.';
         } else if (m === 'token-invalid') {
           msg = 'رمز GitHub في الخادم غير صالح أو منتهٍ — حدّث متغير GITHUB_TOKEN في Vercel برمز جديد.';
@@ -10130,7 +10209,13 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       }
     }
   }
-  function getOverrides() { return lsGet(OV_KEY, {}); }
+  function getOverrides() {
+    var v = lsGet(OV_KEY, {});
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return {};
+    var out = {};
+    Object.keys(v).forEach(function (k) { if (validOverrideEntry(v[k])) out[k] = v[k]; });
+    return out;
+  }
   function applyOverrides() {
     var ovs = getOverrides();
     var ids = Object.keys(ovs);
@@ -10149,16 +10234,16 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (built !== rec && built.replace(/<[^>]+>/g, '').trim() !== rec.replace(/<[^>]+>/g, '').trim()) continue;
       }
       if (originals[id].type === 'text') {
-        if (ov.value != null && ov.value !== '') el.innerHTML = ov.value;
+        if (ov.value != null && ov.value !== '') el.innerHTML = sanitizeHtml(ov.value);
       } else if (originals[id].type === 'img') {
-        if (ov.value) el.setAttribute('src', ov.value);
+        if (ov.value && isSafeMediaUrl(ov.value)) el.setAttribute('src', ov.value);
       } else if (originals[id].type === 'video') {
-        if (ov.value) {
+        if (ov.value && isSafeMediaUrl(ov.value)) {
           var s = el.querySelector('source');
           if (s) s.setAttribute('src', ov.value); else el.setAttribute('src', ov.value);
           el.load && el.load();
         }
-        if (ov.poster) el.setAttribute('poster', ov.poster);
+        if (ov.poster && isSafeMediaUrl(ov.poster)) el.setAttribute('poster', ov.poster);
       }
     }
   }
@@ -10202,7 +10287,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
 
   /* ---------- 2. WhatsApp click tracking (every load) ---------- */
   function logWaClick(label, href, pkg) {
-    var list = lsGet(WA_KEY, []);
+    var list = lsList(WA_KEY);
     list.push({ ts: Date.now(), label: label || '', href: href || '', pkg: pkg || '', uid: uid() });
     if (list.length > 2000) list = list.slice(-2000);
     lsSet(WA_KEY, list);
@@ -10230,7 +10315,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       return origOpen.apply(window, arguments);
     };
     try {
-      var v = lsGet(VIEW_KEY, 0);
+      var v = lsNum(VIEW_KEY, 0);
       lsSet(VIEW_KEY, v + 1);
     } catch (e4) {}
   }
@@ -10244,7 +10329,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function counts() {
     var ovs = getOverrides();
-    var n = { edits: Object.keys(ovs).length, wa: lsGet(WA_KEY, []).length, bookings: lsGet(BOOK_KEY, []).length, views: lsGet(VIEW_KEY, 0), media: 0, texts: 0 };
+    var n = { edits: Object.keys(ovs).length, wa: lsList(WA_KEY).length, bookings: lsList(BOOK_KEY).length, views: lsNum(VIEW_KEY, 0), media: 0, texts: 0 };
     Object.keys(originals).forEach(function (id) {
       if (originals[id].type === 'text') n.texts++;
       else n.media++;
@@ -10517,11 +10602,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     return '<b>حالة النشر:</b> ' + pub + ' <small>(النشر بعد التأكيد فقط — لا نشر تلقائي)</small><br><b>رقم واتساب الاستقبال:</b> <span dir="ltr">+' + wa + '</span>';
   }
   function dashboardLatestHtml() {
-    var list = lsGet(BOOK_KEY, []);
+    var list = lsList(BOOK_KEY);
     if (!list.length) return 'لا توجد حجوزات مرسلة بعد في هذا المتصفح.';
     var b = list[list.length - 1];
     var d = b && b.ts ? new Date(b.ts).toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-    return '<b>آخر حجز:</b> ' + (b && b.ref ? b.ref : '') + (b && b.pkg ? ' — ' + b.pkg : '') + (d ? ' — ' + d : '') + '<br><small>إجمالي الحجوزات في هذا المتصفح: ' + list.length + '</small>';
+    return '<b>آخر حجز:</b> ' + esc(b && b.ref ? b.ref : '') + (b && b.pkg ? ' — ' + esc(b.pkg) : '') + (d ? ' — ' + d : '') + '<br><small>إجمالي الحجوزات في هذا المتصفح: ' + list.length + '</small>';
   }
   function buildBar() {
     var bar = document.createElement('div');
@@ -10538,6 +10623,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.getElementById('rab-pending').addEventListener('click', function () { publishNow(); });
     document.getElementById('rest-admin-logout').addEventListener('click', function () {
       setAuthed(false);
+      setPublishToken('');
       location.reload();
     });
     document.getElementById('rest-admin-done').addEventListener('click', function () {
@@ -10836,7 +10922,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   /* ----- page: overview ----- */
   function renderOverview() {
     var c = counts();
-    var clicks = lsGet(WA_KEY, []).slice(-3).reverse();
+    var clicks = lsList(WA_KEY).slice(-3).reverse();
     var h = pageHead('نظرة عامة', 'ملخص سريع لحالة الموقع ولوحة التحكم.') +
       '<div class="rap-stats-grid">' +
       '<div class="rap-stat"><b>' + c.edits + '</b><span>تعديل محفوظ</span></div>' +
@@ -10863,8 +10949,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   /* ----- page: WhatsApp clicks ----- */
   function renderWa() {
-    var clicks = lsGet(WA_KEY, []).slice().reverse();
-    var views = lsGet(VIEW_KEY, 0);
+    var clicks = lsList(WA_KEY).slice().reverse();
+    var views = lsNum(VIEW_KEY, 0);
     var byPkg = {};
     clicks.forEach(function (c) { var k = c.label || 'واتساب'; byPkg[k] = (byPkg[k] || 0) + 1; });
     var h = pageHead('نقرات واتساب', 'كل من ضغط على رابط واتساب أو أرسل حجزاً عبره.') +
@@ -10895,7 +10981,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   /* ----- page: bookings (submitted booking requests) ----- */
   function renderBookings() {
-    var logs = lsGet(BOOK_KEY, []).slice().reverse();
+    var logs = lsList(BOOK_KEY).slice().reverse();
     var h = pageHead('الحجوزات', 'طلبات الحجز التي أرسلها الزوار عبر واتساب من هذا المتصفح.') +
       '<div class="rap-stats"><div><b>' + logs.length + '</b><span>طلب حجز</span></div></div>' +
       '<p class="rap-note">كل طلب يُحفظ برقم مرجعه (REST-…) وبيانات العميل كاملة. هذه الطلبات مسجَّلة في هذا المتصفح؛ لجمع طلبات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>';
@@ -11040,7 +11126,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         if (!f) return;
         var r = new FileReader();
         r.onload = function () {
-          try { lsSet(OV_KEY, JSON.parse(r.result)); touchLocal(); publishNow().then(function () { location.reload(); }); } catch (e) { alert('ملف غير صالح'); }
+          try {
+            var parsed = JSON.parse(r.result);
+            // Validate the imported file: a plain object of well-formed
+            // override entries only. A malicious or corrupted file is
+            // rejected instead of being trusted and applied to the page.
+            if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('bad-shape');
+            var clean = {};
+            Object.keys(parsed).forEach(function (k) {
+              if (validOverrideEntry(parsed[k])) clean[k] = parsed[k];
+            });
+            lsSet(OV_KEY, clean); touchLocal(); publishNow().then(function () { location.reload(); });
+          } catch (e) { alert('ملف غير صالح'); }
         };
         r.readAsText(f);
       });
@@ -11262,6 +11359,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         .then(function (res) {
           if (res.body && res.body.ok) {
             setAuthed(true);
+            if (res.body.token) setPublishToken(res.body.token);
             wrap.remove();
             enableEditing();
           } else {
