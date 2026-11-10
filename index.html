@@ -5569,6 +5569,185 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
     .f-info-box .text-body { max-width: 56ch; }
     /* Floating book button: never cover the booking summary's last line. */
     #booking { padding-bottom: clamp(72px, 10vw, 110px); }
+        /* ---- v10 §24: Sana'a re-skin (Old Sana'a architecture) ---- */
+    /* (A) Palette variables — dark theme is deep umber night, light theme
+       is warm white plaster. Ochre + terracotta carry the structure;
+       teal is kept ONLY for water/pool. */
+    :root {
+      --bg-ground: #241811;
+      --bg-canvas: #3A2A1C;
+      --bg-card: #4A3626;
+      --bg-elevated: #5A4230;
+      --bg-hover: #6B4F38;
+      --bg-glass: rgba(58, 42, 28, 0.90);
+      --gold-primary: #D9A05B;
+      --gold-light: #E07856;
+      --gold-hover: #E8B878;
+      --gold-deep: #B4652A;
+      --gold-glow: rgba(217, 160, 91, 0.20);
+      --text-pure: #FAF6EF;
+      --text-ivory: #F5EDDF;
+      --text-sub: #E8D9BE;
+      --text-muted: #C9B18C;
+      --border-subtle: rgba(250, 246, 239, 0.12);
+      --border-card: rgba(250, 246, 239, 0.18);
+      --border-gold: rgba(217, 160, 91, 0.45);
+      --border-gold-strong: rgba(217, 160, 91, 0.8);
+      --grad-tropical: linear-gradient(135deg, #B4652A 0%, #C0563B 100%);
+      --night: #1C130C;
+      --night-2: #2E2015;
+      --teal-water: #0F5E5A;
+      --r-sm: 2px; --r-md: 2px; --r-lg: 3px; --r-xl: 4px; --r-2xl: 4px; --r-3xl: 6px;
+      --lattice: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%3E%3Cg%20fill='none'%20stroke='%23D9A05B'%20stroke-width='1'%3E%3Crect%20x='14'%20y='14'%20width='20'%20height='20'/%3E%3Crect%20x='14'%20y='14'%20width='20'%20height='20'%20transform='rotate(45%2024%2024)'/%3E%3Ccircle%20cx='24'%20cy='24'%20r='2'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    [data-theme="light"] {
+      --bg-ground: #FAF6EF;
+      --bg-canvas: #F5EDDF;
+      --bg-card: #FFFDF8;
+      --bg-elevated: #F1E6D2;
+      --bg-hover: #EDE0C8;
+      --bg-glass: rgba(250, 246, 239, 0.92);
+      --gold-primary: #B4652A;
+      --gold-light: #C0563B;
+      --gold-hover: #9A5522;
+      --gold-deep: #8A4A1F;
+      --gold-glow: rgba(180, 101, 42, 0.18);
+      --text-pure: #3A2A1C;
+      --text-ivory: #3A2A1C;
+      --text-sub: #6B4A2F;
+      --text-muted: #8A6B4A;
+      --border-subtle: rgba(58, 42, 28, 0.12);
+      --border-card: rgba(58, 42, 28, 0.18);
+      --border-gold: rgba(180, 101, 42, 0.45);
+      --border-gold-strong: rgba(180, 101, 42, 0.75);
+      --grad-tropical: linear-gradient(135deg, #B4652A 0%, #C0563B 100%);
+      --night: #3A2A1C;
+      --night-2: #2E2015;
+      --teal-water: #0F5E5A;
+      --lattice: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%3E%3Cg%20fill='none'%20stroke='%23B4652A'%20stroke-width='1'%3E%3Crect%20x='14'%20y='14'%20width='20'%20height='20'/%3E%3Crect%20x='14'%20y='14'%20width='20'%20height='20'%20transform='rotate(45%2024%2024)'/%3E%3Ccircle%20cx='24'%20cy='24'%20r='2'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    /* (B) Browser surfaces carry the Sana'a palette. */
+    ::selection { background: #B4652A; color: #FFFDF8; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-canvas); }
+    ::-webkit-scrollbar-thumb { background: #B4652A; border-radius: 2px; }
+    :focus-visible { outline: 2px solid #B4652A; outline-offset: 2px; }
+    /* (C) Header / nav: a deep umber band, white text, solid ochre CTA. */
+    .nav-pill { background-color: rgba(58, 42, 28, 0.92); border: 1px solid rgba(217, 160, 91, 0.35); border-radius: 4px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    [data-theme="light"] .nav-pill { background-color: rgba(250, 246, 239, 0.94); border-color: rgba(180, 101, 42, 0.35); }
+    [data-theme="light"] .nav-holder .nav-pill:not(.scrolled) { background-color: rgba(58, 42, 28, 0.94); }
+    [data-theme="light"] .nav-holder .nav-pill:not(.scrolled) .nav-menu-link { color: rgba(250, 246, 239, 0.88); }
+    [data-theme="light"] .nav-holder .nav-pill:not(.scrolled) .nav-brand-name { color: #FAF6EF; }
+    .nav-pill.scrolled { background-color: rgba(28, 19, 12, 0.97); border-color: rgba(217, 160, 91, 0.5); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45); }
+    .nav-brand-img { border-radius: 2px; border-color: #B4652A; }
+    .nav-cta, a.nav-cta { background: #B4652A !important; color: #FFFDF8 !important; border: 1px solid #B4652A; border-radius: 4px; font-weight: 800; }
+    .nav-cta:hover { background: #9A5522 !important; border-color: #9A5522; }
+    /* (D) Hero: white plaster field, umber heading, one ochre word, a
+       qamariya lattice strip under the heading, and the pool media in a
+       sharp-cornered frame edged by an ochre band. */
+    .hero-heading { background: none !important; -webkit-text-fill-color: currentColor !important; background-clip: border-box !important; -webkit-background-clip: border-box !important; color: #FAF6EF !important; }
+    [data-theme="light"] .hero-heading { color: #3A2A1C !important; }
+    .hero-heading .hero-accent { color: #D9A05B !important; -webkit-text-fill-color: #D9A05B !important; }
+    [data-theme="light"] .hero-heading .hero-accent { color: #B4652A !important; -webkit-text-fill-color: #B4652A !important; }
+    .hero-heading { position: relative; }
+    .hero-heading::after { content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 26px; background-image: var(--lattice); background-size: 48px 48px; background-repeat: repeat-x; opacity: 0.55; pointer-events: none; }
+    .hero-ctas-row .btn-gold, .hero-ctas-row .btn { border-radius: 4px; }
+    .hero-ctas-row .btn-gold { background: #B4652A; border-color: #B4652A; color: #FFFDF8; }
+    .hero-ctas-row .btn-gold:hover { background: #9A5522; border-color: #9A5522; box-shadow: 0 10px 28px rgba(180, 101, 42, 0.35); }
+    .hero-media, .hero-video-item, .hero-scene-media { border-radius: 4px; }
+    .hero-scene-media { border: 3px solid #B4652A; }
+    /* (E) Buttons: solid ochre primary, warm white text, sharp corners. */
+    .btn-gold { background-color: #B4652A; color: #FFFDF8; border: 1px solid #B4652A; border-radius: 4px; }
+    .btn-gold:hover { background-color: #9A5522; border-color: #9A5522; box-shadow: 0 10px 28px rgba(180, 101, 42, 0.35); }
+    .btn-whatsapp { background: #128C7E; border-radius: 4px; }
+    .btn-secondary { border-radius: 4px; }
+    .btn { border-radius: 4px; }
+    /* (F) Night sections: facilities, gallery, and booking sit on deep
+       umber, with warm white text and an ochre lattice band on top. */
+    #facilities, #gallery, #booking { background: var(--night); color: #FAF6EF; }
+    #facilities::before, #gallery::before, #booking::before { content: ""; display: block; height: 26px; background-image: var(--lattice); background-size: 48px 48px; background-repeat: repeat-x; opacity: 0.5; margin-bottom: 8px; }
+    #facilities .section-head h2, #gallery .section-head h2, #booking .section-head h2 { color: #FAF6EF; }
+    #facilities .section-head p, #gallery .section-head p, #booking .section-head p { color: #E8D9BE; }
+    #facilities .text-body, #gallery .text-body { color: #E8D9BE; }
+    /* (G) Package cards: ochre-edged, sharp corners, umber headings,
+       ochre prices; the premium card carries a terracotta edge. */
+    .package-morph-card, .suffo-card { border-radius: 4px; border: 1px solid rgba(180, 101, 42, 0.45); }
+    .suffo-card-title { color: var(--text-pure); }
+    .suffo-card-price, .package-price, .pkg-price { color: #B4652A; }
+    [data-theme="light"] .suffo-card-price, [data-theme="light"] .package-price { color: #B4652A; }
+    .suffo-card-tag { background: #B4652A; color: #FFFDF8; border-radius: 2px; }
+    .suffo-card-plus-btn { background: #B4652A; border-color: #B4652A; color: #FFFDF8; border-radius: 4px; }
+    .suffo-card-plus-btn:hover { background: #9A5522; border-color: #9A5522; }
+    .package-morph-card.is-premium, .suffo-card.is-premium { border: 2px solid #C0563B; }
+    .pkg-book-btn { background: #B4652A; color: #FFFDF8; border-color: #B4652A; border-radius: 4px; }
+    .pkg-book-btn:hover { background: #9A5522; }
+    /* (H) Booking form: a lattice-framed console — ochre edge, lattice
+       band on top, ochre primary action, umber step pills. */
+    .calculator-console { border: 2px solid #B4652A; border-radius: 4px; background: var(--bg-card); }
+    .calculator-console::before { content: ""; display: block; height: 26px; background-image: var(--lattice); background-size: 48px 48px; background-repeat: repeat-x; opacity: 0.5; }
+    .bk-steps-nav .bk-step-btn[aria-current="step"] { background: #B4652A; color: #FFFDF8; border-color: #B4652A; }
+    .bk-steps-nav .bk-step-btn[aria-current="step"] .bk-num { background: #FFFDF8; color: #B4652A; }
+    .bk-step-actions .btn[data-next-step] { background: #B4652A !important; color: #FFFDF8 !important; border-color: #B4652A !important; }
+    .bk-step-actions .btn[data-next-step]:hover { background: #9A5522 !important; border-color: #9A5522 !important; }
+    .bk-pkg-opt { border-radius: 4px; }
+    .bk-pkg-opt:hover { border-color: #B4652A; }
+    .bk-pkg-opt[aria-checked="true"] { border-color: #B4652A; background: rgba(180, 101, 42, 0.10); box-shadow: 0 0 0 1px #B4652A; }
+    .bk-pkg-opt .bk-pkg-price { color: #B4652A; }
+    #booking .calculator-console { background: #FFFDF8 !important; color: #3A2A1C; }
+    [data-theme="light"] #booking .calculator-console { background: #FFFDF8 !important; }
+    #booking .bk-pkg-opt { background: #FFFDF8; color: #3A2A1C; border-color: rgba(58, 42, 28, 0.22); }
+    #booking .bk-pkg-opt small { color: #6B4A2F; }
+    #booking .bk-review dt, #booking .summary-spec-row span:first-child { color: #6B4A2F; }
+    #booking .bk-review dd, #booking .summary-spec-row strong { color: #3A2A1C; }
+    #booking .calc-summary-panel { border-top-color: rgba(58, 42, 28, 0.18); }
+    /* (I) Footer: darkest umber, lattice band on top, warm white text. */
+    .resort-footer { background-color: #1C130C; border-top: none; color: #FAF6EF; }
+    .resort-footer::before { content: ""; display: block; height: 26px; background-image: var(--lattice); background-size: 48px 48px; background-repeat: repeat-x; opacity: 0.5; margin-bottom: 24px; }
+    .resort-footer a { color: #E8D9BE; }
+    .resort-footer a:hover { color: #D9A05B; }
+    .footer-end-bar { border-top-color: rgba(250, 246, 239, 0.14); }
+    /* (J) Pool / water keeps the single deep teal — never dominant. */
+    .pool-accent, [data-water="true"] { color: #0F5E5A; }
+    .hero-scene-media { box-shadow: 0 0 0 1px rgba(15, 94, 90, 0.35), 0 18px 40px rgba(0, 0, 0, 0.35); }
+    /* (K) Section headings: umber on white, warm white on umber; the
+       ochre rule under the heading replaces the old pink dash. */
+    .section-head h2 { color: var(--text-pure); }
+    .section-head h2::after { background: #B4652A; }
+    /* (L) Sharp corners everywhere a card or media box rounds off. */
+    .f-info-box, .guide-horizon-card, .lifestyle-moment, .gallery-item, .dir-tile, .calc-summary-panel { border-radius: 4px; }
+        /* ---- v10 §25: Sana'a overrides vs the preview-polish block ---- */
+    html[data-theme="light"] .hero-heading { color: #3A2A1C !important; -webkit-text-fill-color: #3A2A1C !important; }
+    html[data-theme="light"] .hero-heading .hero-accent { color: #B4652A !important; -webkit-text-fill-color: #B4652A !important; }
+    html:not([data-theme="light"]) .hero-heading { color: #FAF6EF !important; -webkit-text-fill-color: #FAF6EF !important; }
+    /* Facilities stage + map panels: umber, not the teal gradient. */
+    #facilities .f-stage-panel, html:not([data-theme="light"]) #facilities .f-stage-panel { background: #2E2015 !important; background-image: none !important; }
+    #facilities .map-panel, html:not([data-theme="light"]) #facilities .map-panel { background: #2E2015 !important; background-image: none !important; }
+    /* Booking step number: warm white on ochre, not sea cyan. */
+    .bk-steps-nav .bk-step-btn[aria-current="step"] .bk-num { background: #FFFDF8 !important; color: #B4652A !important; background-image: none !important; }
+    /* Directory rows + guide badges: ochre, not pink. */
+    .suffo-dir-row:hover, .suffo-dir-row.active { background-color: rgba(180, 101, 42, 0.14) !important; border-inline-start: 3px solid #B4652A !important; }
+    [data-theme="light"] .suffo-dir-row:hover, [data-theme="light"] .suffo-dir-row.active { background-color: rgba(180, 101, 42, 0.12) !important; border-inline-start-color: #B4652A !important; }
+    .guide-card-badge { background: rgba(180, 101, 42, 0.16) !important; color: #B4652A !important; border: 1px solid rgba(180, 101, 42, 0.5) !important; }
+    /* Video stage: umber while loading, not teal. */
+    .video-screen { background: linear-gradient(160deg, #2E2015, #3A2A1C 60%, #241811) !important; }
+    /* Booking select chevron: ochre, not pink. */
+    .select-box { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B4652A' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important; }
+    [data-theme="light"] .select-box { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B4652A' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important; }
+    /* Cinematic intro splash: deep umber night + ochre rule (was teal sea + sunset pink). */
+    .cinematic-intro { background: linear-gradient(160deg, #1C130C 0%, #3A2A1C 55%, #4A3626 100%) !important; }
+    .cinematic-intro-rule { background: #B4652A !important; }
+    /* Booking summary (white console): force dark readable text — the
+       base rules paint it in the dark theme's light text colours. */
+    #booking .calc-summary-panel { color: #3A2A1C !important; }
+    #booking .calc-summary-panel h2, #booking .calc-summary-panel h3, #booking .calc-summary-panel .summary-title { color: #3A2A1C !important; }
+    #booking .summary-spec-row { color: #3A2A1C !important; }
+    #booking .summary-spec-row span:first-child { color: #6B4A2F !important; }
+    #booking .summary-spec-row span:last-child { color: #3A2A1C !important; }
+    #booking .summary-spec-row strong { color: #3A2A1C !important; }
+    #booking .summary-price-grand { color: #3A2A1C !important; border-top-color: rgba(180, 101, 42, 0.4) !important; }
+    #booking .grand-price-figure { color: #C0563B !important; }
+    #booking .bk-review dt { color: #6B4A2F !important; }
+    #booking .bk-review dd { color: #3A2A1C !important; }
     </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
