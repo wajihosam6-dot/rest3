@@ -5454,7 +5454,27 @@ html.admin-mode { scroll-padding-top: 110px; }
   background: rgba(7, 59, 76, .96); color: #fff; border: 1px solid rgba(255,255,255,.22);
   border-radius: 18px; padding: 10px 12px; backdrop-filter: blur(14px);
   box-shadow: 0 16px 50px rgba(0,0,0,.5); font-family: inherit;
+  transition: transform .35s ease, opacity .35s ease;
 }
+/* Collapsed: the intro bar slides up out of view after 5s; the small
+   floating pill takes its place so the bar never covers the site. */
+#rest-visual-bar.rv-collapsed { transform: translateX(50%) translateY(-140%); opacity: 0; pointer-events: none; }
+/* Compact floating pill (top centre): elegant, simple — draft count plus
+   the two choices: save+publish, or keep the previous version. */
+#rest-visual-fab[hidden] { display: none !important; }
+#rest-visual-fab {
+  position: fixed; top: 10px; right: 50%; transform: translateX(50%);
+  z-index: 99995; display: flex; align-items: center; gap: 6px;
+  background: rgba(7, 59, 76, .94); color: #fff; border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px; padding: 5px 6px 5px 10px; backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.45); font-family: inherit; font-size: 12.5px;
+}
+#rest-visual-fab button { border: 0; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+#rest-visual-fab #rvf-expand { background: none; color: #fff; padding: 6px 8px; }
+#rest-visual-fab #rvf-expand #rvf-count { color: #F9A8D4; }
+#rest-visual-fab #rvf-confirm { background: #F9A8D4; color: #073B4C; padding: 7px 12px; }
+#rest-visual-fab #rvf-revert { background: rgba(255,255,255,.16); color: #fff; padding: 7px 10px; }
+#rest-visual-fab button:disabled { opacity: .45; cursor: default; }
 #rest-visual-bar .rv-hint { font-size: 13px; font-weight: 700; text-align: center; }
 #rest-visual-bar .rv-hint small { display: block; font-weight: 400; font-size: 11.5px; opacity: .85; margin-top: 2px; }
 #rest-visual-bar .rv-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
@@ -9924,6 +9944,16 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     if (cf) cf.disabled = visualDraftCount() === 0;
     var rv = document.getElementById('rv-revert');
     if (rv) rv.disabled = visualDraftCount() === 0;
+    /* Keep the floating pill in sync: draft count + the same two actions. */
+    var fc = document.getElementById('rvf-count');
+    if (fc) {
+      var n2 = visualDraftCount();
+      fc.textContent = n2 > 0 ? n2 + ' تعديل غير منشور' : 'وضع التحرير';
+    }
+    var fcf = document.getElementById('rvf-confirm');
+    if (fcf) fcf.disabled = visualDraftCount() === 0;
+    var frv = document.getElementById('rvf-revert');
+    if (frv) frv.disabled = visualDraftCount() === 0;
   }
   function setPublishState(s, msg) {
     publishState = s;
@@ -10260,6 +10290,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     refreshNavCounts();
   }
   /* ---------- Visual edit mode: the live site is the editor ---------- */
+  var visualBarTimer = null;
   function buildVisualBar() {
     var bar = document.createElement('div');
     bar.id = 'rest-visual-bar';
@@ -10279,6 +10310,38 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.getElementById('rv-confirm').addEventListener('click', confirmVisualEdits);
     document.getElementById('rv-revert').addEventListener('click', revertVisualEdits);
     document.getElementById('rv-exit').addEventListener('click', exitVisualEdit);
+    /* Compact floating pill: the bar shows for 5s, then collapses to this
+       elegant top pill so it never covers the site. It carries the two
+       choices the owner needs: save+publish, or keep the previous version. */
+    var fab = document.createElement('div');
+    fab.id = 'rest-visual-fab';
+    fab.className = 'rest-admin-ui';
+    fab.setAttribute('dir', 'rtl');
+    fab.hidden = true;
+    fab.innerHTML =
+      '<button type="button" id="rvf-expand" title="إظهار شريط التحرير">✎ <span id="rvf-count">وضع التحرير</span></button>' +
+      '<button type="button" id="rvf-confirm">✓ حفظ ونشر</button>' +
+      '<button type="button" id="rvf-revert" title="عدم الحفظ وإبقاء النسخة السابقة">↺ إبقاء السابقة</button>';
+    document.body.appendChild(fab);
+    document.getElementById('rvf-expand').addEventListener('click', expandVisualBar);
+    document.getElementById('rvf-confirm').addEventListener('click', confirmVisualEdits);
+    document.getElementById('rvf-revert').addEventListener('click', revertVisualEdits);
+  }
+  function collapseVisualBar() {
+    var bar = document.getElementById('rest-visual-bar');
+    var fab = document.getElementById('rest-visual-fab');
+    if (bar) bar.classList.add('rv-collapsed');
+    if (fab) fab.hidden = false;
+    if (visualBarTimer) { clearTimeout(visualBarTimer); visualBarTimer = null; }
+  }
+  function expandVisualBar() {
+    var bar = document.getElementById('rest-visual-bar');
+    var fab = document.getElementById('rest-visual-fab');
+    if (bar) bar.classList.remove('rv-collapsed');
+    if (fab) fab.hidden = true;
+    /* Re-collapse after 5s so the bar never lingers over the site. */
+    if (visualBarTimer) clearTimeout(visualBarTimer);
+    visualBarTimer = setTimeout(collapseVisualBar, 5000);
   }
   function enterVisualEdit() {
     visualSnapshot = JSON.parse(JSON.stringify(getOverrides()));
@@ -10287,17 +10350,26 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     closeDrawer();
     document.documentElement.classList.add('ras-visual-edit');
     var bar = document.getElementById('rest-visual-bar');
-    if (bar) bar.hidden = false;
+    if (bar) { bar.hidden = false; bar.classList.remove('rv-collapsed'); }
+    var fab = document.getElementById('rest-visual-fab');
+    if (fab) fab.hidden = true;
     setPublishState('idle', '');
     updateVisualBar();
+    /* The full bar is an intro hint only: after 5s it collapses to the
+       small floating pill at the top so it never covers the site. */
+    if (visualBarTimer) clearTimeout(visualBarTimer);
+    visualBarTimer = setTimeout(collapseVisualBar, 5000);
   }
   function exitVisualEdit() {
     visualEdit = false;
     visualSnapshot = null;
     visualPublished = null;
     document.documentElement.classList.remove('ras-visual-edit');
+    if (visualBarTimer) { clearTimeout(visualBarTimer); visualBarTimer = null; }
     var bar = document.getElementById('rest-visual-bar');
-    if (bar) bar.hidden = true;
+    if (bar) { bar.hidden = true; bar.classList.remove('rv-collapsed'); }
+    var fab = document.getElementById('rest-visual-fab');
+    if (fab) fab.hidden = true;
     clearSelection();
     openDrawer();
     showPages();
