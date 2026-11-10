@@ -5472,7 +5472,8 @@ html.admin-mode { scroll-padding-top: 110px; }
      page from scrolling while the pill is being dragged on a phone. */
   touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
 }
-#rest-visual-fab button { border: 0; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+#rest-visual-fab button { border: 0; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: none; }
+#rest-visual-fab .rvf-grip { color: rgba(255,255,255,.75); font-size: 15px; line-height: 1; padding: 0 2px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
 #rest-visual-fab #rvf-expand { background: none; color: #fff; padding: 6px 8px; }
 #rest-visual-fab #rvf-expand #rvf-count { color: #F9A8D4; }
 #rest-visual-fab #rvf-confirm { background: #F9A8D4; color: #073B4C; padding: 7px 12px; }
@@ -10400,11 +10401,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   /* ---------- Visual edit mode: the live site is the editor ---------- */
   var visualBarTimer = null;
   /* Draggable floating pill: the owner can drag it anywhere so it never
-     covers a part of the site they need. Works with touch + mouse
-     (Pointer Events). A tap (no real movement) still fires the button
-     normally; a drag suppresses the click. Position persists in localStorage. */
+     covers a part of the site they need. Works with touch + mouse.
+     Uses BOTH Pointer Events and Touch Events: on real phones the pointer
+     stream can be flaky, so the touch handlers are a fallback. A tap (no
+     real movement) still fires the button normally; a drag suppresses the
+     click. Position persists in localStorage. */
   var fabDragging = false, fabMoved = false, fabSuppressClick = false;
   var fabDragStartX = 0, fabDragStartY = 0, fabDragLeft = 0, fabDragTop = 0;
+  function fabEvtPos(e) {
+    if (e.touches && e.touches.length) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e.changedTouches && e.changedTouches.length) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
   function fabClamp(left, top, fab) {
     var w = fab.offsetWidth || 200, h = fab.offsetHeight || 40;
     return {
@@ -10427,11 +10435,13 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     } catch (e) {}
   }
   function fabDragStart(e) {
+    if (fabDragging) return; // pointer + touch both fire for one touch; start once
     var fab = document.getElementById('rest-visual-fab');
     if (!fab || fab.hidden) return;
     var r = fab.getBoundingClientRect();
+    var pos = fabEvtPos(e);
     fabDragging = true; fabMoved = false;
-    fabDragStartX = e.clientX; fabDragStartY = e.clientY;
+    fabDragStartX = pos.x; fabDragStartY = pos.y;
     fabDragLeft = r.left; fabDragTop = r.top;
     fab.style.right = 'auto';
     fab.style.transform = 'none';
@@ -10441,7 +10451,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function fabDragMove(e) {
     if (!fabDragging) return;
-    var dx = e.clientX - fabDragStartX, dy = e.clientY - fabDragStartY;
+    var pos = fabEvtPos(e);
+    var dx = pos.x - fabDragStartX, dy = pos.y - fabDragStartY;
     if (Math.abs(dx) > 8 || Math.abs(dy) > 8) fabMoved = true;
     if (!fabMoved) return;
     var fab = document.getElementById('rest-visual-fab');
@@ -10504,6 +10515,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     fab.setAttribute('dir', 'rtl');
     fab.hidden = true;
     fab.innerHTML =
+      '<span class="rvf-grip" title="اسحب لتحريك الزر">⠿</span>' +
       '<button type="button" id="rvf-expand" title="إظهار شريط التحرير">✎ <span id="rvf-count">وضع التحرير</span></button>' +
       '<button type="button" id="rvf-confirm">✓ حفظ ونشر</button>' +
       '<button type="button" id="rvf-revert" title="عدم الحفظ وإبقاء النسخة السابقة">↺ إبقاء السابقة</button>';
@@ -10511,11 +10523,18 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.getElementById('rvf-expand').addEventListener('click', expandVisualBar);
     document.getElementById('rvf-confirm').addEventListener('click', confirmVisualEdits);
     document.getElementById('rvf-revert').addEventListener('click', revertVisualEdits);
-    /* Draggable: press and move the pill anywhere; a tap still works. */
+    /* Draggable: press and move the pill anywhere; a tap still works.
+       Both Pointer Events and Touch Events are wired: on real phones the
+       pointer stream can be flaky, so touch is the fallback. The
+       fabDragging guard makes a single touch start the drag only once. */
     fab.addEventListener('pointerdown', fabDragStart);
+    fab.addEventListener('touchstart', fabDragStart, { passive: true });
     window.addEventListener('pointermove', fabDragMove);
+    window.addEventListener('touchmove', function (e) { if (fabDragging) e.preventDefault(); fabDragMove(e); }, { passive: false });
     window.addEventListener('pointerup', fabDragEnd);
     window.addEventListener('pointercancel', fabDragEnd);
+    window.addEventListener('touchend', fabDragEnd);
+    window.addEventListener('touchcancel', fabDragEnd);
     fab.addEventListener('click', fabClickGuard, true);
     fabApplySavedPos();
   }
