@@ -5468,6 +5468,9 @@ html.admin-mode { scroll-padding-top: 110px; }
   background: rgba(7, 59, 76, .94); color: #fff; border: 1px solid rgba(255,255,255,.22);
   border-radius: 999px; padding: 5px 6px 5px 10px; backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,.45); font-family: inherit; font-size: 12.5px;
+  /* Draggable: the owner can move it anywhere. touch-action:none stops the
+     page from scrolling while the pill is being dragged on a phone. */
+  touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
 }
 #rest-visual-fab button { border: 0; border-radius: 999px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
 #rest-visual-fab #rvf-expand { background: none; color: #fff; padding: 6px 8px; }
@@ -10291,6 +10294,83 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   /* ---------- Visual edit mode: the live site is the editor ---------- */
   var visualBarTimer = null;
+  /* Draggable floating pill: the owner can drag it anywhere so it never
+     covers a part of the site they need. Works with touch + mouse
+     (Pointer Events). A tap (no real movement) still fires the button
+     normally; a drag suppresses the click. Position persists in localStorage. */
+  var fabDragging = false, fabMoved = false, fabSuppressClick = false;
+  var fabDragStartX = 0, fabDragStartY = 0, fabDragLeft = 0, fabDragTop = 0;
+  function fabClamp(left, top, fab) {
+    var w = fab.offsetWidth || 200, h = fab.offsetHeight || 40;
+    return {
+      left: Math.max(4, Math.min(window.innerWidth - w - 4, left)),
+      top: Math.max(4, Math.min(window.innerHeight - h - 4, top))
+    };
+  }
+  function fabApplySavedPos() {
+    var fab = document.getElementById('rest-visual-fab');
+    if (!fab) return;
+    try {
+      var p = JSON.parse(localStorage.getItem('rest_visual_fab_pos_v1') || 'null');
+      if (p && typeof p.left === 'number' && typeof p.top === 'number') {
+        var c = fabClamp(p.left, p.top, fab);
+        fab.style.right = 'auto';
+        fab.style.transform = 'none';
+        fab.style.left = c.left + 'px';
+        fab.style.top = c.top + 'px';
+      }
+    } catch (e) {}
+  }
+  function fabDragStart(e) {
+    var fab = document.getElementById('rest-visual-fab');
+    if (!fab || fab.hidden) return;
+    var r = fab.getBoundingClientRect();
+    fabDragging = true; fabMoved = false;
+    fabDragStartX = e.clientX; fabDragStartY = e.clientY;
+    fabDragLeft = r.left; fabDragTop = r.top;
+    fab.style.right = 'auto';
+    fab.style.transform = 'none';
+    fab.style.left = r.left + 'px';
+    fab.style.top = r.top + 'px';
+    fab.style.cursor = 'grabbing';
+  }
+  function fabDragMove(e) {
+    if (!fabDragging) return;
+    var dx = e.clientX - fabDragStartX, dy = e.clientY - fabDragStartY;
+    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) fabMoved = true;
+    if (!fabMoved) return;
+    var fab = document.getElementById('rest-visual-fab');
+    if (!fab) return;
+    var c = fabClamp(fabDragLeft + dx, fabDragTop + dy, fab);
+    fab.style.left = c.left + 'px';
+    fab.style.top = c.top + 'px';
+  }
+  function fabDragEnd() {
+    if (!fabDragging) return;
+    fabDragging = false;
+    var fab = document.getElementById('rest-visual-fab');
+    if (fab) fab.style.cursor = '';
+    if (fabMoved) {
+      fabSuppressClick = true;
+      if (fab) {
+        try {
+          localStorage.setItem('rest_visual_fab_pos_v1', JSON.stringify({
+            left: parseFloat(fab.style.left) || 0,
+            top: parseFloat(fab.style.top) || 0
+          }));
+        } catch (e) {}
+      }
+      setTimeout(function () { fabSuppressClick = false; }, 100);
+    }
+    fabMoved = false;
+  }
+  function fabClickGuard(e) {
+    if (fabSuppressClick) {
+      e.preventDefault();
+      e.stopPropagation();
+      fabSuppressClick = false;
+    }
+  }
   function buildVisualBar() {
     var bar = document.createElement('div');
     bar.id = 'rest-visual-bar';
@@ -10326,6 +10406,13 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     document.getElementById('rvf-expand').addEventListener('click', expandVisualBar);
     document.getElementById('rvf-confirm').addEventListener('click', confirmVisualEdits);
     document.getElementById('rvf-revert').addEventListener('click', revertVisualEdits);
+    /* Draggable: press and move the pill anywhere; a tap still works. */
+    fab.addEventListener('pointerdown', fabDragStart);
+    window.addEventListener('pointermove', fabDragMove);
+    window.addEventListener('pointerup', fabDragEnd);
+    window.addEventListener('pointercancel', fabDragEnd);
+    fab.addEventListener('click', fabClickGuard, true);
+    fabApplySavedPos();
   }
   function collapseVisualBar() {
     var bar = document.getElementById('rest-visual-bar');
