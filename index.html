@@ -7,10 +7,10 @@
     (function () {
       try {
         var savedTheme = localStorage.getItem('rest_theme');
-        if (savedTheme === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else {
+        if (savedTheme === 'dark') {
           document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
         }
       } catch (e) {}
     })();
@@ -5748,6 +5748,133 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
     #booking .grand-price-figure { color: #C0563B !important; }
     #booking .bk-review dt { color: #6B4A2F !important; }
     #booking .bk-review dd { color: #3A2A1C !important; }
+        /* ---- v10 §26a: LIGHT creative experiment (bright, airy, gold + aqua) ---- */
+    :root {
+      --bg-ground: #FFFDF8; --bg-canvas: #F5EBDC; --bg-card: #FFFFFF; --bg-elevated: #FBF6EC;
+      --bg-hover: #F5EBDC; --bg-glass: rgba(255, 253, 248, 0.88);
+      --gold-primary: #C9A227; --gold-light: #D4AF37; --gold-hover: #B08D1E; --gold-deep: #A8861A;
+      --gold-glow: rgba(201, 162, 39, 0.18);
+      --text-pure: #2B2620; --text-ivory: #2B2620; --text-sub: #6B6259; --text-muted: #8A8175;
+      --border-subtle: rgba(43, 38, 32, 0.10); --border-card: rgba(43, 38, 32, 0.14);
+      --border-gold: rgba(201, 162, 39, 0.45); --border-gold-strong: rgba(201, 162, 39, 0.8);
+      --grad-tropical: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+      --night: #F5EBDC; --night-2: #EFE3CE; --teal-water: #0E7490;
+      --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 32px;
+      --lattice: none;
+    }
+    [data-theme="light"] {
+      --bg-ground: #FFFDF8; --bg-canvas: #F5EBDC; --bg-card: #FFFFFF; --bg-elevated: #FBF6EC;
+      --bg-hover: #F5EBDC; --bg-glass: rgba(255, 253, 248, 0.88);
+      --gold-primary: #C9A227; --gold-light: #D4AF37; --gold-hover: #B08D1E; --gold-deep: #A8861A;
+      --gold-glow: rgba(201, 162, 39, 0.18);
+      --text-pure: #2B2620; --text-ivory: #2B2620; --text-sub: #6B6259; --text-muted: #8A8175;
+      --border-subtle: rgba(43, 38, 32, 0.10); --border-card: rgba(43, 38, 32, 0.14);
+      --border-gold: rgba(201, 162, 39, 0.45); --border-gold-strong: rgba(201, 162, 39, 0.8);
+      --grad-tropical: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+      --night: #F5EBDC; --night-2: #EFE3CE; --teal-water: #0E7490;
+      --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 32px;
+      --lattice: none;
+    }
+    /* Browser surfaces: gold, on light. */
+    html ::selection { background: #C9A227 !important; color: #FFFDF8 !important; }
+    html ::-webkit-scrollbar-track { background: #F5EBDC !important; }
+    html ::-webkit-scrollbar-thumb { background: #C9A227 !important; border-radius: 8px !important; }
+    html :focus-visible { outline: 2px solid #C9A227 !important; outline-offset: 2px !important; }
+    /* Remove the Sana'a lattice bands entirely (clean light look). */
+    html .hero-heading::after, html #facilities::before, html #gallery::before,
+    html #booking::before, html .resort-footer::before, html .calculator-console::before { display: none !important; background: none !important; }
+    /* Hero: warm dark text on bright white, one gold word, gold rule. */
+    html .hero-heading { color: #2B2620 !important; -webkit-text-fill-color: #2B2620 !important; background: none !important; }
+    html[data-theme="light"] .hero-heading { color: #2B2620 !important; -webkit-text-fill-color: #2B2620 !important; }
+    html .hero-heading .hero-accent { color: #C9A227 !important; -webkit-text-fill-color: #C9A227 !important; }
+    html[data-theme="light"] .hero-heading .hero-accent { color: #B08D1E !important; -webkit-text-fill-color: #B08D1E !important; }
+    html .hero-desc { color: #6B6259 !important; }
+    html .hero-scene, html .suffo-hero { background: #FFFDF8 !important; }
+    /* Nav: floating white frosted pill, dark text, gold CTA. */
+    html .nav-pill { background-color: rgba(255, 253, 248, 0.88) !important; border: 1px solid rgba(201, 162, 39, 0.35) !important; border-radius: 999px !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; box-shadow: 0 8px 30px rgba(43, 38, 32, 0.10) !important; }
+    html .nav-pill.scrolled { background-color: rgba(255, 253, 248, 0.96) !important; border-color: rgba(201, 162, 39, 0.5) !important; box-shadow: 0 12px 32px rgba(43, 38, 32, 0.14) !important; }
+    html .nav-menu-link { color: #2B2620 !important; }
+    html .nav-menu-link:hover { color: #B08D1E !important; }
+    html .nav-brand-name { color: #2B2620 !important; }
+    html .nav-cta, html a.nav-cta { background: #C9A227 !important; color: #FFFDF8 !important; border: 1px solid #C9A227 !important; border-radius: 999px !important; font-weight: 800 !important; }
+    html .nav-cta:hover { background: #B08D1E !important; border-color: #B08D1E !important; }
+    /* Hero media: soft rounded frame, gold edge, light shadow. */
+    html .hero-media, html .hero-video-item, html .hero-scene-media { border-radius: 24px !important; border: 2px solid rgba(201, 162, 39, 0.55) !important; box-shadow: 0 24px 60px rgba(43, 38, 32, 0.16) !important; }
+    html .hero-scene-media { box-shadow: 0 24px 60px rgba(43, 38, 32, 0.16) !important; }
+    /* Buttons: warm gold primary, soft rounded. */
+    html .btn-gold { background-color: #C9A227 !important; color: #FFFDF8 !important; border: 1px solid #C9A227 !important; border-radius: 999px !important; }
+    html .btn-gold:hover { background-color: #B08D1E !important; border-color: #B08D1E !important; box-shadow: 0 12px 28px rgba(201, 162, 39, 0.35) !important; }
+    html .btn { border-radius: 999px !important; }
+    html .btn-whatsapp { background: #128C7E !important; border-radius: 999px !important; }
+    /* Sections: NO dark night fields — light sand / white with gold accents. */
+    html #facilities, html #gallery, html #booking { background: #F5EBDC !important; color: #2B2620 !important; }
+    html #packages, html #lifestyle, html #guide, html #resort-map { background: #FFFDF8 !important; color: #2B2620 !important; }
+    html #facilities .section-head h2, html #gallery .section-head h2, html #booking .section-head h2 { color: #2B2620 !important; }
+    html #facilities .section-head p, html #gallery .section-head p, html #booking .section-head p { color: #6B6259 !important; }
+    html #facilities .text-body, html #gallery .text-body { color: #6B6259 !important; }
+    html .f-stage-panel, html #facilities .f-stage-panel, html .map-panel, html #facilities .map-panel { background: #FFFFFF !important; background-image: none !important; color: #2B2620 !important; border: 1px solid rgba(201, 162, 39, 0.3) !important; border-radius: 24px !important; }
+    /* Package cards: white, soft rounded, gold edge + gold price + gold CTA. */
+    html .package-morph-card, html .suffo-card { border-radius: 24px !important; border: 1px solid rgba(201, 162, 39, 0.45) !important; background: #FFFFFF !important; box-shadow: 0 14px 36px rgba(43, 38, 32, 0.10) !important; }
+    html .package-morph-card:hover, html .suffo-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(43, 38, 32, 0.16) !important; border-color: #C9A227 !important; }
+    html .suffo-card-title { color: #2B2620 !important; }
+    html .suffo-card-price, html .package-price, html .pkg-price { color: #B08D1E !important; }
+    html .suffo-card-tag { background: #C9A227 !important; color: #FFFDF8 !important; border-radius: 999px !important; }
+    html .suffo-card-plus-btn { background: #C9A227 !important; border-color: #C9A227 !important; color: #FFFDF8 !important; border-radius: 999px !important; }
+    html .suffo-card-plus-btn:hover { background: #B08D1E !important; border-color: #B08D1E !important; }
+    html .package-morph-card.is-premium, html .suffo-card.is-premium { border: 2px solid #C9A227 !important; }
+    html .pkg-book-btn { background: #C9A227 !important; color: #FFFDF8 !important; border-color: #C9A227 !important; border-radius: 999px !important; }
+    html .pkg-book-btn:hover { background: #B08D1E !important; }
+    /* Booking console: white, gold edge, gold step + gold CTA. */
+    html .calculator-console { border: 2px solid #C9A227 !important; border-radius: 24px !important; background: #FFFFFF !important; background-image: none !important; color: #2B2620 !important; box-shadow: 0 20px 50px rgba(43, 38, 32, 0.12) !important; }
+    html #booking .calculator-console { background: #FFFFFF !important; color: #2B2620 !important; }
+    html .bk-steps-nav .bk-step-btn[aria-current="step"] { background: #C9A227 !important; color: #FFFDF8 !important; border-color: #C9A227 !important; }
+    html .bk-steps-nav .bk-step-btn[aria-current="step"] .bk-num { background: #FFFDF8 !important; color: #B08D1E !important; background-image: none !important; }
+    html .bk-step-actions .btn[data-next-step] { background: #C9A227 !important; color: #FFFDF8 !important; border-color: #C9A227 !important; }
+    html .bk-step-actions .btn[data-next-step]:hover { background: #B08D1E !important; border-color: #B08D1E !important; }
+    html .bk-pkg-opt { border-radius: 16px !important; background: #FFFDF8 !important; color: #2B2620 !important; border-color: rgba(43, 38, 32, 0.18) !important; }
+    html .bk-pkg-opt:hover { border-color: #C9A227 !important; }
+    html .bk-pkg-opt[aria-checked="true"] { border-color: #C9A227 !important; background: rgba(201, 162, 39, 0.10) !important; box-shadow: 0 0 0 1px #C9A227 !important; }
+    html .bk-pkg-opt .bk-pkg-price { color: #B08D1E !important; }
+    html #booking .bk-pkg-opt small { color: #6B6259 !important; }
+    /* Section headings: warm dark on light, gold rule. */
+    html .section-head h2 { color: #2B2620 !important; }
+    html .section-head h2::after { background: #C9A227 !important; }
+    html .section-head p { color: #6B6259 !important; }
+    html .suffo-dash { background: #C9A227 !important; }
+    /* Directory rows + guide badges: gold, not pink. */
+    html .suffo-dir-row:hover, html .suffo-dir-row.active { background-color: rgba(201, 162, 39, 0.12) !important; border-inline-start: 3px solid #C9A227 !important; color: #2B2620 !important; }
+    html .guide-card-badge { background: rgba(201, 162, 39, 0.14) !important; color: #B08D1E !important; border: 1px solid rgba(201, 162, 39, 0.5) !important; }
+    /* Booking select chevron: gold, not pink. */
+    html .select-box { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C9A227' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important; }
+    html[data-theme="light"] .select-box { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B08D1E' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important; }
+    /* Video stage: light sand while loading, never a dark void. */
+    html .video-screen { background: linear-gradient(160deg, #F5EBDC, #FFFDF8 60%, #F5EBDC) !important; }
+    /* Cinematic intro splash: bright warm white + gold rule (was umber night). */
+    html .cinematic-intro { background: linear-gradient(160deg, #FFFDF8 0%, #F5EBDC 55%, #FFFDF8 100%) !important; }
+    html .cinematic-intro-rule { background: #C9A227 !important; }
+    /* Footer: light sand, dark text, gold links. */
+    html .resort-footer { background-color: #F5EBDC !important; border-top: 1px solid rgba(201, 162, 39, 0.35) !important; color: #2B2620 !important; }
+    html .resort-footer a { color: #6B6259 !important; }
+    html .resort-footer a:hover { color: #B08D1E !important; }
+    html .footer-end-bar { border-top-color: rgba(43, 38, 32, 0.14) !important; }
+    /* Cards / media: soft rounded corners, light shadows. */
+    html .f-info-box, html .guide-horizon-card, html .lifestyle-moment, html .gallery-item, html .dir-tile, html .calc-summary-panel { border-radius: 20px !important; }
+    /* Booking summary: dark readable text on white (unchanged from §25). */
+    html #booking .calc-summary-panel { color: #2B2620 !important; }
+    html #booking .calc-summary-panel h2, html #booking .calc-summary-panel h3, html #booking .calc-summary-panel .summary-title { color: #2B2620 !important; }
+    html #booking .summary-spec-row { color: #2B2620 !important; }
+    html #booking .summary-spec-row span:first-child { color: #6B6259 !important; }
+    html #booking .summary-spec-row span:last-child { color: #2B2620 !important; }
+    html #booking .summary-spec-row strong { color: #2B2620 !important; }
+    html #booking .summary-price-grand { color: #2B2620 !important; border-top-color: rgba(201, 162, 39, 0.4) !important; }
+    html #booking .grand-price-figure { color: #B08D1E !important; }
+    html #booking .bk-review dt { color: #6B6259 !important; }
+    html #booking .bk-review dd { color: #2B2620 !important; }
+    /* Gold scroll-progress bar (thin, top of page; animated by GSAP). */
+    html #gsap-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; background: linear-gradient(90deg, #C9A227, #D4AF37); transform: scaleX(0); transform-origin: left center; pointer-events: none; }
+    [dir="ltr"] html #gsap-progress { transform-origin: left center; }
+    /* Aqua stays ONLY on water/pool accents. */
+    html .pool-accent, html [data-water="true"] { color: #0E7490 !important; }
     </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
@@ -11301,6 +11428,78 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
 })();
 
     </script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+/* ---- v10 §26c: GSAP cinematic motion (light creative experiment) ---- */
+(function () {
+  'use strict';
+  var bar = document.createElement('div');
+  bar.id = 'gsap-progress';
+  bar.setAttribute('aria-hidden', 'true');
+  if (document.body) document.body.appendChild(bar);
+  function initMotion() {
+    if (!window.gsap || !window.ScrollTrigger) return false;
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    } catch (e) {}
+    gsap.registerPlugin(ScrollTrigger);
+    /* Free the hero from the reveal system so GSAP owns it (the polish
+       forces .hero-text-block .reveal-box visible with !important). */
+    var heroH = document.querySelector('.hero-heading');
+    var heroD = document.querySelector('.hero-desc');
+    var heroC = document.querySelector('.hero-ctas-row');
+    var heroM = document.querySelector('.hero-media-wrap') || document.querySelector('.hero-scene-media') || document.querySelector('.hero-media');
+    [heroH, heroD, heroC].forEach(function (el) {
+      if (el) el.classList.remove('reveal-box', 'reveal-token', 'delay-1', 'delay-2', 'delay-3');
+    });
+    /* Cinematic hero: media scales in, heading lines slide up staggered,
+       subtitle then CTAs, all expo.out. */
+    var tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    if (heroM) tl.from(heroM, { scale: 1.08, duration: 1.6 }, 0);
+    if (heroH) tl.from(heroH, { y: 50, opacity: 0, duration: 1.0 }, 0.15);
+    if (heroD) tl.from(heroD, { y: 30, opacity: 0, duration: 0.9 }, 0.35);
+    if (heroC) tl.from(heroC, { y: 20, opacity: 0, duration: 0.8 }, 0.55);
+    /* Soft breathing on the hero image, starting after the intro settles. */
+    if (heroM) gsap.delayedCall(1.8, function () {
+      gsap.to(heroM, { scale: 1.02, duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1, overwrite: 'auto' });
+    });
+    /* Hero parallax on scroll. */
+    if (heroM) gsap.to(heroM, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.suffo-hero', start: 'top top', end: 'bottom top', scrub: true } });
+    /* Section reveals: every section head fades up as it enters. */
+    gsap.utils.toArray('.section-head, .section-headline-group').forEach(function (head) {
+      head.classList.remove('reveal-box');
+      gsap.from(head, { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: head, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+    /* Packages: the morph deck OWNS card opacity (only the centre card is
+       visible; the deck morphs cards in/out as you scroll). GSAP must not
+       fight it, so the deck container itself fades up once — the deck's own
+       scroll-morph then staggers the cards in as you scroll through. */
+    var deck = document.querySelector('.morph-sticky-stage') || document.querySelector('.packages-morph-section');
+    if (deck) {
+      deck.classList.remove('reveal-box');
+      gsap.from(deck, { y: 50, opacity: 0, duration: 0.9, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: '#packages', start: 'top 80%', toggleActions: 'play none none none' } });
+      gsap.delayedCall(1.2, function () { ScrollTrigger.refresh(); });
+    }
+    /* Other panels / cards reveal on scroll. clearProps restores CSS hover
+       transforms (e.g. gallery hover-lift) once the entrance finishes. */
+    gsap.utils.toArray('.f-info-box, .guide-horizon-card, .lifestyle-moment, .gallery-brick, .map-panel, .map-shell').forEach(function (el) {
+      el.classList.remove('reveal-box');
+      gsap.from(el, { y: 36, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+    /* Subtle parallax on large gallery images. */
+    gsap.utils.toArray('.gallery-brick .brick-img, .gallery-brick img').forEach(function (img) {
+      gsap.to(img, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+    /* Gold scroll-progress bar. */
+    gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 } });
+    return true;
+  }
+  window.__restMotionInit = initMotion;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMotion);
+  else initMotion();
+})();
+</script>
 </body>
 </html>
 
