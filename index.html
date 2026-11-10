@@ -5393,6 +5393,58 @@ html.admin-mode { scroll-padding-top: 110px; }
 }
 #rest-admin-sidebar .ras-latest b { color: #073B4C; }
 
+/* ---- pending confirm button + logout in the top bar ---- */
+#rest-admin-bar #rab-pending {
+  background: #F9A8D4; color: #073B4C; border: 0; border-radius: 999px;
+  padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap;
+}
+#rest-admin-bar #rab-pending[hidden] { display: none; }
+#rest-admin-bar #rab-pending:disabled { opacity: .45; cursor: default; }
+#rest-admin-bar #rest-admin-logout { background: rgba(255,255,255,.14); color: #fff; }
+
+/* ---- success banner (e.g. WhatsApp number saved) ---- */
+#rest-admin-sidebar .rap-success {
+  margin: 0 0 12px; background: #e8f7ef; border: 1px solid #34a853; color: #0a5c2e;
+  padding: 11px 12px; border-radius: 12px; font-size: 13px; line-height: 1.7;
+}
+#rest-admin-sidebar .rap-success b { font-size: 14px; }
+
+/* ---- admin login screen (full-screen gate) ---- */
+#rest-admin-login {
+  position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #073B4C, #0E7490 60%, #073B4C); padding: 20px; font-family: inherit;
+}
+#rest-admin-login .ral-card {
+  width: min(400px, 100%); background: #fff; color: #0b2b36; border-radius: 20px;
+  padding: 28px 24px; box-shadow: 0 24px 70px rgba(0,0,0,.45); text-align: center;
+}
+#rest-admin-login .ral-logo {
+  width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; background: #F9A8D4; color: #073B4C;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 26px;
+}
+#rest-admin-login h1 { margin: 0 0 6px; font-size: 20px; color: #073B4C; }
+#rest-admin-login p { margin: 0 0 16px; font-size: 13px; color: #5b7a85; line-height: 1.7; }
+#rest-admin-login form { text-align: start; }
+#rest-admin-login label { display: block; font-weight: 700; font-size: 12.5px; margin: 12px 0 5px; color: #0b2b36; }
+#rest-admin-login input {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+  border: 1px solid #b9d2d9; border-radius: 10px; padding: 11px 12px; background: #fff; color: #0b2b36;
+}
+#rest-admin-login input:focus { outline: 2px solid #0E7490; outline-offset: 1px; }
+#rest-admin-login #ral-submit {
+  width: 100%; margin-top: 18px; background: #0E7490; color: #fff; border: 0; border-radius: 999px;
+  padding: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+#rest-admin-login #ral-submit:disabled { opacity: .55; cursor: default; }
+#rest-admin-login .ral-error {
+  margin: 12px 0 0; background: #fdecec; border: 1px solid #f3b0b0; color: #8f1d1d;
+  padding: 9px 11px; border-radius: 10px; font-size: 12.5px; text-align: center;
+}
+#rest-admin-login .ral-back {
+  margin-top: 14px; background: none; border: 0; color: #0E7490; font: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+
 /* ---- visual edit mode: floating toolbar over the live site ---- */
 #rest-visual-bar[hidden] { display: none !important; }
 #rest-visual-bar {
@@ -5450,6 +5502,73 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
     .bk-conf-ref { font-size: 1.4rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; margin: 6px 0 12px; }
     .bk-conf-summary { color: var(--text-muted); margin-bottom: 12px; }
     .bk-confirmation .btn { margin-top: 8px; }
+        /* ---- v10 §23: impeccable refinement (craft floor + distill) ---- */
+    /* Kickers/eyebrows: the heading carries its own weight (craft-floor ban). */
+    .eyebrow, .cinematic-intro-eyebrow, .suffo-section-marker { display: none !important; }
+    /* Gradient text: emphasis from weight and size, not a gradient (craft-floor ban). */
+    .hero-heading { background: none !important; -webkit-text-fill-color: currentColor !important; background-clip: border-box !important; -webkit-background-clip: border-box !important; color: #FFFFFF !important; }
+    [data-theme="light"] .hero-heading { color: #073B4C !important; }
+    .hero-heading .hero-accent { color: #F9A8D4 !important; }
+    [data-theme="light"] .hero-heading .hero-accent { color: #BE185D !important; }
+    /* Headings: more air above, less below (rhythm). */
+    .section-head { margin-bottom: var(--sp-400); }
+    .section-head h2 { margin-bottom: var(--sp-150); }
+    /* Booking step buttons: plain .btn has no background, so the step
+       actions were invisible dark-on-dark. Primary = filled, back = quiet. */
+    .bk-step-actions .btn { background: rgba(255,255,255,.10); color: #FFFFFF; border: 1px solid rgba(255,255,255,.28); }
+    .bk-step-actions .btn[data-next-step] { background: var(--gold-primary); color: #073B4C; border-color: transparent; font-weight: 800; }
+    .bk-step-actions .btn[data-prev-step] { background: transparent; }
+    [data-theme="light"] .bk-step-actions .btn { background: rgba(7,59,76,.07); color: #073B4C; border-color: rgba(7,59,76,.28); }
+    [data-theme="light"] .bk-step-actions .btn[data-next-step] { background: var(--gold-primary); color: #073B4C; border-color: transparent; }
+    /* Step indicator: a compact horizontal strip at every width (never a
+       stacked column on phones). */
+    .bk-steps-nav { gap: 8px; }
+    /* Booking console: grid children must be allowed to shrink below their
+       content, or the step nav forces the whole form past the phone edge. */
+    .calculator-console > * { min-width: 0; }
+    @media (max-width: 640px) {
+      .bk-steps-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); flex-direction: row; }
+      .bk-steps-nav li { min-width: 0; }
+      .bk-step-btn { min-width: 0; padding: 9px 6px; font-size: .78rem; gap: 6px; justify-content: center; }
+      .bk-step-btn .bk-num { width: 22px; height: 22px; flex: 0 0 22px; font-size: .75rem; }
+      .bk-step-btn > span:not(.bk-num) { min-width: 0; line-height: 1.25; white-space: normal; }
+      .bk-pkg-opt { min-width: 0; }
+      .summary-spec-row span:last-child, .summary-spec-row strong { min-width: 0; overflow-wrap: anywhere; }
+    }
+    /* Booking: flatten the nested card — the console is the container; the
+       live summary is a quiet panel separated by a rule, not a card in a card. */
+    .calculator-console { box-shadow: none; }
+    .calc-summary-panel { background: transparent; border: none; border-top: 1px solid var(--border-subtle); border-radius: 0; padding: var(--sp-400) 0 0; }
+    .summary-spec-row { gap: 16px; }
+    .summary-spec-row span:first-child { flex: none; color: var(--text-sub); }
+    .summary-spec-row span:last-child, .summary-spec-row strong { text-align: end; }
+    /* Package option cards (built by §23 JS): large tappable choices. */
+    .bk-pkg-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: var(--sp-100); }
+    .bk-pkg-opt { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: start; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--r-xl); padding: 14px 16px; font: inherit; color: var(--text-pure); cursor: pointer; }
+    .bk-pkg-opt:hover { border-color: var(--gold-primary); }
+    .bk-pkg-opt[aria-checked="true"] { border-color: var(--gold-primary); background: rgba(36,198,200,.10); box-shadow: 0 0 0 1px var(--gold-primary); }
+    .bk-pkg-opt b { font-size: 1rem; }
+    .bk-pkg-opt small { color: var(--text-sub); font-size: .82rem; }
+    .bk-pkg-opt .bk-pkg-price { font-weight: 800; color: var(--gold-primary); font-size: 1.05rem; margin-top: 4px; }
+    .bk-pkg-opt--wide { grid-column: 1 / -1; }
+    @media (max-width: 640px) { .bk-pkg-options { grid-template-columns: 1fr; } }
+    /* Review (step 3): tidy rows, price unmistakable. */
+    .bk-review div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); }
+    .bk-review dt { color: var(--text-sub); flex: none; }
+    .bk-review dd { margin: 0; text-align: end; font-weight: 600; color: var(--text-pure); }
+    /* Guide filmstrip: break the identical-card row — the featured
+       facility is wider, the rest compact. */
+    .guide-horizon-card:first-child { flex-basis: 420px; }
+    .guide-card-desc { -webkit-line-clamp: 2; }
+    @media (max-width: 640px) { .guide-horizon-card:first-child { flex-basis: 320px; } }
+    /* Lifestyle moments: tighter media rows, less card weight. */
+    .lifestyle-moment { gap: var(--sp-200); }
+    .lifestyle-moment img { width: 148px; min-height: 132px; }
+    .lifestyle-moment-body { padding: var(--sp-150) var(--sp-200) var(--sp-150) 0; }
+    /* Facilities theatre: tighter copy block, chips breathe. */
+    .f-info-box .text-body { max-width: 56ch; }
+    /* Floating book button: never cover the booking summary's last line. */
+    #booking { padding-bottom: clamp(72px, 10vw, 110px); }
     </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
@@ -5857,7 +5976,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
             </div>
 
             <p class="suffo-editorial-desc">
-              صُممت باقات شاليه ريست لتمنحك خصوصية تامة واسترخاءً فائقاً مع أحبابك، بدءاً من أوقات السمر والمسابح الدافئة حتى أحدث أنظمة الترفيه والضيافة. مرر للأسفل لاستعراض انزياح البطاقات التفاعلي.
+              باقات صُممت لخصوصيتك وراحتك مع أحبابك — اختر ما يناسب مناسبتك.
             </p>
           </div>
 
@@ -6074,7 +6193,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">المسبح والجاكوزي</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">المسبح العائلي والشلال والمساج المائي</h3>
                 <p class="text-body">
-                  مسبح عائلي رحب مغلق في خصوصية تامة، مزود بنظام تدفئة مياه متطور على مدار العام، شلال جداري انسيابي، نوافير قوسية، مسبح مستقل للأطفال، وجلسة مساج مائي جاكوزي للاسترخاء التام.
+                  مسبح عائلي مغلق ومدفأ طوال العام، بشلال جداري ونوافير قوسية ومسبح أطفال وجاكوزي.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>مياه دافئة في كل الفصول</span></div>
@@ -6103,7 +6222,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">جلسة حكاية</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">جلسة حكاية حول موقد النار وشجرة الكرز</h3>
                 <p class="text-body">
-                  جلسة دائرية حجرية غائرة مستوحاة من الطراز المتوسطي، تحيط بموقد نار طبيعي لإشعال الحطب وإعداد الشاي والسمر العائلي الهادئ تحت زهور شجرة الكرز الوردية المضيئة.
+                  جلسة حجرية دائرية حول موقد نار طبيعي، للشاي والسمر تحت زهور الكرز المضيئة.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>موقد نار حطبي طبيعي</span></div>
@@ -6132,7 +6251,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">المجلس والديوان</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">الديوان والمجلس الملكي الفاخر</h3>
                 <p class="text-body">
-                  صالة استقبال فسيحة تجمع بين النوافذ المقوسة المشمسة والأثاث المخملي الملكي، مجهزة بشاشة ذكية وسينما 4K، وتكييف مركزي، ونقوش جبسية مغربية لاستقبال كبار الضيوف.
+                  صالة استقبال فسيحة بأثاث مخملي ملكي، شاشة 4K وتكييف مركزي، لكبار الضيوف.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>شاشة ذكية وسينما 4K</span></div>
@@ -6161,7 +6280,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">جلسة بستان</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">جلسة بستان والشرفة الأندلسية الحجرية</h3>
                 <p class="text-body">
-                  شرفة حجرية مرتفعة تعلوها مظلة قرميدية حمراء تطل بانورامياً على المنتجع والمسبح، تحيط بها زهور الجهنمية المتسلقة وتوفر أجواء ريفية منعشة للقهوة الصباحية والشاي.
+                  شرفة حجرية بمظلة قرميدية حمراء تطل على المنتجع والمسبح، لقهوة الصباح والشاي.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>طراز أندلسي حجري</span></div>
@@ -6190,7 +6309,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">الملاعب والترفيه</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">الكوخ الأبيض وملاعب كرة القدم والسلة</h3>
                 <p class="text-body">
-                  ركن ترفيهي آمن متكامل للأطفال والعائلة: كوخ أبيض للاسترخاء، ملعب كرة قدم عائلي محاط بحواجز أمان، ملعب كرة سلة، ترامبولين كبير، وألعاب أرضية منوعة لإسعاد الصغار.
+                  ركن آمن للأطفال والعائلة: كوخ أبيض، ملعبا كرة قدم وسلة، ترامبولين وألعاب أرضية.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>ملعب كرة قدم للأطفال</span></div>
@@ -6219,7 +6338,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span class="eyebrow">أركان التصوير</span>
                 <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">أركان التصوير والذكريات الحصرية</h3>
                 <p class="text-body">
-                  زوايا احترافية مصممة لتوثيق أجمل اللحظات وصناعة محتوى تذكاري مبهر: شعار REST النيوني المضيء مع أرجوحة الورد، وأرجوحة الفرو الأنيقة بجوار شلال الزهور والدرج الداخلي.
+                  زوايا احترافية لأجمل اللقطات: شعار REST النيوني وأرجوحة الورد وأرجوحة الفرو.
                 </p>
                 <div class="f-specs-dock">
                   <div class="spec-dock-tag"><span class="mini-dot"></span><span>شعار REST نيون مضيء</span></div>
@@ -6269,7 +6388,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           <div class="lifestyle-intro-col section-head reveal-box">
             <span class="eyebrow">TROPICAL LIFESTYLE — أسلوب الحياة الاستوائية</span>
             <h2 id="lifestyle-head">لـحـظـات لا تُقاس بالساعات</h2>
-            <p class="section-head-body">ريست ليس مكاناً تقضي فيه وقتك، بل إيقاعٌ تعيشه: ماءٌ دافئ، ونارٌ هادئة، وخضرةٌ تظلّلك — كل لحظة فيه من مرافق المكان نفسه، لا من صورٍ مستعارة.</p>
+            <p class="section-head-body">ريست ليس مكاناً تقضي فيه وقتك، بل إيقاعٌ تعيشه: ماء دافئ، ونار هادئة، وخضرة تظلّلك.</p>
           </div>
           <div class="lifestyle-palm-showcase-card reveal-box delay-1 botanical-scroll-art" id="botanical-palm-art">
             <div class="palm-aura-glow" aria-hidden="true"></div>
@@ -6527,7 +6646,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           <div class="suffo-facilities-narrative">
             <span class="suffo-section-marker"><span>•</span> مرافق ومنشآت ريست</span>
             <p>
-              تجسد مرافق شاليه ريست توازناً نادراً بين عمارة الاسترخاء والخصوصية العائلية المطلقة، حيث صُممت كافة المساحات والمسابح والديوانيات لتمنحك شعوراً بالفخامة والسكينة التي تبحث عنها.
+              مرافق صُممت للاسترخاء والخصوصية العائلية المطلقة — فخامة وسكينة في كل تفصيلة.
             </p>
             <a href="#booking" class="btn btn-md btn-gold">
               <span>احجز تجربتك في ريست</span>
@@ -6677,7 +6796,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         <div class="section-headline-group reveal-box">
           <span class="eyebrow">دليل ريست الشامل</span>
           <h2 id="guide-head" class="h-section" style="color: var(--text-pure); margin-bottom: var(--sp-100);">دلـيـل الشاليه والمرافق والخدمات</h2>
-          <p class="text-body">كل ما تود معرفته عن المرافق الـ 13 المعتمدة وقواعد المسبح وقائمة الإضافات والأنشطة</p>
+          <p class="text-body">المرافق الـ 13 وقواعد المسبح والإضافات والأنشطة — كل ما تحتاجه.</p>
         </div>
 
         <div class="guide-tabs-bar reveal-box" role="tablist">
@@ -6730,7 +6849,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">المسبح العائلي الدافئ</h3>
-                <p class="guide-card-desc">مسبح دافئ مغلق مزود بشلال جداري انسيابي ونوافير قوسية مضيئة ونظام فلترة وتعقيم متطور بدرجة حرارة 30-34 مئوية.</p>
+                <p class="guide-card-desc">مسبح دافئ مغلق (30–34°) بشلال جداري ونوافير مضيئة وفلترة وتعقيم متطور.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6755,7 +6874,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">جلسة حكاية حول موقد النار</h3>
-                <p class="guide-card-desc">جلسة دائرية حجرية محاطة بفرش أزرق ملكي تتوسطها حفرة نار طبيعية تحت شجرة الكرز المزهرة للسمر الهادئ.</p>
+                <p class="guide-card-desc">جلسة حجرية دائرية بفرش أزرق ملكي، تتوسطها حفرة نار تحت شجرة الكرز.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6780,7 +6899,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">جلسة بستان</h3>
-                <p class="guide-card-desc">جلسة هادئة خارجية وسط المسطحات الخضراء والزهور الطبيعية والمظلات الواقية لاحتساء الشاي والقهوة.</p>
+                <p class="guide-card-desc">جلسة خارجية هادئة بين الخضرة والزهور والمظلات، للشاي والقهوة.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6805,7 +6924,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">الكوخ الأبيض</h3>
-                <p class="guide-card-desc">كوخ أبيض أنيق بطابع ريفي هادئ مخصص للاسترخاء وتبادل الأحاديث بعيداً عن الصخب مع جلسات وثيرة.</p>
+                <p class="guide-card-desc">كوخ أبيض ريفي هادئ للاسترخاء والأحاديث، بعيداً عن الصخب.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6830,7 +6949,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">الدكان التراثي</h3>
-                <p class="guide-card-desc">ركن خشبي تراثي بسقف السعف يستحضر عبق الزمن الجميل ويسعد الأطفال بالضيافة والحلويات التراثية الشعبية.</p>
+                <p class="guide-card-desc">ركن خشبي تراثي بسقف السعف، بضيافة وحلويات شعبية للأطفال.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6855,7 +6974,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">الشرفة الأندلسية</h3>
-                <p class="guide-card-desc">برج حجري بقرميد إسباني أحمر وزهور الجهنمية المتسلقة يطل بانورامياً على كامل أرجاء المنتجع والحديقة.</p>
+                <p class="guide-card-desc">برج حجري بقرميد إسباني أحمر وجهنمية متسلقة، يطل على المنتجع والحديقة.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6880,7 +6999,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">الملاعب الرياضية</h3>
-                <p class="guide-card-desc">ملعب كرة قدم عائلي بعشب آمن محاط بحواجز شبكية واقية، وملعب كرة سلة مجهز وترامبولين للأطفال.</p>
+                <p class="guide-card-desc">ملعب كرة قدم بعشب آمن وحواجز واقية، وملعب سلة وترامبولين للأطفال.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6905,7 +7024,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">المصلى</h3>
-                <p class="guide-card-desc">مكان هادئ ومجهز بالسجاد الفاخر وتكييف ممتاز لأداء الصلاة بسكينة وطمأنينة تامة مع مغاسل وضوء قريبة.</p>
+                <p class="guide-card-desc">مصلّى هادئ بسجاد فاخر وتكييف ممتاز، مع مغاسل وضوء قريبة.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6930,7 +7049,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">المجلس الملكي والديوان</h3>
-                <p class="guide-card-desc">صالة استقبال كبرى مجهزة بكنب مخملي أزرق فاخر وشاشات ذكية ونقوش جبسية مغربية وثريا ذهبية لكبار الضيوف.</p>
+                <p class="guide-card-desc">صالة استقبال كبرى بكنب مخملي أزرق وشاشات ذكية وثريا ذهبية لكبار الضيوف.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6955,7 +7074,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">سويت منامك</h3>
-                <p class="guide-card-desc">غرفة نوم رئيسية فاخرة مجهزة بفرش فندقي راقٍ وإضاءات مهدئة لراحة تامة ونوم هانئ للعرسان والعائلات.</p>
+                <p class="guide-card-desc">غرفة نوم رئيسية فاخرة بفرش فندقي راقٍ وإضاءة مهدئة، لنوم هانئ.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -6980,7 +7099,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">غرفة السينما والألعاب الورقية</h3>
-                <p class="guide-card-desc">ركن ترفيهي لمشاهدة الأفلام بجودة 4K مع ألعاب البلوت والبورد جيمز العائلية المتنوعة وجلسات مريحة.</p>
+                <p class="guide-card-desc">ركن سينما 4K وألعاب بلوت وبورد جيمز عائلية، بجلسات مريحة.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -7005,7 +7124,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">المطبخ المجهز</h3>
-                <p class="guide-card-desc">مطبخ عصري مزود بالثلاجة والفرن والمايكروويف وأواني الضيافة وإعداد الطعام ومستلزمات إعداد الشاي والقهوة.</p>
+                <p class="guide-card-desc">مطبخ عصري مجهز بالثلاجة والفرن والمايكروويف وأواني الضيافة والشاي والقهوة.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -7030,7 +7149,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
               <div class="guide-card-body">
                 <h3 class="guide-card-title">منطقة الشواء وغرف التبديل</h3>
-                <p class="guide-card-desc">ركن شواء مجهز مع مناقل حطب وفحم، وغرف تبديل ملابس ودورات مياه ومغاسل مستقلة بجوار المسبح لخصوصية تامة.</p>
+                <p class="guide-card-desc">ركن شواء بمناقل حطب وفحم، وغرف تبديل ودورات مياه مستقلة بجوار المسبح.</p>
                 <div class="guide-card-footer">
                   <span class="guide-card-action-btn">
                     استعراض المرفق
@@ -7057,7 +7176,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
             <div class="rule-monolith hover-lift">
               <span class="rule-index-num">30° — 34°C</span>
               <h4 class="h-subcard" style="color: var(--text-pure); margin-bottom: var(--sp-100);">حرارة المياه والتدفئة المتطورة</h4>
-              <p class="text-body">يتم ضبط نظام التدفئة المتقدم تلقائياً بين 30 و34 درجة مئوية ليناسب السباحة الشتوية المريحة لكافة أفراد العائلة في مختلف فصول السنة.</p>
+              <p class="text-body">تدفئة تلقائية بين 30 و34° لسباحة مريحة لكل العائلة، في كل الفصول.</p>
             </div>
             <div class="rule-monolith hover-lift">
               <span class="rule-index-num">100%</span>
@@ -7133,7 +7252,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <span class="eyebrow">خدمات الضيافة المعتمدة</span>
               <h3 class="h-card" style="color: var(--text-pure); margin-bottom: var(--sp-100);">وجبات الغداء والعشاء والشواء الفاخر</h3>
               <p class="text-body" style="margin-bottom: var(--sp-300);">
-                نوفر لكم خيارات تنسيق وجبات طعام راقية عبر قائمة مطاعم معتمدة ومختارة بعناية: وجبات غداء الأعمال، بوفيهات مفتوحة، ومستلزمات لحوم الشواء الطازجة مع المقبلات والضيافة، وتُحتسب تكلفتها بشكل مستقل وفق القائمة.
+                وجبات راقية من قائمة مطاعم معتمدة: غداء أعمال، بوفيهات، ولحوم شواء طازجة — تُحتسب بشكل مستقل.
               </p>
               <a href="https://wa.me/966508332211?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%20%D8%B9%D9%84%D9%89%20%D9%82%D8%A7%D8%A6%D9%85%D8%A9%20%D8%A7%D9%84%D8%B7%D8%B9%D8%A7%D9%85%20%D9%88%D8%A7%D9%84%D8%B6%D9%8A%D8%A7%D9%81%D8%A9%20%D9%84%D8%B4%D8%A7%D9%84%D9%8A%D9%87%20%D8%B1%D9%8A%D8%B3%D8%AA" target="_blank" rel="noopener noreferrer" class="btn btn-md btn-gold" style="width: fit-content;">
                 <span>طلب قائمة الطعام عبر واتساب</span>
@@ -7326,7 +7445,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         <div class="section-headline-group reveal-box">
           <span class="eyebrow">آلية الحجز في 3 خطوات بسيطة</span>
           <h2 id="steps-head" class="h-section" style="color: var(--text-pure); margin-bottom: var(--sp-100);">خـطـوات حجز إقامتك بكل سهولة</h2>
-          <p class="text-body">نوفر لكم تجربة حجز سلسة وسريعة مع تأكيد فوري ومباشر مع إدارة المنتجع</p>
+          <p class="text-body">حجز سلس وسريع، بتأكيد فوري من إدارة المنتجع.</p>
         </div>
 
         <div class="steps-triplet">
@@ -7355,7 +7474,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         <div class="section-headline-group reveal-box">
           <span class="eyebrow">إجابات واضحة لاستفساراتكم</span>
           <h2 id="faq-head" class="h-section" style="color: var(--text-pure); margin-bottom: var(--sp-100);">الأسئلة الشائعة</h2>
-          <p class="text-body">كل ما يهمكم معرفته قبل تثبيت حجزكم في شاليه ومنتجع ريست الفاخر</p>
+          <p class="text-body">كل ما تحتاج معرفته قبل الحجز.</p>
         </div>
 
         <div class="faq-accordion-stack reveal-box">
@@ -7366,7 +7485,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              باقة ريست دي ومومنت تبدأ من 09:00 صباحاً حتى 09:00 مساءً (12 ساعة كاملة). باقة ريست نايت تبدأ من 11:00 منتصف الليل حتى 07:00 صباحاً. باقة غداء الأعمال خيار الفترة الممتدة من 12:00 ظهراً حتى 09:00 مساءً، وخيار اليوم الكامل من 12:00 ظهراً حتى 12:00 منتصف الليل.
+              ريست دي: 09:00 ص — 09:00 م (12 ساعة). ريست نايت: 11:00 م — 07:00 ص (8 ساعات). ريست مومنت: 04:00 م — 10:00 م (6 ساعات). غداء الأعمال: 12:00 ظ — 09:00 م (ممتدة) أو حتى 12:00 منتصف الليل (يوم كامل).
             </div>
           </div>
 
@@ -7376,7 +7495,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              نعم بالتأكيد، المسبح مغلق بالكامل ومزود بنظام تدفئة مياه متقدم يعمل على مدار الساعة ليحافظ على درجة حرارة مريحة بين 30 و34 درجة مئوية، كما يوجد مسبح آمن مخصص للأطفال بنظام تعقيم فندقي دوري.
+              نعم — المسبح مغلق ومدفأ على مدار الساعة (30–34°) مع مسبح آمن للأطفال وتعقيم فندقي دوري.
             </div>
           </div>
 
@@ -7386,7 +7505,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              يتسع الشاليه براحة تامة لـ 40 إلى 50 شخصاً حسب الباقة المختارة، مع خصوصية مطلقة 100% حيث يكون الشاليه بالكامل محجوزاً لك ولعائلتك أو ضيوفك فقط دون أي تداخل مع أي زوار آخرين.
+              يتسع لـ 40–50 شخصاً حسب الباقة، والشاليه كاملاً لكم وحدكم — خصوصية 100%.
             </div>
           </div>
 
@@ -7396,7 +7515,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              يتم إعداد وجبات الغداء حسب الطلب وعدد الضيوف ونوع الأطباق المفضلة، وتُحتسب تكلفتها بشكل مستقل عن قيمة حجز الباقة وفق قائمة الطعام المعتمدة، مع توفير خدمة الضيافة المجانية واستخدام كافة المجالس والحديقة والواي فاي.
+              تُحضّر حسب الطلب وعدد الضيوف، وتُحتسب بشكل مستقل عن الباقة وفق قائمة الطعام — مع ضيافة مجانية واستخدام المجالس والحديقة والواي فاي.
             </div>
           </div>
 
@@ -7406,7 +7525,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              نعم، تبلغ تكلفة الساعة الإضافية 10,000 ريال يمني، ويخضع التمديد لتوافر الشاليه والموافقة المسبقة من إدارة الحجوزات لضمان عدم تعارض المواعيد مع إجراءات التعقيم للحجز التالي.
+              نعم — 10,000 ريال للساعة، حسب التوافر والموافقة المسبقة.
             </div>
           </div>
 
@@ -7416,7 +7535,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              نعم، يحتوي الشاليه على مطبخ مجهز بثلاجة، فرن، مايكروويف، أواني تقديم وضيافة، بالإضافة إلى منطقة شواء خارجية مجهزة ومناقل حطب وفحم وموقد نار طبيعي في جلسة حكاية.
+              نعم — مطبخ مجهز (ثلاجة، فرن، مايكروويف، أواني ضيافة) ومنطقة شواء خارجية بمناقل حطب وفحم وموقد نار.
             </div>
           </div>
 
@@ -7426,7 +7545,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              باقة ريست مومنت مخصصة للاحتفالات وتُصمم حسب نوع مناسبتكم وميزانيتكم؛ يتم التواصل معكم عبر الواتساب لتحديد تفاصيل الديكور، الكيكة، التجهيزات الصوتية، جلسة التصوير، وأي متطلبات خاصة لتجهيزها مسبقاً قبل وصولكم.
+              تُصمَّم حسب مناسبتكم وميزانيتكم — نتواصل عبر واتساب لتحديد الديكور والكيكة والصوتيات والتصوير قبل وصولكم.
             </div>
           </div>
 
@@ -7436,7 +7555,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               <svg class="faq-caret" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-drawer-content">
-              يتم تثبيت وتأكيد الحجز بدفع عربون تأكيد عبر الحسابات البنكية أو المحافظ الإلكترونية المعتمدة، مع تزويدكم بسند حجز رسمي وفاتورة إلكترونية معتمدة وإرشادات الوصول الكاملة.
+              يُثبَّت الحجز بعربون عبر الحسابات البنكية أو المحافظ المعتمدة، مع سند حجز رسمي وفاتورة إلكترونية وإرشادات الوصول.
             </div>
           </div>
 
@@ -7450,7 +7569,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         <div class="section-headline-group reveal-box">
           <span class="eyebrow">حاسبة الحجز والتأكيد الفوري</span>
           <h2 id="calc-head" class="h-section" style="color: var(--text-pure); margin-bottom: var(--sp-100);">احـجـز إقامتك في رِيست</h2>
-          <p class="text-body">حدد اختياراتك وسيتم احتساب التكلفة وتجهيز رسالة حجز فورية على الواتساب</p>
+          <p class="text-body">حدد اختياراتك، وسنجهّز رسالتك على واتساب فوراً.</p>
         </div>
 
         <div class="calculator-console reveal-box">
@@ -7588,7 +7707,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
                 <span>ضمان الجاهزية والتعقيم الفندقي الكامل</span>
               </div>
               <p class="text-caption" style="margin: 0;">
-                يتم تعقيم المسبح والمجالس بالكامل قبل دخولكم مع تسليم الشفرة الخاصة واستقبال الضيوف.
+                تعقيم كامل للمسبح والمجالس قبل وصولكم، مع تسليم شفرتكم الخاصة.
               </p>
             </div>
           </div>
@@ -8581,6 +8700,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         'business-ext': '12:00 ظ — 09:00 م (فترة ممتدة)',
         'business-full': '12:00 ظ — 12:00 منتصف الليل (يوم كامل)'
       };
+      window.__restSchedule = scheduleDictionary;
 
       var chosenAddons = [];
       addonCheckboxes.forEach(function (chk) {
@@ -8733,6 +8853,49 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var bk = document.getElementById('booking');
       if (bk) bk.scrollIntoView({ behavior: 'smooth' });
     });
+
+    // §23 package option cards: large tappable choices for step 1,
+    // rendered from the calculator's own select (names + prices).
+    (function () {
+      var sel = document.getElementById('select-pkg-choice');
+      if (!sel) return;
+      var group = document.createElement('div');
+      group.className = 'bk-pkg-options';
+      group.setAttribute('role', 'radiogroup');
+      group.setAttribute('aria-label', 'اختر الباقة');
+      var sched = window.__restSchedule || {};
+      Array.prototype.forEach.call(sel.options, function (opt, idx) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bk-pkg-opt' + (idx === 2 ? ' bk-pkg-opt--wide' : '');
+        btn.setAttribute('role', 'radio');
+        var label = (opt.textContent || '').split('(')[0].trim();
+        var price = (opt.textContent.match(/\(([0-9,]+)/) || [])[1] || '';
+        var time = sched[opt.value] || '';
+        btn.innerHTML = '<b></b><small></small><span class="bk-pkg-price"></span>';
+        btn.querySelector('b').textContent = label;
+        btn.querySelector('small').textContent = time;
+        btn.querySelector('.bk-pkg-price').textContent = price ? price + ' ريال يمني' : '';
+        btn.setAttribute('aria-checked', sel.value === opt.value ? 'true' : 'false');
+        btn.addEventListener('click', function () {
+          sel.value = opt.value;
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+          group.querySelectorAll('.bk-pkg-opt').forEach(function (b) { b.setAttribute('aria-checked', 'false'); });
+          btn.setAttribute('aria-checked', 'true');
+        });
+        group.appendChild(btn);
+      });
+      sel.addEventListener('change', function () {
+        group.querySelectorAll('.bk-pkg-opt').forEach(function (b, i) {
+          b.setAttribute('aria-checked', sel.options[i] && sel.value === sel.options[i].value ? 'true' : 'false');
+        });
+      });
+      // Keep the select as the accessible fallback, visually compact.
+      sel.style.display = 'none';
+      sel.parentNode.insertBefore(group, sel);
+    })();
+
+
 
     // ==========================================================================
     // THEME ENGINE & WATER RIPPLE HORIZON ANIMATION
@@ -9389,7 +9552,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
        Static text is translated from the embedded dictionary; a
        MutationObserver re-applies it to content JS renders later. */
     (function () {
-      var DICT = {"03:00 م — 06:00 م": "3:00 PM — 6:00 PM", "04:00 م — 10:00 م": "4:00 PM — 10:00 PM", "04:00 م — 10:00 م (6 ساعات — أمسية مناسبات)": "4:00 PM — 10:00 PM (6 hours — events evening)", "06:00 م — 09:00 م": "6:00 PM — 9:00 PM", "09:00 ص — 09:00 م": "9:00 AM — 9:00 PM", "09:00 ص — 09:00 م (12 ساعة)": "9:00 AM — 9:00 PM (12 hours)", "09:00 ص — 12:00 ظ": "9:00 AM — 12:00 PM", "1,800 م²": "1,800 m²", "10,000 ريال يمني لكل ساعة إضافية (تخضع للموافقة المسبقة وتوفر الوقت بين الحجوزات).": "10,000 YER per extra hour (subject to prior approval and availability between bookings).", "11:00 م — 07:00 ص": "11:00 PM — 7:00 AM", "11:00 م — 07:00 ص (8 ساعات)": "11:00 PM — 7:00 AM (8 hours)", "120 م²": "120 m²", "12:00 ظ — 03:00 م": "12:00 PM — 3:00 PM", "12:00 ظ — 09:00 م": "12:00 PM — 9:00 PM", "12:00 ظ — 09:00 م (فترة ممتدة)": "12:00 PM — 9:00 PM (extended session)", "12:00 ظ — 12:00 منتصف الليل": "12:00 PM — 12:00 AM", "12:00 ظ — 12:00 منتصف الليل (يوم كامل)": "12:00 PM — 12:00 AM (full day)", "25 — 50 ضيف": "25–50 guests", "350 م²": "350 m²", "4 باقات رسمية: نهار، ليلة، مناسبات، وغداء أعمال": "4 official packages: Day, Night, Events, and Business Lunch", "45 م²": "45 m²", "450 م²": "450 m²", "55 م²": "55 m²", "65 م²": "65 m²", "70 م²": "70 m²", "85 م²": "85 m²", "90 م²": "90 m²", "BUSINESS — غداء الأعمال": "BUSINESS — Business Lunch", "RESORT MAP — خريطة المنتجع": "RESORT MAP — Resort Map", "REST DAY (ريست دي)": "REST DAY (REST Day)", "REST DAY — ريست دي": "REST DAY — REST Day", "REST DAY — ريست دي (180,000 ريال يمني)": "REST DAY — REST Day (180,000 YER)", "REST DAY — ريست دي (180,000 ريال)": "REST DAY — REST Day (180,000 YER)", "REST DAY — رِيست دي": "REST DAY — REST Day", "REST MOMENT — ريست مومنت": "REST MOMENT — REST Moment", "REST MOMENT — ريست مومنت (250,000 ريال)": "REST MOMENT — REST Moment (250,000 YER)", "REST MOMENT — ريست مومنت للمناسبات (250,000 ريال يمني)": "REST MOMENT — REST Moment for Events (250,000 YER)", "REST MOMENT — رِيست مومنت": "REST MOMENT — REST Moment", "REST NIGHT — ريست نايت": "REST NIGHT — REST Night", "REST NIGHT — ريست نايت (130,000 ريال يمني)": "REST NIGHT — REST Night (130,000 YER)", "REST NIGHT — ريست نايت (130,000 ريال)": "REST NIGHT — REST Night (130,000 YER)", "REST NIGHT — رِيست نايت": "REST NIGHT — REST Night", "TROPICAL LIFESTYLE — أسلوب الحياة الاستوائية": "TROPICAL LIFESTYLE — Tropical Living", "آلية الحجز في 3 خطوات بسيطة": "Booking in 3 simple steps", "أبرز المرافق": "Signature Facilities", "أداء الصلاة بالمصلى، تناول وجبة الغداء في صالة الطعام أو الشرفة، والاسترخاء في الديوان المكيف.": "Pray in the prayer room, enjoy lunch in the dining hall or on the terrace, and unwind in the air-conditioned diwan.", "أرجاء الشاليه": "Around the Chalet", "أرجاء ومرافق شاليه ريست": "REST Chalet Grounds & Facilities", "أرجـاء الـمـلاذ": "The Haven's Corners", "أرجـاء ريست في نظرة واحدة": "All of REST at a Glance", "أرجوحة الزهور التذكارية": "Souvenir Flower Swing", "أرجوحة الفرو والدرج الداخلي": "Fur Swing & Indoor Staircase", "أرجوحة الفرو والزهور": "Fur & Flower Swing", "أرجوحة الفرو والزهور المتدلية بجوار الدرج": "Fur & Flower Swing Hanging by the Staircase", "أرقام الحجز والاستفسار المباشرة": "Direct Booking & Enquiry Numbers", "أركان التصوير": "Photo Corners", "أركان التصوير الحصرية": "Exclusive Photo Corners", "أركان التصوير والذكريات الحصرية": "Photo Corners & Exclusive Memories", "أركان التصوير وشعار النيون": "Photo Corners & the Neon Sign", "أركان التصوير وشعار نيون ريست": "Photo Corners & the REST Neon Sign", "أسلوب الحياة": "Lifestyle", "أصالة وتراث": "Heritage & Authenticity", "أقواس بالونات أنيقة وثيمات ألوان مخصصة لأعياد الميلاد والخطوبة والتخرج حسب اختياركم.": "Elegant balloon arches and custom colour themes for birthdays, engagements, and graduations — tailored to your choice.", "أود تأكيد الاستفسار وحجز الشاليه وفق التفاصيل التالية:": "I would like to confirm my enquiry and book the chalet with the following details:", "إجابات واضحة لاستفساراتكم": "Clear answers to your questions", "إرسال تفاصيل الحجز وتأكيده عبر واتساب": "Send and confirm your booking details via WhatsApp", "إرشادات أمان وسلامة الأطفال": "Child Safety Guidelines", "إشعال الحطب في جلسة حكاية، الاستمتاع بالشواء والشاي على الجمر تحت أضواء النجوم والزهور الوردية.": "Light the firewood at Hikaya Lounge, enjoy the barbecue and ember-brewed tea under the stars and pink blossoms.", "إضاءات سينمائية مهيأة للموبايل": "Cinematic lighting, tuned for mobile", "إطلالة بانورامية": "Panoramic View", "إطلالة بانورامية على فناء ريست": "Panoramic view over the REST courtyard", "إطلالة بانورامية كاملة": "Full panoramic view", "إطلالة بانورامية كاملة، تكييف مركزي متطور، وشاشة عرض 4K": "Full panoramic view, advanced central air conditioning, and a 4K display", "إطلالة كاشفة للمنتجع": "A sweeping view of the resort", "إغلاق": "Close", "إغلاق القائمة": "Close menu", "اتساع وفخامة تليق بالضيوف": "Space and luxury worthy of your guests", "احجز إقامتك": "Book Your Stay", "احجز إقامتك الآن": "Book Your Stay Now", "احجز الآن": "Book Now", "احجز المجلس والديوان": "Book the Majlis & Diwan", "احجز تجربتك في ريست": "Book Your REST Experience", "احجز جلسة بستان": "Book a Bustan Lounge Session", "احجز سهرتك في حكاية": "Book Your Evening at Hikaya", "احجز عبر واتساب": "Book via WhatsApp", "احجز للعائلة والأطفال": "Book for Family & Children", "احجز ليلتك الفاخرة": "Book Your Luxurious Night", "احجز مع المسبح الآن": "Book with the Pool Now", "احجز هذا المرفق ضمن إقامتك": "Add This Facility to Your Stay", "احـجـز إقامتك في رِيست": "Book Your Stay at REST", "اختر الباقة المناسبة لمناسبتك وعائلتك": "Choose the right package for your occasion and family", "اختر باقتك وتاريخ إقامتك": "Choose your package and stay date", "اختر عدد الضيوف، وأي إضافات خاصة ترغب بها (تنسيق ديكور، كيكة، جلسة تصوير، أو ساعات إضافية).": "Choose your guest count and any special extras you'd like (decor styling, a cake, a photo session, or extra hours).", "اختيار الباقة": "Choose a Package", "استثنائي؟": "extraordinary?", "استجمام ومياه": "Relaxation & Water", "استعراض المرفق": "View Facility", "استكشف الباقات والأسعار": "Explore Packages & Prices", "استلام الشاليه في خصوصية تامة، استكشاف الحديقة والكوخ الأبيض، وبدء جلسة سباحة دافئة مع شلال المياه.": "Check in in complete privacy, explore the garden and the White Cabin, and start a warm swim beneath the waterfall.", "اسم المشروع": "Project Name", "اضغط على أي علامة لتتعرّف على المرفق ومساحته. هذا رسمٌ إرشادي توضيحي لترتيب المرافق وليس مخططاً هندسياً، والمساحات منقولة من دليل المرافق في الموقع نفسه.": "Tap any marker to learn about the facility and its area. This is an illustrative guide to the layout of the facilities, not an engineering plan, and the areas are taken from the facilities guide on this site.", "الأجواء والاحتفال": "Ambience & Celebration", "الأسئلة الشائعة": "FAQ", "الإضافات": "Extras", "الإضافات المحددة:": "Selected extras:", "الاستدامة": "Sustainability", "الباقات والأسعار": "Packages & Prices", "الباقة": "Package", "الباقة 01 من 04": "Package 01 of 04", "الباقة 02 من 04": "Package 02 of 04", "الباقة 03 من 04": "Package 03 of 04", "الباقة 04 من 04": "Package 04 of 04", "الباقة المحددة:": "Selected package:", "الباقة المطلوبة": "Requested Package", "التاريخ": "Date", "التاريخ والضيوف": "Date & Guests", "التالي": "Next", "التامة": "complete", "التحويل إلى الوضع البحري الفاتح": "Switch to Light Sea Mode", "التحويل إلى الوضع الليلي": "Switch to Night Mode", "التعقيم والفحص الدوري المستمر": "Continuous Sterilisation & Routine Inspection", "التنقل الرئيسي": "Main navigation", "التوثيق الاحترافي": "Professional Photography", "الجلسات والمجالس": "Lounges & Majlis", "الحجز والاستفسار": "Booking & Enquiries", "الحديقة والفناء": "Garden & Courtyard", "الخاص": "private", "الخصوصية": "Privacy", "الدكان التراثي": "Heritage Shop", "الدكان التراثي وركن السعف الشعبي": "Heritage Shop & the Palm-Frond Folk Corner", "الديوان والمجلس الملكي": "Diwan & Royal Majlis", "الديوان والمجلس الملكي الفاخر": "Luxurious Diwan & Royal Majlis", "الرئيسية": "Home", "الرئيسية — شاليه ريست": "Home — REST Chalet", "الرفاهية": "Luxury", "الرفاهية // الخصوصية // الاسترخاء": "Luxury // Privacy // Relaxation", "السابق": "Previous", "السعة": "Capacity", "السعة الاستيعابية": "Capacity", "السعر (ريال يمني)": "Price (YER)", "السعر التقديري": "Estimated Price", "السعر التقديري:": "Estimated price:", "السكينة": "serenity", "السمر والشواء": "Evening Gatherings & Barbecue", "الشرفة الأندلسية": "Andalusian Terrace", "الشرفة الأندلسية الحجرية": "Stone Andalusian Terrace", "الشرفة الأندلسية الحجرية وإطلالة المنتجع": "Stone Andalusian Terrace & the Resort View", "الشرفة الأندلسية وجلسة بستان": "Andalusian Terrace & Bustan Lounge", "الصالة الرئيسية الفسيحة للمجلس الملكي": "Spacious Main Hall of the Royal Majlis", "الضيافة والحلويات": "Hospitality & Sweets", "الضيوف": "Guests", "العمارية، الرياض": "Al Ammariyah, Riyadh", "الغداء واستراحة الديوان": "Lunch & Diwan Break", "الفناء والمظلات الشراعية": "Courtyard & Sail Shades", "الكوخ الأبيض": "White Cabin", "الكوخ الأبيض الريفي": "Rustic White Cabin", "الكوخ الأبيض الريفي الفاخر": "Luxurious Rustic White Cabin", "الكوخ الأبيض وألعاب الفناء": "White Cabin & Courtyard Games", "الكوخ الأبيض وملاعب الأطفال": "White Cabin & Children's Playgrounds", "الكوخ الأبيض وملاعب كرة القدم والسلة": "White Cabin & the Football and Basketball Courts", "الكوخ الأبيض وملاعب كرة القدم والسلة للأطفال": "White Cabin & Children's Football and Basketball Courts", "الكوخ والملاعب": "Cabin & Playgrounds", "الكوخ وملاعب الأطفال": "Cabin & Children's Playgrounds", "المبيت الملكي": "Royal Overnight", "المجلس الملكي المشرق": "Sunlit Royal Majlis", "المجلس الملكي المشرق بأشعة الشمس الصباحية": "Royal Majlis Bathed in Morning Sunlight", "المجلس الملكي بشمس الصباح": "Royal Majlis in the Morning Sun", "المجلس الملكي والديوان": "Royal Majlis & Diwan", "المجلس الملكي والديوان الفاخر": "Luxurious Royal Majlis & Diwan", "المجلس الملكي والديوان الفخم": "Grand Royal Majlis & Diwan", "المجلس والديوان": "Majlis & Diwan", "المراجعة والإرسال": "Review & Send", "المرافق الرسمية الـ 13": "The 13 Official Facilities", "المرفق": "Facility", "المرفق 01 من 06": "Facility 01 of 06", "المرفق 01 من 06 — المسبح العائلي والشلال": "Facility 01 of 06 — Family Pool & Waterfall", "المرفق 01 من 13 • مرر أفقياً للاستكشاف": "Facility 01 of 13 • Swipe sideways to explore", "المرفق 01 • تجربة مائية دافئة": "Facility 01 • Warm Water Experience", "المرفق 02 من 06 — جلسة حكاية وموقد النار": "Facility 02 of 06 — Hikaya Lounge & Fire Pit", "المرفق 02 • سمر عائلي حول الموقد": "Facility 02 • Family Gathering Around the Fire", "المرفق 03 من 06 — الديوان والمجلس الملكي": "Facility 03 of 06 — Diwan & Royal Majlis", "المرفق 03 • ضيافة ملكية وسينما": "Facility 03 • Royal Hospitality & Cinema", "المرفق 04 من 06 — جلسة بستان والشرفة": "Facility 04 of 06 — Bustan Lounge & Terrace", "المرفق 04 • طراز أندلسي ريفي": "Facility 04 • Rustic Andalusian Style", "المرفق 05 من 06 — الكوخ الأبيض وملاعب الأطفال": "Facility 05 of 06 — White Cabin & Children's Playgrounds", "المرفق 05 • ترفيه وألعاب آمنة": "Facility 05 • Safe Fun & Games", "المرفق 06 من 06 — أركان التصوير الحصرية": "Facility 06 of 06 — Exclusive Photo Corners", "المرفق 06 • توثيق ولحظات تذكارية": "Facility 06 • Memories & Keepsake Moments", "المرفق التالي": "Next facility", "المرفق السابق": "Previous facility", "المساء والرفاهية": "Evening & Luxury", "المساحة الإجمالية": "Total Area", "المساحة: 120 م²": "Area: 120 m²", "المساحة: 450 م²": "Area: 450 m²", "المساحة: 55 م²": "Area: 55 m²", "المساحة: 65 م²": "Area: 65 m²", "المساحة: 85 م²": "Area: 85 m²", "المساحة: 90 م²": "Area: 90 m²", "المسبح الداخلي الدافئ بشاليه ريست": "Heated Indoor Pool at REST Chalet", "المسبح الداخلي الدافئ والشلال الانسيابي": "Heated Indoor Pool & Flowing Waterfall", "المسبح الداخلي والشلال": "Indoor Pool & Waterfall", "المسبح الدافئ والشلال في ريست": "Heated Pool & Waterfall at REST", "المسبح العائلي الدافئ": "Heated Family Pool", "المسبح العائلي الدافئ مع الشلال والنوافير المضيئة": "Heated Family Pool with Waterfall & Illuminated Fountains", "المسبح العائلي الدافئ والشلال المائي": "Heated Family Pool & Waterfall", "المسبح العائلي والشلال": "Family Pool & Waterfall", "المسبح العائلي والشلال المضيء": "Illuminated Family Pool & Waterfall", "المسبح العائلي والشلال والمساج المائي": "Family Pool, Waterfall & Hydro Massage", "المسبح العائلي — تدفق الشلال والنوافير المضيئة": "Family Pool — Flowing Waterfall & Illuminated Fountains", "المسبح والجاكوزي": "Pool & Jacuzzi", "المسبح والسكينة": "Pool & Serenity", "المسبح والشلال": "Pool & Waterfall", "المسرح السينمائي والمعرض": "Cinema Theatre & Gallery", "المصلى": "Prayer Room", "المصلى والسكينة الروحانية": "Prayer Room & Spiritual Serenity", "المطاعم والضيافة": "Dining & Hospitality", "المطبخ المجهز": "Equipped Kitchen", "المطبخ المجهز ومستلزمات الضيافة": "Equipped Kitchen & Hospitality Essentials", "الملاعب الرياضية": "Sports Courts", "الملاعب الرياضية والحديقة": "Sports Courts & Garden", "الملاعب الرياضية وملعب كرة القدم والسلة": "Sports Courts & the Football and Basketball Court", "الملاعب والترفيه": "Playgrounds & Entertainment", "الملاعب والحديقة": "Playgrounds & Garden", "الملاعب والسينما والتصوير": "Playgrounds, Cinema & Photography", "الموقع الجغرافي": "Location", "الوصول والسباحة الصباحية": "Arrival & Morning Swim", "الوضع البحري الفاتح": "Light Sea Mode", "الوضع الليلي الفاخر": "Luxurious Night Mode", "الوقت": "Time", "الوقت الإضافي": "Extra Time", "اليوم": "Today", "باقة الحفلات": "Party Package", "باقة اليوم الكامل": "Full-Day Package", "باقة ريست دي الشاملة": "All-Inclusive REST Day Package", "باقة ريست دي ومومنت تبدأ من 09:00 صباحاً حتى 09:00 مساءً (12 ساعة كاملة). باقة ريست نايت تبدأ من 11:00 منتصف الليل حتى 07:00 صباحاً. باقة غداء الأعمال خيار الفترة الممتدة من 12:00 ظهراً حتى 09:00 مساءً، وخيار اليوم الكامل من 12:00 ظهراً حتى 12:00 منتصف الليل.": "REST Day and Moment packages run from 9:00 AM to 9:00 PM (a full 12 hours). The REST Night package runs from 11:00 PM to 7:00 AM. The Business Lunch package offers an extended session from 12:00 PM to 9:00 PM, and a full-day option from 12:00 PM to 12:00 AM.", "باقة ريست مومنت المسائية": "Evening REST Moment Package", "باقة ريست مومنت مخصصة للاحتفالات وتُصمم حسب نوع مناسبتكم وميزانيتكم؛ يتم التواصل معكم عبر الواتساب لتحديد تفاصيل الديكور، الكيكة، التجهيزات الصوتية، جلسة التصوير، وأي متطلبات خاصة لتجهيزها مسبقاً قبل وصولكم.": "The REST Moment package is tailored for celebrations and designed around your occasion and budget; we will contact you on WhatsApp to arrange the decor, cake, sound setup, photo session, and any special requests in advance of your arrival.", "باقة ريست نايت الليلية": "REST Night Package", "باقة غداء وعشاء الأعمال": "Business Lunch & Dinner Package", "بانوراما الفناء والمظلات الشراعية": "Courtyard Panorama & Sail Shades", "بجانب الماء": "By the Water", "بحري": "Sea", "بدون إضافات خاصة": "No special extras", "برج حجري بقرميد إسباني أحمر وزهور الجهنمية المتسلقة يطل بانورامياً على كامل أرجاء المنتجع والحديقة.": "A stone tower with red Spanish tiles and climbing bougainvillea, overlooking the entire resort and garden in panorama.", "برنامج استجمام نهاري متكامل يشمل كافة مرافق الشاليه": "A complete daytime relaxation programme covering every facility of the chalet", "بيئة عمل راقية ومريحة للاجتماعات ولقاءات فرق العمل": "An elegant, comfortable working environment for meetings and team gatherings", "بين يديك.": "at your fingertips.", "تأكيد فوري واستلام الشاليه": "Instant confirmation & chalet handover", "تاريخ الحجز المفضل": "Preferred Booking Date", "تاريخ الحجز:": "Booking date:", "تبديل المظهر": "Switch appearance", "تبديل مظهر الشاليه": "Switch chalet appearance", "تبديل مظهر الشاليه بين الليلي والبحري الفاتح": "Switch the chalet appearance between night and light sea", "تجسد مرافق شاليه ريست توازناً نادراً بين عمارة الاسترخاء والخصوصية العائلية المطلقة، حيث صُممت كافة المساحات والمسابح والديوانيات لتمنحك شعوراً بالفخامة والسكينة التي تبحث عنها.": "REST Chalet's facilities strike a rare balance between the architecture of relaxation and absolute family privacy: every space, pool, and diwan was designed to give you the sense of luxury and serenity you are looking for.", "تجمع كبير (26 إلى 40 شخصاً)": "Large gathering (26 to 40 guests)", "تجهيزات صوتية وإضاءة": "Sound & Lighting Equipment", "تجهيزات صوتية وإضاءة حفلات": "Party Sound & Lighting Equipment", "تجهيزات طهي متكاملة": "Fully Equipped Cooking Facilities", "تجهيزات متكاملة": "Fully Equipped", "تحت المظلة الخضراء": "Under the Green Canopy", "تخطَّ إلى الباقات": "Skip to Packages", "تخطَّ إلى الحجز مباشرة": "Skip straight to Booking", "تدفئة ذكية وعمق متدرج": "Smart Heating & Graduated Depth", "ترامبولين وألعاب منوعة": "Trampoline & Assorted Games", "تشغيل أو إيقاف الفيديو": "Play or pause the video", "تصلك رسالة التأكيد المباشر عبر واتساب مع كافة تفاصيل الحجز ورمز الدخول لاستقبالكم بضيافة تليق بكم.": "You will receive an instant confirmation message on WhatsApp with all your booking details and your entry code, welcoming you with the hospitality you deserve.", "تصميم ناعم بجوار شلال الزهور": "Soft design beside the flower waterfall", "تصنيفات الباقات": "Package categories", "تصنيفات الصور": "Photo categories", "تظليل كامل ونافورة ماء هادئة": "Full shade and a tranquil water fountain", "تـوثـيـق حي لسحر المكان": "A Living Record of the Place's Magic", "تكبير الصورة": "Enlarge image", "تكييف مركزي متكامل": "Fully Integrated Central Air Conditioning", "تنسيق جلسة تصوير خاصة": "Private Photo Session Styling", "تنسيق ديكور وبالونات": "Decor & Balloon Styling", "تواصل واتساب فوري": "Instant WhatsApp Contact", "توثيق المسبح الحي والشلال": "Live Pool & Waterfall Footage", "توفير حطب سمر طبيعي لإشعال موقد جلسة حكاية، وفحم شواء سريع الاشتعال وأسياخ كاملة.": "Natural firewood for the Hikaya Lounge fire pit, plus quick-lighting barbecue charcoal and full skewer sets.", "جدول الأنشطة المقترح": "Suggested Activities Schedule", "جلسات خارجية": "Outdoor Lounges", "جلسة البستان": "Bustan Lounge", "جلسة البستان في ريست": "Bustan Lounge at REST", "جلسة السمر": "Evening Gathering Lounge", "جلسة الكوخ الأبيض": "White Cabin Lounge", "جلسة بستان": "Bustan Lounge", "جلسة بستان بمظلة ريفية ورذاذ ماء منعش — ظلٌّ أخضر وطعامٌ خارجي على مهل، كما يجب أن تكون العطلة.": "A Bustan lounge beneath a rustic canopy with refreshing water mist — green shade and unhurried outdoor dining, exactly as a holiday should be.", "جلسة بستان والشرفة": "Bustan Lounge & Terrace", "جلسة بستان والشرفة الأندلسية": "Bustan Lounge & Andalusian Terrace", "جلسة بستان والشرفة الأندلسية الحجرية": "Bustan Lounge & the Stone Andalusian Terrace", "جلسة بستان والمظلة الخشبية": "Bustan Lounge & the Wooden Canopy", "جلسة بستان والمظلة الريفية": "Bustan Lounge & the Rustic Canopy", "جلسة تصوير احترافية": "Professional Photo Session", "جلسة تصوير فوتوغرافي وفيديو": "Photography & Video Session", "جلسة حكاية": "Hikaya Lounge", "جلسة حكاية الدائرية مع شجرة الكرز وموقد النار": "Circular Hikaya Lounge with Cherry Tree & Fire Pit", "جلسة حكاية الغائرة وموقد النار": "Sunken Hikaya Lounge & Fire Pit", "جلسة حكاية بموقد حطب طبيعي — حيث تجتمع العائلة حول النار، وتُروى الحكايات تحت زهور الكرز المضيئة.": "A Hikaya lounge with a natural wood fire — where the family gathers around the fire and stories are told beneath the illuminated cherry blossoms.", "جلسة حكاية بموقد نار طبيعي وشجرة الكرز": "Hikaya Lounge with Natural Fire Pit & Cherry Tree", "جلسة حكاية حول موقد النار": "Hikaya Lounge Around the Fire Pit", "جلسة حكاية حول موقد النار وشجرة الكرز": "Hikaya Lounge Around the Fire Pit & Cherry Tree", "جلسة حكاية وموقد النار": "Hikaya Lounge & Fire Pit", "جلسة خارجية هادئة": "Quiet Outdoor Lounge", "جلسة دائرية حجرية غائرة مستوحاة من الطراز المتوسطي، تحيط بموقد نار طبيعي لإشعال الحطب وإعداد الشاي والسمر العائلي الهادئ تحت زهور شجرة الكرز الوردية المضيئة.": "A sunken circular stone lounge inspired by Mediterranean style, wrapped around a natural fire pit for lighting firewood, brewing tea, and quiet family evenings beneath the illuminated pink cherry blossoms.", "جلسة دائرية حجرية محاطة بفرش أزرق ملكي تتوسطها حفرة نار طبيعية تحت شجرة الكرز المزهرة للسمر الهادئ.": "A circular stone lounge ringed with royal-blue cushions, centred on a natural fire pit beneath the blossoming cherry tree for quiet evenings.", "جلسة مساج مائي جاكوزي": "Hydro Massage Jacuzzi Lounge", "جلسة هادئة خارجية وسط المسطحات الخضراء والزهور الطبيعية والمظلات الواقية لاحتساء الشاي والقهوة.": "A quiet outdoor lounge amid green lawns, natural flowers, and protective canopies for tea and coffee.", "جميع الحقوق محفوظة ©": "All rights reserved ©", "جميع الصور": "All Photos", "جناح المبيت": "Overnight Suite", "جولة في أرجاء الشاليه": "A Tour of the Chalet", "حاسبة الحجز والتأكيد الفوري": "Booking Calculator & Instant Confirmation", "حتى 25 شخصاً": "Up to 25 guests", "حتى 30 شخصاً": "Up to 30 guests", "حتى 40 شخصاً": "Up to 40 guests", "حتى 50 شخصاً": "Up to 50 guests", "حجز باقة ريست دي": "Book the REST Day package", "حجز باقة ريست مومنت": "Book the REST Moment package", "حجز باقة ريست نايت": "Book the REST Night package", "حجز باقة غداء الأعمال": "Book the Business Lunch package", "حدد اختياراتك وسيتم احتساب التكلفة وتجهيز رسالة حجز فورية على الواتساب": "Make your selections and the cost will be calculated, with an instant booking message prepared on WhatsApp", "حدد التجربة الأنسب لك (نهار، ليل، مومنت للمناسبات، أو غداء أعمال) مع اختيار التاريخ المطلوب.": "Choose the experience that suits you best (Day, Night, Moment for events, or Business Lunch) and pick your preferred date.", "حدد عدد الضيوف وإضافاتك": "Set Your Guest Count & Extras", "حرارة المياه والتدفئة المتطورة": "Water Temperature & Advanced Heating", "حطب طبيعي وفحم للشواء": "Natural Firewood & Barbecue Charcoal", "حين": "When", "حين يهدأ كل شيء… وتبدأ راحة وسكينة ليلتك الخاصة": "When everything quiets down… and the comfort and serenity of your own night begin", "حين يهدأ كل شيء… وتبدأ راحتك": "When everything quiets down… and your relaxation begins", "خدمات الضيافة المعتمدة": "Approved Hospitality Services", "خدمات وإضافات اختيارية (حسب الرغبة):": "Optional services & extras (as desired):", "خريطة المنتجع": "Resort Map", "خصوصية وسكينة": "Privacy & Serenity", "خصوصية وهدوء تام": "Complete privacy & quiet", "خط الحجز والضيافة المباشر": "Direct Booking & Hospitality Line", "خطوات الحجز": "Booking steps", "خـطـوات حجز إقامتك بكل سهولة": "Booking Your Stay in a Few Easy Steps", "دلـيـل الشاليه والمرافق والخدمات": "Chalet Guide: Facilities & Services", "دليل الشاليه": "Guide", "دليل المرافق والقواعد": "Facilities & Rules Guide", "دليل ريست الشامل": "The Complete REST Guide", "ديوان ملكي فخم وشاشة ذكية 4K وتكييف مركزي": "Luxurious royal diwan with a 4K smart screen and central air conditioning", "رؤية الشاليه": "View the Chalet", "راحة وخصوصية": "Comfort & Privacy", "راحتك": "your relaxation", "رجوع": "Back", "رسم توضيحي لأرجاء المنتجع": "Illustrative map of the resort grounds", "ركن ألعاب ورقية وبلوت": "Card Games & Baloot Corner", "ركن ترفيهي آمن متكامل للأطفال والعائلة: كوخ أبيض للاسترخاء، ملعب كرة قدم عائلي محاط بحواجز أمان، ملعب كرة سلة، ترامبولين كبير، وألعاب أرضية منوعة لإسعاد الصغار.": "A complete, safe entertainment corner for children and families: a White Cabin for relaxing, a family football pitch with safety barriers, a basketball court, a large trampoline, and assorted floor games to delight the little ones.", "ركن ترفيهي لمشاهدة الأفلام بجودة 4K مع ألعاب البلوت والبورد جيمز العائلية المتنوعة وجلسات مريحة.": "An entertainment corner for watching films in 4K, with baloot, assorted family board games, and comfortable seating.", "ركن خشبي تراثي بسقف السعف يستحضر عبق الزمن الجميل ويسعد الأطفال بالضيافة والحلويات التراثية الشعبية.": "A heritage wooden corner with a palm-frond roof that recalls the charm of bygone days and delights children with traditional hospitality and folk sweets.", "ركن شواء مجهز مع مناقل حطب وفحم، وغرف تبديل ملابس ودورات مياه ومغاسل مستقلة بجوار المسبح لخصوصية تامة.": "An equipped barbecue corner with wood and charcoal grills, plus changing rooms, toilets, and separate washbasins beside the pool for complete privacy.", "ركن نيون ريست للتصوير": "REST Neon Photo Corner", "ركن نيون ريست وأرجوحة الزهور للتصوير": "REST Neon Corner & Flower Swing for Photos", "ركن نيون ريست وأرجوحة الورد": "REST Neon Corner & Rose Swing", "روابط سريعة": "Quick Links", "رياضة وترفيه": "Sports & Entertainment", "ريال يمني": "YER", "ريال يمني / للفترة": "YER / per stay", "ريست": "REST", "ريست شاليه — لحظات لا تُنسى": "REST Chalet — Unforgettable Moments", "ريست ليس مكاناً تقضي فيه وقتك، بل إيقاعٌ تعيشه: ماءٌ دافئ، ونارٌ هادئة، وخضرةٌ تظلّلك — كل لحظة فيه من مرافق المكان نفسه، لا من صورٍ مستعارة.": "REST is not a place where you pass time; it is a rhythm you live: warm water, a quiet fire, and greenery shading you — every moment comes from the place's own facilities, not from borrowed images.", "ريست — عالمك الخاص من السكينة": "REST — Your Own World of Serenity", "زاوية مخصصة لأجمل اللقطات التذكارية": "A dedicated corner for your most beautiful keepsake shots", "زهور الجهنمية البديعة": "Exquisite Bougainvillea Blooms", "زوايا احترافية مصممة لتوثيق أجمل اللحظات وصناعة محتوى تذكاري مبهر: شعار REST النيوني المضيء مع أرجوحة الورد، وأرجوحة الفرو الأنيقة بجوار شلال الزهور والدرج الداخلي.": "Professional corners designed to capture your finest moments and create stunning keepsake content: the glowing REST neon sign with the rose swing, and the elegant fur swing beside the flower waterfall and indoor staircase.", "ساعات إضافية": "Extra Hours", "سرير كينج ملكي، حمام خاص متكامل، وخصوصية تامة للاستراحة": "King-size royal bed, a fully equipped private bathroom, and complete privacy for rest", "سعة حتى 25 شخصاً": "Capacity up to 25 guests", "سعة حتى 30 شخصاً": "Capacity up to 30 guests", "سعة حتى 40 شخصاً": "Capacity up to 40 guests", "سعة حتى 50 شخصاً": "Capacity up to 50 guests", "سعة رحبة حتى 50 شخصاً بخصوصية تامة 100%": "Spacious capacity for up to 50 guests with 100% complete privacy", "سعة مريحة حتى 15 شخصاً": "Comfortable capacity for up to 15 guests", "سكينة وخشوع": "Serenity & Reverence", "سماعات بلوتوث عملاقة وإضاءات ليزرية احتفالية وأجهزة بخار خفيفة لأجواء حماسية.": "Giant Bluetooth speakers, festive laser lighting, and light haze machines for a high-energy atmosphere.", "سمر العائلة": "Family Evenings", "سمر هادئ تحت زهور شجرة الكرز": "Quiet evenings beneath the cherry blossoms", "سنة التطوير": "Year of Development", "سويت منامك": "Sleeping Suite", "سويت منامك الفاخر": "Luxurious Sleeping Suite", "سويت منامك والراحة الفندقية": "Sleeping Suite & Hotel-Style Comfort", "سويت منامك والسينما 4K": "Sleeping Suite & 4K Cinema", "سينما وترفيه": "Cinema & Entertainment", "شاشة ذكية وسينما 4K": "Smart Screen & 4K Cinema", "شاليه": "Chalet", "شاليه ريست (REST-26)": "REST Chalet (REST-26)", "شاليه رِيست": "REST Chalet", "شاليه متكامل يجمع بين دفء الأجواء العائلية وسحر المساء في مساحة خاصة بك وحدك.": "A complete chalet that brings together the warmth of family time and the magic of the evening in a space that is entirely your own.", "شاليه ومنتجع رِيست": "REST Chalet & Resort", "شاليه ومنتجع رِيست الفاخر — تجارب استجمام نهارية وليلية متكاملة، مسبح دافئ بشلال متدفق ومساج مائي، جلسة حكاية بموقد نار طبيعي، باقات غداء الأعمال والمناسبات الخاصة في خصوصية تامة.": "The luxurious REST Chalet & Resort — complete daytime and nighttime relaxation experiences, a heated pool with a flowing waterfall and hydro massage, a Hikaya lounge with a natural wood fire, and business lunch and special occasion packages in complete privacy.", "شاليه ومنتجع رِيست — عالمك الخاص من السكينة والرفاهية": "REST Chalet & Resort — Your Own World of Serenity and Luxury", "شجرة الكرز الوردية": "Pink Cherry Tree", "شرفة حجرية مرتفعة تعلوها مظلة قرميدية حمراء تطل بانورامياً على المنتجع والمسبح، تحيط بها زهور الجهنمية المتسلقة وتوفر أجواء ريفية منعشة للقهوة الصباحية والشاي.": "A raised stone terrace crowned with a red-tiled canopy, overlooking the resort and pool in panorama, ringed by climbing bougainvillea and offering a refreshing rural setting for morning coffee and tea.", "شريط مواصفات مرافق ريست": "REST Facilities Specifications Strip", "شعار REST نيون مضيء": "Glowing REST Neon Sign", "شعار شاليه ريست": "REST Chalet Logo", "شعار شاليه ومنتجع ريست": "REST Chalet & Resort Logo", "شلال الحدائق": "Garden Waterfall", "شلال الحدائق وجلسة بستان": "Garden Waterfall & Bustan Lounge", "شلال مائي ونوافير قوسية": "Waterfall & Arched Fountains", "شواء وخدمات": "Barbecue & Services", "شواية متكاملة، مرافق استحمام حديثة، وغرف تبديل ملابس خاصة": "Fully equipped grill, modern shower facilities, and private changing rooms", "شيء": "thing", "صالة استقبال فسيحة تجمع بين النوافذ المقوسة المشمسة والأثاث المخملي الملكي، مجهزة بشاشة ذكية وسينما 4K، وتكييف مركزي، ونقوش جبسية مغربية لاستقبال كبار الضيوف.": "A spacious reception hall combining sunlit arched windows and royal velvet furniture, fitted with a smart screen and 4K cinema, central air conditioning, and Moroccan plasterwork to welcome honoured guests.", "صالة استقبال كبرى مجهزة بكنب مخملي أزرق فاخر وشاشات ذكية ونقوش جبسية مغربية وثريا ذهبية لكبار الضيوف.": "A grand reception hall furnished with luxurious blue velvet sofas, smart screens, Moroccan plasterwork, and a golden chandelier for honoured guests.", "صالة الطعام والبرجولا": "Dining Hall & Pergola", "صالة الطعام والبرجولا المعلقة": "Dining Hall & Hanging Pergola", "صالة المجلس الملكي الفسيحة": "Spacious Royal Majlis Hall", "صُممت باقات شاليه ريست لتمنحك خصوصية تامة واسترخاءً فائقاً مع أحبابك، بدءاً من أوقات السمر والمسابح الدافئة حتى أحدث أنظمة الترفيه والضيافة. مرر للأسفل لاستعراض انزياح البطاقات التفاعلي.": "REST Chalet's packages were designed to give you complete privacy and exceptional relaxation with your loved ones, from evening gatherings and warm pools to the latest entertainment and hospitality systems. Scroll down to explore the interactive card shift.", "ضمان الجاهزية والتعقيم الفندقي الكامل": "Guaranteed Readiness & Full Hotel-Grade Sterilisation", "ضيافة شاليه ريست الفاخرة": "Luxurious REST Chalet Hospitality", "ضيافة ملكية": "Royal Hospitality", "طاولات خشبية وأزهار معلقة دافئة": "Wooden tables & warm hanging flowers", "طاولات رخامية ذهبية": "Golden Marble Tables", "طبيعة خضراء ورذاذ ماء منعش وجلسة طعام خارجية مريحة": "Green nature, refreshing water mist, and a comfortable outdoor dining lounge", "طبيعة واسترخاء": "Nature & Relaxation", "طراز أندلسي حجري": "Stone Andalusian Style", "طراز القلاع وزهور الجهنمية الحمراء": "Castle Style & Red Bougainvillea", "طراز خشبي أوروبي، صالة شاي دافئة، وشرفة مطلة على الحدائق": "European wooden style, a warm tea lounge, and a terrace overlooking the gardens", "طلب قائمة الطعام عبر واتساب": "Request the Menu via WhatsApp", "طلب مع الحجز": "Request with Booking", "عائلة أو تجمع متوسط (11 إلى 25 شخصاً)": "Family or medium gathering (11 to 25 guests)", "عائلة صغيرة (حتى 10 أشخاص)": "Small family (up to 10 guests)", "عارض الصور المكبرة": "Image Lightbox", "عالمك": "your world", "عدد الضيوف المتوقع": "Expected Number of Guests", "عدد الضيوف:": "Number of guests:", "عدسة حية من قلب رِيست": "A Live Lens from the Heart of REST", "عطلة الأسبوع": "Weekend", "عـالـمُـك الـخـاص مِـن الـسَّـكِـيـنـةِ والـرَّفـاهِـيَـــة": "Your Own World of Serenity and Luxury", "عـمـارة مـسـتـوحـاة من تفاصيل السكينة": "Architecture Inspired by the Details of Serenity", "عمق متدرج، تدفئة مياه ذكية، شلال جداري انسيابي ونوافير قوسية": "Graduated depth, smart water heating, a flowing wall waterfall, and arched fountains", "غداء أعمال — الفترة الممتدة": "Business Lunch — Extended Session", "غداء أعمال — الفترة الممتدة (50,000 ريال يمني)": "Business Lunch — Extended Session (50,000 YER)", "غداء أعمال — اليوم الكامل": "Business Lunch — Full Day", "غداء أعمال — اليوم الكامل (70,000 ريال يمني)": "Business Lunch — Full Day (70,000 YER)", "غداء الأعمال — اليوم الكامل (70,000 ريال)": "Business Lunch — Full Day (70,000 YER)", "غرفة السينما 4K ومسرح الترفيه": "4K Cinema Room & Entertainment Theatre", "غرفة السينما والألعاب الورقية": "Cinema Room & Card Games", "غرفة نوم رئيسية فاخرة مجهزة بفرش فندقي راقٍ وإضاءات مهدئة لراحة تامة ونوم هانئ للعرسان والعائلات.": "A luxurious master bedroom with premium hotel bedding and soothing lighting for complete comfort and restful sleep for newlyweds and families.", "غير محدد": "Not specified", "فتح القائمة": "Open menu", "فترة الإقامة:": "Stay period:", "فترة مخصصة": "Custom period", "فترة مسائية هادئة للأمسيات العائلية واللقاءات الودية": "A quiet evening period for family nights and friendly gatherings", "فحص مخبري دوري لجودة ونقاء المياه وتعقيم فندقي شامل لكل مرافق الشاليه قبل تسليم كل حجز لضمان بيئة صحية نقية تماماً.": "Regular laboratory testing of water quality and purity, with full hotel-grade sterilisation of every chalet facility before each handover, ensuring a completely clean and healthy environment.", "فخامة المخمل الأزرق وإشراقة الشمس": "The Luxury of Blue Velvet & the Glow of the Sun", "فريق خدمة العملاء متواجد على مدار الساعة للرد على استفساراتكم وتأكيد الحجوزات المباشرة.": "Our customer service team is available around the clock to answer your questions and confirm direct bookings.", "فهرس مرافق ريست المعمارية": "Index of REST's Architectural Facilities", "قائمة الإضافات": "Extras List", "قواعد المسبح والسلامة": "Pool Rules & Safety", "كل": "everything", "كل ما تود معرفته عن المرافق الـ 13 المعتمدة وقواعد المسبح وقائمة الإضافات والأنشطة": "Everything you want to know about the 13 approved facilities, pool rules, extras list, and activities", "كل ما يهمكم معرفته قبل تثبيت حجزكم في شاليه ومنتجع ريست الفاخر": "Everything you need to know before confirming your booking at the luxurious REST Chalet & Resort", "كم تبلغ السعة الاستيعابية للشاليه وهل توجد خصوصية تامة؟": "What is the chalet's capacity, and is privacy complete?", "كوخ أبيض أنيق بطابع ريفي هادئ مخصص للاسترخاء وتبادل الأحاديث بعيداً عن الصخب مع جلسات وثيرة.": "An elegant white cabin with a quiet rustic character, made for relaxing and conversation away from the noise, with plush seating.", "كيف يتم احتساب وجبات الغداء في باقة الأعمال؟": "How are lunch meals calculated in the Business package?", "كيف يتم تنسيق باقة المناسبات REST MOMENT والديكورات؟": "How is the REST MOMENT events package and its decor arranged?", "كيكات احتفالية بطبقات متعددة مع كتابة الاسم والتصميم المطلوب بالتنسيق المسبق.": "Multi-tier celebration cakes with the name and design of your choice, arranged in advance.", "كيكة المناسبة الفاخرة": "Luxurious Celebration Cake", "لا توجد إضافات": "No extras", "لـحـظـات لا تُقاس بالساعات": "Moments Not Measured in Hours", "لقطات حية توثق انسياب المياه الصافية والإضاءة الليلية الهادئة": "Live shots capturing the flow of clear water and the calm night lighting", "لقطات مباشرة للمسبح الداخلي الدافئ والجلسات والحديقة وأركان التصوير الحصرية": "Live footage of the heated indoor pool, lounges, garden, and exclusive photo corners", "ليلي": "Night", "ما هي أوقات الدخول والخروج للباقات المختلفة؟": "What are the check-in and check-out times for the different packages?", "ما هي سياسة تأكيد الحجز المعتمدة؟": "What is the booking confirmation policy?", "مباريات كرة القدم والسلة للأطفال، مشاهدة فيلم في صالة السينما 4K، وتوثيق الصور التذكارية بجوار ركن النيون.": "Children's football and basketball games, a film in the 4K cinema lounge, and keepsake photos by the neon corner.", "متابعة: التاريخ والضيوف": "Continue: Date & Guests", "متابعة: مراجعة الحجز": "Continue: Review Booking", "مجلس الياقوت": "Ruby Majlis", "مجلس الياقوت الملكي": "Royal Ruby Majlis", "محادثة واتساب مباشرة": "Direct WhatsApp Chat", "مرافق ريست": "REST Facilities", "مرافق شاليه ريست": "REST Chalet Facilities", "مرافق ومنشآت ريست": "REST Facilities & Amenities", "مرح وترامبولين وملاعب رياضية آمنة": "Fun, trampoline & safe sports courts", "مرحباً إدارة شاليه ومنتجع رِيست الفاخر": "Hello, management of the luxurious REST Chalet & Resort", "مرر المؤشر فوق أي بطاقة لاستعراض الصورة الحية للمرفق وتفاصيل مساحته": "Hover over any card to preview the facility's live photo and area details", "مرر لأسفل للتنقل بين المشهدين": "Scroll down to switch between the two scenes", "مرفق 01": "Facility 01", "مرفق 02": "Facility 02", "مرفق 03": "Facility 03", "مرفق 04": "Facility 04", "مرفق 05": "Facility 05", "مرفق 06": "Facility 06", "مرفق 07": "Facility 07", "مرفق 08": "Facility 08", "مرفق 09": "Facility 09", "مرفق 10": "Facility 10", "مرفق 11": "Facility 11", "مرفق 12": "Facility 12", "مرفق 13": "Facility 13", "مزايا شاليه ريست": "REST Chalet Highlights", "مسبح أطفال آمن ومحمي": "Safe, Protected Children's Pool", "مسبح دافئ بشلال متدفق ومساج مائي — صباحٌ يبدأ بصوت الماء، وينتهي بسكينة لا تشبه سواها.": "A heated pool with a flowing waterfall and hydro massage — a morning that begins with the sound of water and ends in a serenity like no other.", "مسبح دافئ بشلال متدفق، خصوصية عائلية تامة، ولحظات هادئة لا تُنسى.": "A heated pool with a flowing waterfall, complete family privacy, and quiet moments you'll never forget.", "مسبح دافئ مغلق مزود بشلال جداري انسيابي ونوافير قوسية مضيئة ونظام فلترة وتعقيم متطور بدرجة حرارة 30-34 مئوية.": "An enclosed heated pool with a flowing wall waterfall, illuminated arched fountains, and an advanced filtration and sterilisation system at 30–34°C.", "مسبح ريست الدافئ": "REST Heated Pool", "مسبح عائلي دافئ ومساج مائي طوال العام": "Heated family pool & hydro massage all year round", "مسبح عائلي رحب مغلق في خصوصية تامة، مزود بنظام تدفئة مياه متطور على مدار العام، شلال جداري انسيابي، نوافير قوسية، مسبح مستقل للأطفال، وجلسة مساج مائي جاكوزي للاسترخاء التام.": "A spacious enclosed family pool in complete privacy, with an advanced year-round water heating system, a flowing wall waterfall, arched fountains, a separate children's pool, and a hydro massage jacuzzi lounge for total relaxation.", "مستلزمات حطب وشواء": "Firewood & Barbecue Supplies", "مسطحات خضراء طبيعية": "Natural Green Lawns", "مشهد المساء والرفاهية": "Evening & Luxury Scene", "مشهد المسبح والسكينة": "Pool & Serenity Scene", "مشهد المنتجع الفاخر 1080p": "Luxury Resort Scene 1080p", "مصور محترف لتوثيق تفاصيل مناسبتكم في أركان النيون وأرجوحة الورد والمسبح المضيء.": "A professional photographer to capture every detail of your occasion at the neon corners, the rose swing, and the illuminated pool.", "مطبخ عصري مزود بالثلاجة والفرن والمايكروويف وأواني الضيافة وإعداد الطعام ومستلزمات إعداد الشاي والقهوة.": "A modern kitchen equipped with a fridge, oven, microwave, hospitality and cooking utensils, and everything needed for tea and coffee.", "مظلات شراعية واقية": "Protective Sail Shades", "مظهر الشاليه": "Chalet Appearance", "معاينة المرفق": "Facility Preview", "معرض الصور": "Gallery", "مـواصـفـات ومساحات مرافق ريست": "REST Facilities: Specifications & Areas", "مقارنة الباقات": "Compare Packages", "مقاطع الفيديو الاحتياطية في الواجهة: Pexels. جميع صور المكان من أصول ريست الحقيقية.": "Fallback videos in the interface: Pexels. All photos of the place are genuine REST assets.", "مقدمة شاليه ومنتجع ريست": "Introduction to REST Chalet & Resort", "مكان هادئ ومجهز بالسجاد الفاخر وتكييف ممتاز لأداء الصلاة بسكينة وطمأنينة تامة مع مغاسل وضوء قريبة.": "A quiet place with luxurious carpets and excellent air conditioning for prayer in serenity and complete peace, with nearby ablution washbasins.", "ملاحظة: مواقع العلامات تقريبية لأغراض التوضيح فقط، ولا تعبّر عن مسافات أو اتجاهات حقيقية بين المرافق.": "Note: marker positions are approximate and for illustration only; they do not represent real distances or directions between facilities.", "ملخص الحجز التقديري": "Estimated Booking Summary", "ملخص الحجز للمراجعة": "Booking Summary for Review", "ملعب كرة سلة": "Basketball Court", "ملعب كرة طائرة رملي، مسطحات خضراء، ومنطقة ألعاب أطفال آمنة": "Sandy volleyball court, green lawns, and a safe children's play area", "ملعب كرة قدم عائلي بعشب آمن محاط بحواجز شبكية واقية، وملعب كرة سلة مجهز وترامبولين للأطفال.": "A family football pitch with safe turf surrounded by protective netting, an equipped basketball court, and a children's trampoline.", "ملعب كرة قدم للأطفال": "Children's Football Pitch", "من": "of", "مناسبة وسهرة كبرى (حتى 50 شخصاً)": "Grand occasion & evening (up to 50 guests)", "منطقة الشواء": "Barbecue Area", "منطقة الشواء الفاخرة": "Luxurious Barbecue Area", "منطقة الشواء وغرف التبديل": "Barbecue Area & Changing Rooms", "منطقة الشواء وغرف التبديل المستقلة": "Barbecue Area & Separate Changing Rooms", "موقد النار في جلسة حكاية": "Fire Pit at Hikaya Lounge", "موقد النار والشواء والسمر": "Fire Pit, Barbecue & Evening Gatherings", "موقد حطب طبيعي، سمر عائلي هادئ، تحت زهور الكرز المضيئة": "Natural wood fire, quiet family evenings, beneath the illuminated cherry blossoms", "موقد نار حطبي طبيعي": "Natural Wood Fire Pit", "موقد نار ونظام صوتي": "Fire Pit & Sound System", "مياه دافئة في كل الفصول": "Warm water in every season", "مياه دافئة وإضاءات ليلية بديعة": "Warm water & beautiful night lighting", "نعم بالتأكيد، المسبح مغلق بالكامل ومزود بنظام تدفئة مياه متقدم يعمل على مدار الساعة ليحافظ على درجة حرارة مريحة بين 30 و34 درجة مئوية، كما يوجد مسبح آمن مخصص للأطفال بنظام تعقيم فندقي دوري.": "Yes, certainly — the pool is fully enclosed and fitted with an advanced water heating system that runs around the clock to maintain a comfortable temperature between 30 and 34°C, and there is a safe children's pool with regular hotel-grade sterilisation.", "نعم، تبلغ تكلفة الساعة الإضافية 10,000 ريال يمني، ويخضع التمديد لتوافر الشاليه والموافقة المسبقة من إدارة الحجوزات لضمان عدم تعارض المواعيد مع إجراءات التعقيم للحجز التالي.": "Yes — an extra hour costs 10,000 YER, and any extension depends on chalet availability and prior approval from the bookings team, to avoid clashing with the sterilisation routine for the next booking.", "نعم، يحتوي الشاليه على مطبخ مجهز بثلاجة، فرن، مايكروويف، أواني تقديم وضيافة، بالإضافة إلى منطقة شواء خارجية مجهزة ومناقل حطب وفحم وموقد نار طبيعي في جلسة حكاية.": "Yes — the chalet has a kitchen equipped with a fridge, oven, microwave, and serving and hospitality utensils, plus an equipped outdoor barbecue area with wood and charcoal grills and a natural wood fire pit at Hikaya Lounge.", "نـخـلـةُ الـواحَــــة الاســتـوائـيـة": "The Tropical Oasis Palm", "نوفر لكم تجربة حجز سلسة وسريعة مع تأكيد فوري ومباشر مع إدارة المنتجع": "We offer you a smooth, fast booking experience with instant confirmation directly with the resort management", "نوفر لكم خيارات تنسيق وجبات طعام راقية عبر قائمة مطاعم معتمدة ومختارة بعناية: وجبات غداء الأعمال، بوفيهات مفتوحة، ومستلزمات لحوم الشواء الطازجة مع المقبلات والضيافة، وتُحتسب تكلفتها بشكل مستقل وفق القائمة.": "We offer refined meal arrangements through a carefully selected list of approved restaurants: business lunches, open buffets, and fresh barbecue meat supplies with appetisers and hospitality — priced separately according to the menu.", "هل تبحث عن مـلاذ": "Looking for a haven", "هل تتوفر مستلزمات الطبخ والشواء داخل الشاليه؟": "Are cooking and barbecue supplies available inside the chalet?", "هل مياه المسبح دافئة ومناسبة للأطفال في الشتاء؟": "Is the pool water warm and suitable for children in winter?", "هل يمكن تمديد ساعات إضافية وما هي تكلفتها؟": "Can extra hours be added, and what do they cost?", "واحة الخصوصية والفخامة: مسبح دافئ بشلال ومساج مائي، جلسات حكاية وبستان، والكوخ الأبيض.": "An oasis of privacy and luxury: a heated pool with waterfall and hydro massage, Hikaya and Bustan lounges, and the White Cabin.", "والخصوصية": "and privacy", "والرفاهية": "and luxury", "وتبدأ": "and begins", "وجبات الغداء والعشاء والشواء الفاخر": "Luxurious Lunch, Dinner & Barbecue Meals", "وجهتكم الفاخرة لقضاء أسعد اللحظات العائلية والمناسبات الخاصة في أجواء استثنائية من السكينة والرفاهية والخصوصية التامة.": "Your luxurious destination for the happiest family moments and special occasions, in an exceptional atmosphere of serenity, luxury, and complete privacy.", "يتسع الشاليه براحة تامة لـ 40 إلى 50 شخصاً حسب الباقة المختارة، مع خصوصية مطلقة 100% حيث يكون الشاليه بالكامل محجوزاً لك ولعائلتك أو ضيوفك فقط دون أي تداخل مع أي زوار آخرين.": "The chalet comfortably accommodates 40 to 50 guests depending on the chosen package, with 100% absolute privacy — the entire chalet is booked for you, your family, or your guests only, with no overlap with any other visitors.", "يتم إعداد وجبات الغداء حسب الطلب وعدد الضيوف ونوع الأطباق المفضلة، وتُحتسب تكلفتها بشكل مستقل عن قيمة حجز الباقة وفق قائمة الطعام المعتمدة، مع توفير خدمة الضيافة المجانية واستخدام كافة المجالس والحديقة والواي فاي.": "Lunch meals are prepared to order, according to guest count and preferred dishes, and priced separately from the package booking value per the approved menu — with complimentary hospitality service and access to all majlis lounges, the garden, and Wi-Fi.", "يتم تثبيت وتأكيد الحجز بدفع عربون تأكيد عبر الحسابات البنكية أو المحافظ الإلكترونية المعتمدة، مع تزويدكم بسند حجز رسمي وفاتورة إلكترونية معتمدة وإرشادات الوصول الكاملة.": "Your booking is secured and confirmed by paying a confirmation deposit via approved bank accounts or e-wallets, and you will receive an official booking voucher, an approved electronic invoice, and full arrival directions.", "يتم تعقيم المسبح والمجالس بالكامل قبل دخولكم مع تسليم الشفرة الخاصة واستقبال الضيوف.": "The pool and lounges are fully sterilised before your arrival, with your private code handed over and guests welcomed on arrival.", "يتم ضبط نظام التدفئة المتقدم تلقائياً بين 30 و34 درجة مئوية ليناسب السباحة الشتوية المريحة لكافة أفراد العائلة في مختلف فصول السنة.": "The advanced heating system is automatically set between 30 and 34°C for comfortable winter swimming for the whole family, in every season of the year.", "يجب ارتداء سترات النجاة للأطفال دون سن 8 سنوات واستخدام المسبح المخصص للأطفال بعمق آمن ومستقل تحت إشراف ذويهم.": "Children under 8 must wear life jackets and use the dedicated children's pool, with its safe, separate depth, under the supervision of their guardians.", "يرجى إفادتي بتوفر التاريخ وتأكيد إجراءات الحجز. شكراً لكم!": "Please let me know if the date is available and confirm the booking arrangements. Thank you!", "يرجى اختيار تاريخ للحجز (لا يمكن أن يكون في الماضي).": "Please choose a booking date (it cannot be in the past).", "يمنحك": "gives you", "يهدأ": "quiets down", "• الإضافات المختارة:": "• Selected extras:", "• الباقة المطلوبة:": "• Requested package:", "• القيمة التقديرية للباقة:": "• Estimated package value:", "• تاريخ الحجز:": "• Booking date:", "• عدد الضيوف:": "• Number of guests:", "_dynamic": {"map": {"note": "The MAP object (JS) drives the resort-map panel: clicking a marker sets the panel image, name, description and area from these entries.", "pool": {"name": "المسبح الداخلي والشلال", "desc": "عمق متدرج، تدفئة مياه ذكية، شلال جداري انسيابي ونوافير قوسية", "area": "المساحة: 120 م²", "alt": "المسبح الداخلي والشلال"}, "majlis": {"name": "مجلس الياقوت الملكي", "desc": "إطلالة بانورامية كاملة، تكييف مركزي متطور، وشاشة عرض 4K", "area": "المساحة: 85 م²", "alt": "مجلس الياقوت الملكي"}, "hikaya": {"name": "جلسة حكاية وموقد النار", "desc": "موقد حطب طبيعي، سمر عائلي هادئ، تحت زهور الكرز المضيئة", "area": "المساحة: 65 م²", "alt": "جلسة حكاية وموقد النار"}, "bustan": {"name": "جلسة بستان والمظلة الريفية", "desc": "طبيعة خضراء ورذاذ ماء منعش وجلسة طعام خارجية مريحة", "area": "المساحة: 90 م²", "alt": "جلسة بستان والمظلة الريفية"}, "cabin": {"name": "الكوخ الأبيض الريفي", "desc": "طراز خشبي أوروبي، صالة شاي دافئة، وشرفة مطلة على الحدائق", "area": "المساحة: 55 م²", "alt": "الكوخ الأبيض الريفي"}, "playground": {"name": "الملاعب الرياضية والحديقة", "desc": "ملعب كرة طائرة رملي، مسطحات خضراء، ومنطقة ألعاب أطفال آمنة", "area": "المساحة: 450 م²", "alt": "الملاعب الرياضية والحديقة"}}, "whatsapp_message": {"note": "Lines joined with newlines and sent to wa.me/966508332211 on booking submit. The • lines take a runtime value after the colon.", "greeting": "مرحباً إدارة شاليه ومنتجع رِيست الفاخر", "intro": "أود تأكيد الاستفسار وحجز الشاليه وفق التفاصيل التالية:", "package": "• الباقة المطلوبة:", "date": "• تاريخ الحجز:", "guests": "• عدد الضيوف:", "addons": "• الإضافات المختارة:", "price": "• القيمة التقديرية للباقة:", "price_suffix": "ريال يمني", "closing": "يرجى إفادتي بتوفر التاريخ وتأكيد إجراءات الحجز. شكراً لكم!", "addons_fallback": "بدون إضافات خاصة", "date_fallback": "غير محدد", "guests_fallback": "غير محدد"}, "counters": {"facilities": {"note": "Rendered as 'المرفق {NN} من 06 — {name}' with names from facilityStepNames.", "pattern": "المرفق 01 من 06 — المسبح العائلي والشلال", "names": ["المسبح العائلي والشلال", "جلسة حكاية وموقد النار", "الديوان والمجلس الملكي", "جلسة بستان والشرفة", "الكوخ الأبيض وملاعب الأطفال", "أركان التصوير الحصرية"]}, "guide": {"note": "Rendered as 'المرفق {NN} من 13 • مرر أفقياً للاستكشاف'.", "pattern": "المرفق 01 من 13 • مرر أفقياً للاستكشاف"}, "morph_packages": {"note": "Rendered as 'الباقة 0{X} من 04'.", "pattern": "الباقة 01 من 04"}}, "booking_schedule": {"note": "scheduleDictionary: shown as the live timing line in the booking summary.", "day": "09:00 ص — 09:00 م (12 ساعة)", "night": "11:00 م — 07:00 ص (8 ساعات)", "moment": "04:00 م — 10:00 م (6 ساعات — أمسية مناسبات)", "business-ext": "12:00 ظ — 09:00 م (فترة ممتدة)", "business-full": "12:00 ظ — 12:00 منتصف الليل (يوم كامل)", "fallback": "فترة مخصصة"}, "booking_summary_fallbacks": {"no_addons": "لا توجد إضافات", "date_empty": "اليوم"}, "theme_toggle": {"note": "JS-set title/description strings for the light/dark theme switch.", "to_night": "التحويل إلى الوضع الليلي", "to_sea": "التحويل إلى الوضع البحري الفاتح", "desc_sea": "الوضع البحري الفاتح", "desc_night": "الوضع الليلي الفاخر"}, "lightbox_fallback_titles": {"note": "Fallback captions passed to openLightboxDirect when a row/card has no title.", "directory": "مرافق شاليه ريست", "metric": "مرافق ريست"}, "video_toggle_caption": {"note": "Caption toggled with the hero video source.", "resort": "مشهد المنتجع الفاخر 1080p", "pool": "توثيق المسبح الحي والشلال"}}, "لوحة اتجاهات المنتجع": "Resort Directions Board", "كل المرافق بين يديك من مكان واحد": "Every facility at your fingertips, in one place", "الجلسة الدائرية ليلاً": "The Circular Lounge at Night", "أضواء النيون وشجرة الزهر الوردية": "Neon lights and the pink blossom tree", "ألعاب الأرضية": "Floor Games", "الحجلة والتيك تاك تو للأطفال": "Hopscotch and tic-tac-toe for children", "الباحة والدكان ليلاً": "The Courtyard & Shop at Night", "ألعاب الأرضية والكوخ الأزرق": "Floor games and the blue cabin", "البرج الحجري": "The Stone Tower", "جلسة مقوّسة بدرج حجري وعشب أخضر": "An arched lounge with stone steps and green grass", "فناء المنتجع ليلاً": "The Resort Courtyard at Night", "ألعاب الأرضية والكوخ الأزرق والواجهة التراثية": "Floor games, the blue cabin, and the heritage facade", "لوحة دليل المرافق": "Facilities Guide Board", "الجلسة الغائرة في الفناء": "The Sunken Courtyard Lounge", "مجلس دائري منخفض في قلب الفناء": "A low circular lounge in the heart of the courtyard", "نسخة معاينة: جميع الصور والفيديوهات في هذه النسخة من Pexels (صور مخزون تجريبية للمعاينة فقط) وليست صور المنتجع الحقيقية — ستُستبدل بصور REST الحقيقية عند نسخ الأصول إلى جذر المستودع.": "Preview version: all photos and videos in this version are from Pexels (trial stock media for preview only), not the resort’s real photos — they will be replaced with REST’s real photos once the assets are copied to the repository root.", "الصور في هذه النسخة هي صور المنتجع الحقيقية من المستودع؛ الفيديوهات ما زالت مخزوناً تجريبياً من Pexels وستُستبدل بفيديوهات REST الحقيقية عند توفرها.": "The photos in this version are the resort’s real photos from the repository; the videos are still trial stock from Pexels and will be replaced with REST’s real videos when available.", "نسخة معاينة بالصور الحقيقية: جميع الصور في هذه النسخة هي صور المنتجع الحقيقية (أرسلها المالك)؛ الفيديوهات ما زالت مخزوناً تجريبياً من Pexels وستُستبدل بفيديوهات REST الحقيقية عند توفرها.": "Real-photo preview: all photos in this version are the resort’s real photos (sent by the owner); the videos are still trial stock from Pexels and will be replaced with REST’s real videos when available.", "ريست شاليه يمنحك عالمك الخاص من السكينة والرفاهية والخصوصية التامة": "REST Chalet gives you your own private world of serenity, luxury and complete privacy", "الإعدادات": "Settings", "لوحة التحكم": "Admin", "اسم العميل": "Client name", "رقم جوال العميل": "Client phone", "رقم الجوال": "Phone number", "الاسم الكامل": "Full name", "يرجى إدخال اسم العميل ورقم الجوال قبل المتابعة.": "Please enter the client name and phone number before continuing.", "طلب حجز جديد من الموقع:": "New booking request from the website:", "• اسم العميل:": "• Client name:", "• رقم جوال العميل:": "• Client phone:", "• وقت الحجز:": "• Booking time:", "طلب حجز جديد — شاليه ومنتجع رِيست": "New booking request — REST Chalet & Resort", "رقم مرجع الحجز:": "Booking reference:", "رقم مرجع الحجز": "Booking reference", "تاريخ الطلب:": "Request date:", "بيانات العميل:": "Client details:", "تفاصيل الحجز:": "Booking details:", "المصدر: موقع رِيست الرسمي": "Source: REST official website", "يرجى تأكيد التوفر وإجراءات الحجز. شكراً لكم!": "Please confirm availability and the booking procedure. Thank you!", "04:00 م — 10:00 م (6 ساعات)": "4:00 PM — 10:00 PM (6 hours)", "احجز هذه الباقة": "Book this package", "احجز": "Book", "الحجز": "Booking", "باقة المناسبات": "Events package", "تم إرسال طلب الحجز بنجاح": "Your booking request was sent successfully", "رقم مرجع حجزك هو:": "Your booking reference is:", "سنتواصل معك قريباً عبر واتساب لتأكيد التوفر وإجراءات الحجز. احتفظ برقم المرجع عند التواصل معنا.": "We will contact you soon on WhatsApp to confirm availability and the booking procedure. Please keep your reference number when contacting us.", "حجز جديد": "New booking"};
+      var DICT = {"03:00 م — 06:00 م": "3:00 PM — 6:00 PM", "04:00 م — 10:00 م": "4:00 PM — 10:00 PM", "04:00 م — 10:00 م (6 ساعات — أمسية مناسبات)": "4:00 PM — 10:00 PM (6 hours — events evening)", "06:00 م — 09:00 م": "6:00 PM — 9:00 PM", "09:00 ص — 09:00 م": "9:00 AM — 9:00 PM", "09:00 ص — 09:00 م (12 ساعة)": "9:00 AM — 9:00 PM (12 hours)", "09:00 ص — 12:00 ظ": "9:00 AM — 12:00 PM", "1,800 م²": "1,800 m²", "10,000 ريال يمني لكل ساعة إضافية (تخضع للموافقة المسبقة وتوفر الوقت بين الحجوزات).": "10,000 YER per extra hour (subject to prior approval and availability between bookings).", "11:00 م — 07:00 ص": "11:00 PM — 7:00 AM", "11:00 م — 07:00 ص (8 ساعات)": "11:00 PM — 7:00 AM (8 hours)", "120 م²": "120 m²", "12:00 ظ — 03:00 م": "12:00 PM — 3:00 PM", "12:00 ظ — 09:00 م": "12:00 PM — 9:00 PM", "12:00 ظ — 09:00 م (فترة ممتدة)": "12:00 PM — 9:00 PM (extended session)", "12:00 ظ — 12:00 منتصف الليل": "12:00 PM — 12:00 AM", "12:00 ظ — 12:00 منتصف الليل (يوم كامل)": "12:00 PM — 12:00 AM (full day)", "25 — 50 ضيف": "25–50 guests", "350 م²": "350 m²", "4 باقات رسمية: نهار، ليلة، مناسبات، وغداء أعمال": "4 official packages: Day, Night, Events, and Business Lunch", "45 م²": "45 m²", "450 م²": "450 m²", "55 م²": "55 m²", "65 م²": "65 m²", "70 م²": "70 m²", "85 م²": "85 m²", "90 م²": "90 m²", "BUSINESS — غداء الأعمال": "BUSINESS — Business Lunch", "RESORT MAP — خريطة المنتجع": "RESORT MAP — Resort Map", "REST DAY (ريست دي)": "REST DAY (REST Day)", "REST DAY — ريست دي": "REST DAY — REST Day", "REST DAY — ريست دي (180,000 ريال يمني)": "REST DAY — REST Day (180,000 YER)", "REST DAY — ريست دي (180,000 ريال)": "REST DAY — REST Day (180,000 YER)", "REST DAY — رِيست دي": "REST DAY — REST Day", "REST MOMENT — ريست مومنت": "REST MOMENT — REST Moment", "REST MOMENT — ريست مومنت (250,000 ريال)": "REST MOMENT — REST Moment (250,000 YER)", "REST MOMENT — ريست مومنت للمناسبات (250,000 ريال يمني)": "REST MOMENT — REST Moment for Events (250,000 YER)", "REST MOMENT — رِيست مومنت": "REST MOMENT — REST Moment", "REST NIGHT — ريست نايت": "REST NIGHT — REST Night", "REST NIGHT — ريست نايت (130,000 ريال يمني)": "REST NIGHT — REST Night (130,000 YER)", "REST NIGHT — ريست نايت (130,000 ريال)": "REST NIGHT — REST Night (130,000 YER)", "REST NIGHT — رِيست نايت": "REST NIGHT — REST Night", "TROPICAL LIFESTYLE — أسلوب الحياة الاستوائية": "TROPICAL LIFESTYLE — Tropical Living", "آلية الحجز في 3 خطوات بسيطة": "Booking in 3 simple steps", "أبرز المرافق": "Signature Facilities", "أداء الصلاة بالمصلى، تناول وجبة الغداء في صالة الطعام أو الشرفة، والاسترخاء في الديوان المكيف.": "Pray in the prayer room, enjoy lunch in the dining hall or on the terrace, and unwind in the air-conditioned diwan.", "أرجاء الشاليه": "Around the Chalet", "أرجاء ومرافق شاليه ريست": "REST Chalet Grounds & Facilities", "أرجـاء الـمـلاذ": "The Haven's Corners", "أرجـاء ريست في نظرة واحدة": "All of REST at a Glance", "أرجوحة الزهور التذكارية": "Souvenir Flower Swing", "أرجوحة الفرو والدرج الداخلي": "Fur Swing & Indoor Staircase", "أرجوحة الفرو والزهور": "Fur & Flower Swing", "أرجوحة الفرو والزهور المتدلية بجوار الدرج": "Fur & Flower Swing Hanging by the Staircase", "أرقام الحجز والاستفسار المباشرة": "Direct Booking & Enquiry Numbers", "أركان التصوير": "Photo Corners", "أركان التصوير الحصرية": "Exclusive Photo Corners", "أركان التصوير والذكريات الحصرية": "Photo Corners & Exclusive Memories", "أركان التصوير وشعار النيون": "Photo Corners & the Neon Sign", "أركان التصوير وشعار نيون ريست": "Photo Corners & the REST Neon Sign", "أسلوب الحياة": "Lifestyle", "أصالة وتراث": "Heritage & Authenticity", "أقواس بالونات أنيقة وثيمات ألوان مخصصة لأعياد الميلاد والخطوبة والتخرج حسب اختياركم.": "Elegant balloon arches and custom colour themes for birthdays, engagements, and graduations — tailored to your choice.", "أود تأكيد الاستفسار وحجز الشاليه وفق التفاصيل التالية:": "I would like to confirm my enquiry and book the chalet with the following details:", "إجابات واضحة لاستفساراتكم": "Clear answers to your questions", "إرسال تفاصيل الحجز وتأكيده عبر واتساب": "Send and confirm your booking details via WhatsApp", "إرشادات أمان وسلامة الأطفال": "Child Safety Guidelines", "إشعال الحطب في جلسة حكاية، الاستمتاع بالشواء والشاي على الجمر تحت أضواء النجوم والزهور الوردية.": "Light the firewood at Hikaya Lounge, enjoy the barbecue and ember-brewed tea under the stars and pink blossoms.", "إضاءات سينمائية مهيأة للموبايل": "Cinematic lighting, tuned for mobile", "إطلالة بانورامية": "Panoramic View", "إطلالة بانورامية على فناء ريست": "Panoramic view over the REST courtyard", "إطلالة بانورامية كاملة": "Full panoramic view", "إطلالة بانورامية كاملة، تكييف مركزي متطور، وشاشة عرض 4K": "Full panoramic view, advanced central air conditioning, and a 4K display", "إطلالة كاشفة للمنتجع": "A sweeping view of the resort", "إغلاق": "Close", "إغلاق القائمة": "Close menu", "اتساع وفخامة تليق بالضيوف": "Space and luxury worthy of your guests", "احجز إقامتك": "Book Your Stay", "احجز إقامتك الآن": "Book Your Stay Now", "احجز الآن": "Book Now", "احجز المجلس والديوان": "Book the Majlis & Diwan", "احجز تجربتك في ريست": "Book Your REST Experience", "احجز جلسة بستان": "Book a Bustan Lounge Session", "احجز سهرتك في حكاية": "Book Your Evening at Hikaya", "احجز عبر واتساب": "Book via WhatsApp", "احجز للعائلة والأطفال": "Book for Family & Children", "احجز ليلتك الفاخرة": "Book Your Luxurious Night", "احجز مع المسبح الآن": "Book with the Pool Now", "احجز هذا المرفق ضمن إقامتك": "Add This Facility to Your Stay", "احـجـز إقامتك في رِيست": "Book Your Stay at REST", "اختر الباقة المناسبة لمناسبتك وعائلتك": "Choose the right package for your occasion and family", "اختر باقتك وتاريخ إقامتك": "Choose your package and stay date", "اختر عدد الضيوف، وأي إضافات خاصة ترغب بها (تنسيق ديكور، كيكة، جلسة تصوير، أو ساعات إضافية).": "Choose your guest count and any special extras you'd like (decor styling, a cake, a photo session, or extra hours).", "اختيار الباقة": "Choose a Package", "استثنائي؟": "extraordinary?", "استجمام ومياه": "Relaxation & Water", "استعراض المرفق": "View Facility", "استكشف الباقات والأسعار": "Explore Packages & Prices", "استلام الشاليه في خصوصية تامة، استكشاف الحديقة والكوخ الأبيض، وبدء جلسة سباحة دافئة مع شلال المياه.": "Check in in complete privacy, explore the garden and the White Cabin, and start a warm swim beneath the waterfall.", "اسم المشروع": "Project Name", "اضغط على أي علامة لتتعرّف على المرفق ومساحته. هذا رسمٌ إرشادي توضيحي لترتيب المرافق وليس مخططاً هندسياً، والمساحات منقولة من دليل المرافق في الموقع نفسه.": "Tap any marker to learn about the facility and its area. This is an illustrative guide to the layout of the facilities, not an engineering plan, and the areas are taken from the facilities guide on this site.", "الأجواء والاحتفال": "Ambience & Celebration", "الأسئلة الشائعة": "FAQ", "الإضافات": "Extras", "الإضافات المحددة:": "Selected extras:", "الاستدامة": "Sustainability", "الباقات والأسعار": "Packages & Prices", "الباقة": "Package", "الباقة 01 من 04": "Package 01 of 04", "الباقة 02 من 04": "Package 02 of 04", "الباقة 03 من 04": "Package 03 of 04", "الباقة 04 من 04": "Package 04 of 04", "الباقة المحددة:": "Selected package:", "الباقة المطلوبة": "Requested Package", "التاريخ": "Date", "التاريخ والضيوف": "Date & Guests", "التالي": "Next", "التامة": "complete", "التحويل إلى الوضع البحري الفاتح": "Switch to Light Sea Mode", "التحويل إلى الوضع الليلي": "Switch to Night Mode", "التعقيم والفحص الدوري المستمر": "Continuous Sterilisation & Routine Inspection", "التنقل الرئيسي": "Main navigation", "التوثيق الاحترافي": "Professional Photography", "الجلسات والمجالس": "Lounges & Majlis", "الحجز والاستفسار": "Booking & Enquiries", "الحديقة والفناء": "Garden & Courtyard", "الخاص": "private", "الخصوصية": "Privacy", "الدكان التراثي": "Heritage Shop", "الدكان التراثي وركن السعف الشعبي": "Heritage Shop & the Palm-Frond Folk Corner", "الديوان والمجلس الملكي": "Diwan & Royal Majlis", "الديوان والمجلس الملكي الفاخر": "Luxurious Diwan & Royal Majlis", "الرئيسية": "Home", "الرئيسية — شاليه ريست": "Home — REST Chalet", "الرفاهية": "Luxury", "الرفاهية // الخصوصية // الاسترخاء": "Luxury // Privacy // Relaxation", "السابق": "Previous", "السعة": "Capacity", "السعة الاستيعابية": "Capacity", "السعر (ريال يمني)": "Price (YER)", "السعر التقديري": "Estimated Price", "السعر التقديري:": "Estimated price:", "السكينة": "serenity", "السمر والشواء": "Evening Gatherings & Barbecue", "الشرفة الأندلسية": "Andalusian Terrace", "الشرفة الأندلسية الحجرية": "Stone Andalusian Terrace", "الشرفة الأندلسية الحجرية وإطلالة المنتجع": "Stone Andalusian Terrace & the Resort View", "الشرفة الأندلسية وجلسة بستان": "Andalusian Terrace & Bustan Lounge", "الصالة الرئيسية الفسيحة للمجلس الملكي": "Spacious Main Hall of the Royal Majlis", "الضيافة والحلويات": "Hospitality & Sweets", "الضيوف": "Guests", "العمارية، الرياض": "Al Ammariyah, Riyadh", "الغداء واستراحة الديوان": "Lunch & Diwan Break", "الفناء والمظلات الشراعية": "Courtyard & Sail Shades", "الكوخ الأبيض": "White Cabin", "الكوخ الأبيض الريفي": "Rustic White Cabin", "الكوخ الأبيض الريفي الفاخر": "Luxurious Rustic White Cabin", "الكوخ الأبيض وألعاب الفناء": "White Cabin & Courtyard Games", "الكوخ الأبيض وملاعب الأطفال": "White Cabin & Children's Playgrounds", "الكوخ الأبيض وملاعب كرة القدم والسلة": "White Cabin & the Football and Basketball Courts", "الكوخ الأبيض وملاعب كرة القدم والسلة للأطفال": "White Cabin & Children's Football and Basketball Courts", "الكوخ والملاعب": "Cabin & Playgrounds", "الكوخ وملاعب الأطفال": "Cabin & Children's Playgrounds", "المبيت الملكي": "Royal Overnight", "المجلس الملكي المشرق": "Sunlit Royal Majlis", "المجلس الملكي المشرق بأشعة الشمس الصباحية": "Royal Majlis Bathed in Morning Sunlight", "المجلس الملكي بشمس الصباح": "Royal Majlis in the Morning Sun", "المجلس الملكي والديوان": "Royal Majlis & Diwan", "المجلس الملكي والديوان الفاخر": "Luxurious Royal Majlis & Diwan", "المجلس الملكي والديوان الفخم": "Grand Royal Majlis & Diwan", "المجلس والديوان": "Majlis & Diwan", "المراجعة والإرسال": "Review & Send", "المرافق الرسمية الـ 13": "The 13 Official Facilities", "المرفق": "Facility", "المرفق 01 من 06": "Facility 01 of 06", "المرفق 01 من 06 — المسبح العائلي والشلال": "Facility 01 of 06 — Family Pool & Waterfall", "المرفق 01 من 13 • مرر أفقياً للاستكشاف": "Facility 01 of 13 • Swipe sideways to explore", "المرفق 01 • تجربة مائية دافئة": "Facility 01 • Warm Water Experience", "المرفق 02 من 06 — جلسة حكاية وموقد النار": "Facility 02 of 06 — Hikaya Lounge & Fire Pit", "المرفق 02 • سمر عائلي حول الموقد": "Facility 02 • Family Gathering Around the Fire", "المرفق 03 من 06 — الديوان والمجلس الملكي": "Facility 03 of 06 — Diwan & Royal Majlis", "المرفق 03 • ضيافة ملكية وسينما": "Facility 03 • Royal Hospitality & Cinema", "المرفق 04 من 06 — جلسة بستان والشرفة": "Facility 04 of 06 — Bustan Lounge & Terrace", "المرفق 04 • طراز أندلسي ريفي": "Facility 04 • Rustic Andalusian Style", "المرفق 05 من 06 — الكوخ الأبيض وملاعب الأطفال": "Facility 05 of 06 — White Cabin & Children's Playgrounds", "المرفق 05 • ترفيه وألعاب آمنة": "Facility 05 • Safe Fun & Games", "المرفق 06 من 06 — أركان التصوير الحصرية": "Facility 06 of 06 — Exclusive Photo Corners", "المرفق 06 • توثيق ولحظات تذكارية": "Facility 06 • Memories & Keepsake Moments", "المرفق التالي": "Next facility", "المرفق السابق": "Previous facility", "المساء والرفاهية": "Evening & Luxury", "المساحة الإجمالية": "Total Area", "المساحة: 120 م²": "Area: 120 m²", "المساحة: 450 م²": "Area: 450 m²", "المساحة: 55 م²": "Area: 55 m²", "المساحة: 65 م²": "Area: 65 m²", "المساحة: 85 م²": "Area: 85 m²", "المساحة: 90 م²": "Area: 90 m²", "المسبح الداخلي الدافئ بشاليه ريست": "Heated Indoor Pool at REST Chalet", "المسبح الداخلي الدافئ والشلال الانسيابي": "Heated Indoor Pool & Flowing Waterfall", "المسبح الداخلي والشلال": "Indoor Pool & Waterfall", "المسبح الدافئ والشلال في ريست": "Heated Pool & Waterfall at REST", "المسبح العائلي الدافئ": "Heated Family Pool", "المسبح العائلي الدافئ مع الشلال والنوافير المضيئة": "Heated Family Pool with Waterfall & Illuminated Fountains", "المسبح العائلي الدافئ والشلال المائي": "Heated Family Pool & Waterfall", "المسبح العائلي والشلال": "Family Pool & Waterfall", "المسبح العائلي والشلال المضيء": "Illuminated Family Pool & Waterfall", "المسبح العائلي والشلال والمساج المائي": "Family Pool, Waterfall & Hydro Massage", "المسبح العائلي — تدفق الشلال والنوافير المضيئة": "Family Pool — Flowing Waterfall & Illuminated Fountains", "المسبح والجاكوزي": "Pool & Jacuzzi", "المسبح والسكينة": "Pool & Serenity", "المسبح والشلال": "Pool & Waterfall", "المسرح السينمائي والمعرض": "Cinema Theatre & Gallery", "المصلى": "Prayer Room", "المصلى والسكينة الروحانية": "Prayer Room & Spiritual Serenity", "المطاعم والضيافة": "Dining & Hospitality", "المطبخ المجهز": "Equipped Kitchen", "المطبخ المجهز ومستلزمات الضيافة": "Equipped Kitchen & Hospitality Essentials", "الملاعب الرياضية": "Sports Courts", "الملاعب الرياضية والحديقة": "Sports Courts & Garden", "الملاعب الرياضية وملعب كرة القدم والسلة": "Sports Courts & the Football and Basketball Court", "الملاعب والترفيه": "Playgrounds & Entertainment", "الملاعب والحديقة": "Playgrounds & Garden", "الملاعب والسينما والتصوير": "Playgrounds, Cinema & Photography", "الموقع الجغرافي": "Location", "الوصول والسباحة الصباحية": "Arrival & Morning Swim", "الوضع البحري الفاتح": "Light Sea Mode", "الوضع الليلي الفاخر": "Luxurious Night Mode", "الوقت": "Time", "الوقت الإضافي": "Extra Time", "اليوم": "Today", "باقة الحفلات": "Party Package", "باقة اليوم الكامل": "Full-Day Package", "باقة ريست دي الشاملة": "All-Inclusive REST Day Package", "باقة ريست مومنت المسائية": "Evening REST Moment Package", "باقة ريست نايت الليلية": "REST Night Package", "باقة غداء وعشاء الأعمال": "Business Lunch & Dinner Package", "بانوراما الفناء والمظلات الشراعية": "Courtyard Panorama & Sail Shades", "بجانب الماء": "By the Water", "بحري": "Sea", "بدون إضافات خاصة": "No special extras", "برنامج استجمام نهاري متكامل يشمل كافة مرافق الشاليه": "A complete daytime relaxation programme covering every facility of the chalet", "بيئة عمل راقية ومريحة للاجتماعات ولقاءات فرق العمل": "An elegant, comfortable working environment for meetings and team gatherings", "بين يديك.": "at your fingertips.", "تأكيد فوري واستلام الشاليه": "Instant confirmation & chalet handover", "تاريخ الحجز المفضل": "Preferred Booking Date", "تاريخ الحجز:": "Booking date:", "تبديل المظهر": "Switch appearance", "تبديل مظهر الشاليه": "Switch chalet appearance", "تبديل مظهر الشاليه بين الليلي والبحري الفاتح": "Switch the chalet appearance between night and light sea", "تجمع كبير (26 إلى 40 شخصاً)": "Large gathering (26 to 40 guests)", "تجهيزات صوتية وإضاءة": "Sound & Lighting Equipment", "تجهيزات صوتية وإضاءة حفلات": "Party Sound & Lighting Equipment", "تجهيزات طهي متكاملة": "Fully Equipped Cooking Facilities", "تجهيزات متكاملة": "Fully Equipped", "تحت المظلة الخضراء": "Under the Green Canopy", "تخطَّ إلى الباقات": "Skip to Packages", "تخطَّ إلى الحجز مباشرة": "Skip straight to Booking", "تدفئة ذكية وعمق متدرج": "Smart Heating & Graduated Depth", "ترامبولين وألعاب منوعة": "Trampoline & Assorted Games", "تشغيل أو إيقاف الفيديو": "Play or pause the video", "تصلك رسالة التأكيد المباشر عبر واتساب مع كافة تفاصيل الحجز ورمز الدخول لاستقبالكم بضيافة تليق بكم.": "You will receive an instant confirmation message on WhatsApp with all your booking details and your entry code, welcoming you with the hospitality you deserve.", "تصميم ناعم بجوار شلال الزهور": "Soft design beside the flower waterfall", "تصنيفات الباقات": "Package categories", "تصنيفات الصور": "Photo categories", "تظليل كامل ونافورة ماء هادئة": "Full shade and a tranquil water fountain", "تـوثـيـق حي لسحر المكان": "A Living Record of the Place's Magic", "تكبير الصورة": "Enlarge image", "تكييف مركزي متكامل": "Fully Integrated Central Air Conditioning", "تنسيق جلسة تصوير خاصة": "Private Photo Session Styling", "تنسيق ديكور وبالونات": "Decor & Balloon Styling", "تواصل واتساب فوري": "Instant WhatsApp Contact", "توثيق المسبح الحي والشلال": "Live Pool & Waterfall Footage", "توفير حطب سمر طبيعي لإشعال موقد جلسة حكاية، وفحم شواء سريع الاشتعال وأسياخ كاملة.": "Natural firewood for the Hikaya Lounge fire pit, plus quick-lighting barbecue charcoal and full skewer sets.", "جدول الأنشطة المقترح": "Suggested Activities Schedule", "جلسات خارجية": "Outdoor Lounges", "جلسة البستان": "Bustan Lounge", "جلسة البستان في ريست": "Bustan Lounge at REST", "جلسة السمر": "Evening Gathering Lounge", "جلسة الكوخ الأبيض": "White Cabin Lounge", "جلسة بستان": "Bustan Lounge", "جلسة بستان بمظلة ريفية ورذاذ ماء منعش — ظلٌّ أخضر وطعامٌ خارجي على مهل، كما يجب أن تكون العطلة.": "A Bustan lounge beneath a rustic canopy with refreshing water mist — green shade and unhurried outdoor dining, exactly as a holiday should be.", "جلسة بستان والشرفة": "Bustan Lounge & Terrace", "جلسة بستان والشرفة الأندلسية": "Bustan Lounge & Andalusian Terrace", "جلسة بستان والشرفة الأندلسية الحجرية": "Bustan Lounge & the Stone Andalusian Terrace", "جلسة بستان والمظلة الخشبية": "Bustan Lounge & the Wooden Canopy", "جلسة بستان والمظلة الريفية": "Bustan Lounge & the Rustic Canopy", "جلسة تصوير احترافية": "Professional Photo Session", "جلسة تصوير فوتوغرافي وفيديو": "Photography & Video Session", "جلسة حكاية": "Hikaya Lounge", "جلسة حكاية الدائرية مع شجرة الكرز وموقد النار": "Circular Hikaya Lounge with Cherry Tree & Fire Pit", "جلسة حكاية الغائرة وموقد النار": "Sunken Hikaya Lounge & Fire Pit", "جلسة حكاية بموقد حطب طبيعي — حيث تجتمع العائلة حول النار، وتُروى الحكايات تحت زهور الكرز المضيئة.": "A Hikaya lounge with a natural wood fire — where the family gathers around the fire and stories are told beneath the illuminated cherry blossoms.", "جلسة حكاية بموقد نار طبيعي وشجرة الكرز": "Hikaya Lounge with Natural Fire Pit & Cherry Tree", "جلسة حكاية حول موقد النار": "Hikaya Lounge Around the Fire Pit", "جلسة حكاية حول موقد النار وشجرة الكرز": "Hikaya Lounge Around the Fire Pit & Cherry Tree", "جلسة حكاية وموقد النار": "Hikaya Lounge & Fire Pit", "جلسة خارجية هادئة": "Quiet Outdoor Lounge", "جلسة مساج مائي جاكوزي": "Hydro Massage Jacuzzi Lounge", "جميع الحقوق محفوظة ©": "All rights reserved ©", "جميع الصور": "All Photos", "جناح المبيت": "Overnight Suite", "جولة في أرجاء الشاليه": "A Tour of the Chalet", "حاسبة الحجز والتأكيد الفوري": "Booking Calculator & Instant Confirmation", "حتى 25 شخصاً": "Up to 25 guests", "حتى 30 شخصاً": "Up to 30 guests", "حتى 40 شخصاً": "Up to 40 guests", "حتى 50 شخصاً": "Up to 50 guests", "حجز باقة ريست دي": "Book the REST Day package", "حجز باقة ريست مومنت": "Book the REST Moment package", "حجز باقة ريست نايت": "Book the REST Night package", "حجز باقة غداء الأعمال": "Book the Business Lunch package", "حدد التجربة الأنسب لك (نهار، ليل، مومنت للمناسبات، أو غداء أعمال) مع اختيار التاريخ المطلوب.": "Choose the experience that suits you best (Day, Night, Moment for events, or Business Lunch) and pick your preferred date.", "حدد عدد الضيوف وإضافاتك": "Set Your Guest Count & Extras", "حرارة المياه والتدفئة المتطورة": "Water Temperature & Advanced Heating", "حطب طبيعي وفحم للشواء": "Natural Firewood & Barbecue Charcoal", "حين": "When", "حين يهدأ كل شيء… وتبدأ راحة وسكينة ليلتك الخاصة": "When everything quiets down… and the comfort and serenity of your own night begin", "حين يهدأ كل شيء… وتبدأ راحتك": "When everything quiets down… and your relaxation begins", "خدمات الضيافة المعتمدة": "Approved Hospitality Services", "خدمات وإضافات اختيارية (حسب الرغبة):": "Optional services & extras (as desired):", "خريطة المنتجع": "Resort Map", "خصوصية وسكينة": "Privacy & Serenity", "خصوصية وهدوء تام": "Complete privacy & quiet", "خط الحجز والضيافة المباشر": "Direct Booking & Hospitality Line", "خطوات الحجز": "Booking steps", "خـطـوات حجز إقامتك بكل سهولة": "Booking Your Stay in a Few Easy Steps", "دلـيـل الشاليه والمرافق والخدمات": "Chalet Guide: Facilities & Services", "دليل الشاليه": "Guide", "دليل المرافق والقواعد": "Facilities & Rules Guide", "دليل ريست الشامل": "The Complete REST Guide", "ديوان ملكي فخم وشاشة ذكية 4K وتكييف مركزي": "Luxurious royal diwan with a 4K smart screen and central air conditioning", "رؤية الشاليه": "View the Chalet", "راحة وخصوصية": "Comfort & Privacy", "راحتك": "your relaxation", "رجوع": "Back", "رسم توضيحي لأرجاء المنتجع": "Illustrative map of the resort grounds", "ركن ألعاب ورقية وبلوت": "Card Games & Baloot Corner", "ركن نيون ريست للتصوير": "REST Neon Photo Corner", "ركن نيون ريست وأرجوحة الزهور للتصوير": "REST Neon Corner & Flower Swing for Photos", "ركن نيون ريست وأرجوحة الورد": "REST Neon Corner & Rose Swing", "روابط سريعة": "Quick Links", "رياضة وترفيه": "Sports & Entertainment", "ريال يمني": "YER", "ريال يمني / للفترة": "YER / per stay", "ريست": "REST", "ريست شاليه — لحظات لا تُنسى": "REST Chalet — Unforgettable Moments", "ريست — عالمك الخاص من السكينة": "REST — Your Own World of Serenity", "زاوية مخصصة لأجمل اللقطات التذكارية": "A dedicated corner for your most beautiful keepsake shots", "زهور الجهنمية البديعة": "Exquisite Bougainvillea Blooms", "ساعات إضافية": "Extra Hours", "سرير كينج ملكي، حمام خاص متكامل، وخصوصية تامة للاستراحة": "King-size royal bed, a fully equipped private bathroom, and complete privacy for rest", "سعة حتى 25 شخصاً": "Capacity up to 25 guests", "سعة حتى 30 شخصاً": "Capacity up to 30 guests", "سعة حتى 40 شخصاً": "Capacity up to 40 guests", "سعة حتى 50 شخصاً": "Capacity up to 50 guests", "سعة رحبة حتى 50 شخصاً بخصوصية تامة 100%": "Spacious capacity for up to 50 guests with 100% complete privacy", "سعة مريحة حتى 15 شخصاً": "Comfortable capacity for up to 15 guests", "سكينة وخشوع": "Serenity & Reverence", "سماعات بلوتوث عملاقة وإضاءات ليزرية احتفالية وأجهزة بخار خفيفة لأجواء حماسية.": "Giant Bluetooth speakers, festive laser lighting, and light haze machines for a high-energy atmosphere.", "سمر العائلة": "Family Evenings", "سمر هادئ تحت زهور شجرة الكرز": "Quiet evenings beneath the cherry blossoms", "سنة التطوير": "Year of Development", "سويت منامك": "Sleeping Suite", "سويت منامك الفاخر": "Luxurious Sleeping Suite", "سويت منامك والراحة الفندقية": "Sleeping Suite & Hotel-Style Comfort", "سويت منامك والسينما 4K": "Sleeping Suite & 4K Cinema", "سينما وترفيه": "Cinema & Entertainment", "شاشة ذكية وسينما 4K": "Smart Screen & 4K Cinema", "شاليه": "Chalet", "شاليه ريست (REST-26)": "REST Chalet (REST-26)", "شاليه رِيست": "REST Chalet", "شاليه متكامل يجمع بين دفء الأجواء العائلية وسحر المساء في مساحة خاصة بك وحدك.": "A complete chalet that brings together the warmth of family time and the magic of the evening in a space that is entirely your own.", "شاليه ومنتجع رِيست": "REST Chalet & Resort", "شاليه ومنتجع رِيست الفاخر — تجارب استجمام نهارية وليلية متكاملة، مسبح دافئ بشلال متدفق ومساج مائي، جلسة حكاية بموقد نار طبيعي، باقات غداء الأعمال والمناسبات الخاصة في خصوصية تامة.": "The luxurious REST Chalet & Resort — complete daytime and nighttime relaxation experiences, a heated pool with a flowing waterfall and hydro massage, a Hikaya lounge with a natural wood fire, and business lunch and special occasion packages in complete privacy.", "شاليه ومنتجع رِيست — عالمك الخاص من السكينة والرفاهية": "REST Chalet & Resort — Your Own World of Serenity and Luxury", "شجرة الكرز الوردية": "Pink Cherry Tree", "شريط مواصفات مرافق ريست": "REST Facilities Specifications Strip", "شعار REST نيون مضيء": "Glowing REST Neon Sign", "شعار شاليه ريست": "REST Chalet Logo", "شعار شاليه ومنتجع ريست": "REST Chalet & Resort Logo", "شلال الحدائق": "Garden Waterfall", "شلال الحدائق وجلسة بستان": "Garden Waterfall & Bustan Lounge", "شلال مائي ونوافير قوسية": "Waterfall & Arched Fountains", "شواء وخدمات": "Barbecue & Services", "شواية متكاملة، مرافق استحمام حديثة، وغرف تبديل ملابس خاصة": "Fully equipped grill, modern shower facilities, and private changing rooms", "شيء": "thing", "صالة الطعام والبرجولا": "Dining Hall & Pergola", "صالة الطعام والبرجولا المعلقة": "Dining Hall & Hanging Pergola", "صالة المجلس الملكي الفسيحة": "Spacious Royal Majlis Hall", "ضمان الجاهزية والتعقيم الفندقي الكامل": "Guaranteed Readiness & Full Hotel-Grade Sterilisation", "ضيافة شاليه ريست الفاخرة": "Luxurious REST Chalet Hospitality", "ضيافة ملكية": "Royal Hospitality", "طاولات خشبية وأزهار معلقة دافئة": "Wooden tables & warm hanging flowers", "طاولات رخامية ذهبية": "Golden Marble Tables", "طبيعة خضراء ورذاذ ماء منعش وجلسة طعام خارجية مريحة": "Green nature, refreshing water mist, and a comfortable outdoor dining lounge", "طبيعة واسترخاء": "Nature & Relaxation", "طراز أندلسي حجري": "Stone Andalusian Style", "طراز القلاع وزهور الجهنمية الحمراء": "Castle Style & Red Bougainvillea", "طراز خشبي أوروبي، صالة شاي دافئة، وشرفة مطلة على الحدائق": "European wooden style, a warm tea lounge, and a terrace overlooking the gardens", "طلب قائمة الطعام عبر واتساب": "Request the Menu via WhatsApp", "طلب مع الحجز": "Request with Booking", "عائلة أو تجمع متوسط (11 إلى 25 شخصاً)": "Family or medium gathering (11 to 25 guests)", "عائلة صغيرة (حتى 10 أشخاص)": "Small family (up to 10 guests)", "عارض الصور المكبرة": "Image Lightbox", "عالمك": "your world", "عدد الضيوف المتوقع": "Expected Number of Guests", "عدد الضيوف:": "Number of guests:", "عدسة حية من قلب رِيست": "A Live Lens from the Heart of REST", "عطلة الأسبوع": "Weekend", "عـالـمُـك الـخـاص مِـن الـسَّـكِـيـنـةِ والـرَّفـاهِـيَـــة": "Your Own World of Serenity and Luxury", "عـمـارة مـسـتـوحـاة من تفاصيل السكينة": "Architecture Inspired by the Details of Serenity", "عمق متدرج، تدفئة مياه ذكية، شلال جداري انسيابي ونوافير قوسية": "Graduated depth, smart water heating, a flowing wall waterfall, and arched fountains", "غداء أعمال — الفترة الممتدة": "Business Lunch — Extended Session", "غداء أعمال — الفترة الممتدة (50,000 ريال يمني)": "Business Lunch — Extended Session (50,000 YER)", "غداء أعمال — اليوم الكامل": "Business Lunch — Full Day", "غداء أعمال — اليوم الكامل (70,000 ريال يمني)": "Business Lunch — Full Day (70,000 YER)", "غداء الأعمال — اليوم الكامل (70,000 ريال)": "Business Lunch — Full Day (70,000 YER)", "غرفة السينما 4K ومسرح الترفيه": "4K Cinema Room & Entertainment Theatre", "غرفة السينما والألعاب الورقية": "Cinema Room & Card Games", "غير محدد": "Not specified", "فتح القائمة": "Open menu", "فترة الإقامة:": "Stay period:", "فترة مخصصة": "Custom period", "فترة مسائية هادئة للأمسيات العائلية واللقاءات الودية": "A quiet evening period for family nights and friendly gatherings", "فحص مخبري دوري لجودة ونقاء المياه وتعقيم فندقي شامل لكل مرافق الشاليه قبل تسليم كل حجز لضمان بيئة صحية نقية تماماً.": "Regular laboratory testing of water quality and purity, with full hotel-grade sterilisation of every chalet facility before each handover, ensuring a completely clean and healthy environment.", "فخامة المخمل الأزرق وإشراقة الشمس": "The Luxury of Blue Velvet & the Glow of the Sun", "فريق خدمة العملاء متواجد على مدار الساعة للرد على استفساراتكم وتأكيد الحجوزات المباشرة.": "Our customer service team is available around the clock to answer your questions and confirm direct bookings.", "فهرس مرافق ريست المعمارية": "Index of REST's Architectural Facilities", "قائمة الإضافات": "Extras List", "قواعد المسبح والسلامة": "Pool Rules & Safety", "كل": "everything", "كم تبلغ السعة الاستيعابية للشاليه وهل توجد خصوصية تامة؟": "What is the chalet's capacity, and is privacy complete?", "كيف يتم احتساب وجبات الغداء في باقة الأعمال؟": "How are lunch meals calculated in the Business package?", "كيف يتم تنسيق باقة المناسبات REST MOMENT والديكورات؟": "How is the REST MOMENT events package and its decor arranged?", "كيكات احتفالية بطبقات متعددة مع كتابة الاسم والتصميم المطلوب بالتنسيق المسبق.": "Multi-tier celebration cakes with the name and design of your choice, arranged in advance.", "كيكة المناسبة الفاخرة": "Luxurious Celebration Cake", "لا توجد إضافات": "No extras", "لـحـظـات لا تُقاس بالساعات": "Moments Not Measured in Hours", "لقطات حية توثق انسياب المياه الصافية والإضاءة الليلية الهادئة": "Live shots capturing the flow of clear water and the calm night lighting", "لقطات مباشرة للمسبح الداخلي الدافئ والجلسات والحديقة وأركان التصوير الحصرية": "Live footage of the heated indoor pool, lounges, garden, and exclusive photo corners", "ليلي": "Night", "ما هي أوقات الدخول والخروج للباقات المختلفة؟": "What are the check-in and check-out times for the different packages?", "ما هي سياسة تأكيد الحجز المعتمدة؟": "What is the booking confirmation policy?", "مباريات كرة القدم والسلة للأطفال، مشاهدة فيلم في صالة السينما 4K، وتوثيق الصور التذكارية بجوار ركن النيون.": "Children's football and basketball games, a film in the 4K cinema lounge, and keepsake photos by the neon corner.", "متابعة: التاريخ والضيوف": "Continue: Date & Guests", "متابعة: مراجعة الحجز": "Continue: Review Booking", "مجلس الياقوت": "Ruby Majlis", "مجلس الياقوت الملكي": "Royal Ruby Majlis", "محادثة واتساب مباشرة": "Direct WhatsApp Chat", "مرافق ريست": "REST Facilities", "مرافق شاليه ريست": "REST Chalet Facilities", "مرافق ومنشآت ريست": "REST Facilities & Amenities", "مرح وترامبولين وملاعب رياضية آمنة": "Fun, trampoline & safe sports courts", "مرحباً إدارة شاليه ومنتجع رِيست الفاخر": "Hello, management of the luxurious REST Chalet & Resort", "مرر المؤشر فوق أي بطاقة لاستعراض الصورة الحية للمرفق وتفاصيل مساحته": "Hover over any card to preview the facility's live photo and area details", "مرر لأسفل للتنقل بين المشهدين": "Scroll down to switch between the two scenes", "مرفق 01": "Facility 01", "مرفق 02": "Facility 02", "مرفق 03": "Facility 03", "مرفق 04": "Facility 04", "مرفق 05": "Facility 05", "مرفق 06": "Facility 06", "مرفق 07": "Facility 07", "مرفق 08": "Facility 08", "مرفق 09": "Facility 09", "مرفق 10": "Facility 10", "مرفق 11": "Facility 11", "مرفق 12": "Facility 12", "مرفق 13": "Facility 13", "مزايا شاليه ريست": "REST Chalet Highlights", "مسبح أطفال آمن ومحمي": "Safe, Protected Children's Pool", "مسبح دافئ بشلال متدفق ومساج مائي — صباحٌ يبدأ بصوت الماء، وينتهي بسكينة لا تشبه سواها.": "A heated pool with a flowing waterfall and hydro massage — a morning that begins with the sound of water and ends in a serenity like no other.", "مسبح دافئ بشلال متدفق، خصوصية عائلية تامة، ولحظات هادئة لا تُنسى.": "A heated pool with a flowing waterfall, complete family privacy, and quiet moments you'll never forget.", "مسبح ريست الدافئ": "REST Heated Pool", "مسبح عائلي دافئ ومساج مائي طوال العام": "Heated family pool & hydro massage all year round", "مستلزمات حطب وشواء": "Firewood & Barbecue Supplies", "مسطحات خضراء طبيعية": "Natural Green Lawns", "مشهد المساء والرفاهية": "Evening & Luxury Scene", "مشهد المسبح والسكينة": "Pool & Serenity Scene", "مشهد المنتجع الفاخر 1080p": "Luxury Resort Scene 1080p", "مصور محترف لتوثيق تفاصيل مناسبتكم في أركان النيون وأرجوحة الورد والمسبح المضيء.": "A professional photographer to capture every detail of your occasion at the neon corners, the rose swing, and the illuminated pool.", "مظلات شراعية واقية": "Protective Sail Shades", "مظهر الشاليه": "Chalet Appearance", "معاينة المرفق": "Facility Preview", "معرض الصور": "Gallery", "مـواصـفـات ومساحات مرافق ريست": "REST Facilities: Specifications & Areas", "مقارنة الباقات": "Compare Packages", "مقاطع الفيديو الاحتياطية في الواجهة: Pexels. جميع صور المكان من أصول ريست الحقيقية.": "Fallback videos in the interface: Pexels. All photos of the place are genuine REST assets.", "مقدمة شاليه ومنتجع ريست": "Introduction to REST Chalet & Resort", "ملاحظة: مواقع العلامات تقريبية لأغراض التوضيح فقط، ولا تعبّر عن مسافات أو اتجاهات حقيقية بين المرافق.": "Note: marker positions are approximate and for illustration only; they do not represent real distances or directions between facilities.", "ملخص الحجز التقديري": "Estimated Booking Summary", "ملخص الحجز للمراجعة": "Booking Summary for Review", "ملعب كرة سلة": "Basketball Court", "ملعب كرة طائرة رملي، مسطحات خضراء، ومنطقة ألعاب أطفال آمنة": "Sandy volleyball court, green lawns, and a safe children's play area", "ملعب كرة قدم للأطفال": "Children's Football Pitch", "من": "of", "مناسبة وسهرة كبرى (حتى 50 شخصاً)": "Grand occasion & evening (up to 50 guests)", "منطقة الشواء": "Barbecue Area", "منطقة الشواء الفاخرة": "Luxurious Barbecue Area", "منطقة الشواء وغرف التبديل": "Barbecue Area & Changing Rooms", "منطقة الشواء وغرف التبديل المستقلة": "Barbecue Area & Separate Changing Rooms", "موقد النار في جلسة حكاية": "Fire Pit at Hikaya Lounge", "موقد النار والشواء والسمر": "Fire Pit, Barbecue & Evening Gatherings", "موقد حطب طبيعي، سمر عائلي هادئ، تحت زهور الكرز المضيئة": "Natural wood fire, quiet family evenings, beneath the illuminated cherry blossoms", "موقد نار حطبي طبيعي": "Natural Wood Fire Pit", "موقد نار ونظام صوتي": "Fire Pit & Sound System", "مياه دافئة في كل الفصول": "Warm water in every season", "مياه دافئة وإضاءات ليلية بديعة": "Warm water & beautiful night lighting", "نـخـلـةُ الـواحَــــة الاســتـوائـيـة": "The Tropical Oasis Palm", "هل تبحث عن مـلاذ": "Looking for a haven", "هل تتوفر مستلزمات الطبخ والشواء داخل الشاليه؟": "Are cooking and barbecue supplies available inside the chalet?", "هل مياه المسبح دافئة ومناسبة للأطفال في الشتاء؟": "Is the pool water warm and suitable for children in winter?", "هل يمكن تمديد ساعات إضافية وما هي تكلفتها؟": "Can extra hours be added, and what do they cost?", "واحة الخصوصية والفخامة: مسبح دافئ بشلال ومساج مائي، جلسات حكاية وبستان، والكوخ الأبيض.": "An oasis of privacy and luxury: a heated pool with waterfall and hydro massage, Hikaya and Bustan lounges, and the White Cabin.", "والخصوصية": "and privacy", "والرفاهية": "and luxury", "وتبدأ": "and begins", "وجبات الغداء والعشاء والشواء الفاخر": "Luxurious Lunch, Dinner & Barbecue Meals", "وجهتكم الفاخرة لقضاء أسعد اللحظات العائلية والمناسبات الخاصة في أجواء استثنائية من السكينة والرفاهية والخصوصية التامة.": "Your luxurious destination for the happiest family moments and special occasions, in an exceptional atmosphere of serenity, luxury, and complete privacy.", "يجب ارتداء سترات النجاة للأطفال دون سن 8 سنوات واستخدام المسبح المخصص للأطفال بعمق آمن ومستقل تحت إشراف ذويهم.": "Children under 8 must wear life jackets and use the dedicated children's pool, with its safe, separate depth, under the supervision of their guardians.", "يرجى إفادتي بتوفر التاريخ وتأكيد إجراءات الحجز. شكراً لكم!": "Please let me know if the date is available and confirm the booking arrangements. Thank you!", "يرجى اختيار تاريخ للحجز (لا يمكن أن يكون في الماضي).": "Please choose a booking date (it cannot be in the past).", "يمنحك": "gives you", "يهدأ": "quiets down", "• الإضافات المختارة:": "• Selected extras:", "• الباقة المطلوبة:": "• Requested package:", "• القيمة التقديرية للباقة:": "• Estimated package value:", "• تاريخ الحجز:": "• Booking date:", "• عدد الضيوف:": "• Number of guests:", "_dynamic": {"map": {"note": "The MAP object (JS) drives the resort-map panel: clicking a marker sets the panel image, name, description and area from these entries.", "pool": {"name": "المسبح الداخلي والشلال", "desc": "عمق متدرج، تدفئة مياه ذكية، شلال جداري انسيابي ونوافير قوسية", "area": "المساحة: 120 م²", "alt": "المسبح الداخلي والشلال"}, "majlis": {"name": "مجلس الياقوت الملكي", "desc": "إطلالة بانورامية كاملة، تكييف مركزي متطور، وشاشة عرض 4K", "area": "المساحة: 85 م²", "alt": "مجلس الياقوت الملكي"}, "hikaya": {"name": "جلسة حكاية وموقد النار", "desc": "موقد حطب طبيعي، سمر عائلي هادئ، تحت زهور الكرز المضيئة", "area": "المساحة: 65 م²", "alt": "جلسة حكاية وموقد النار"}, "bustan": {"name": "جلسة بستان والمظلة الريفية", "desc": "طبيعة خضراء ورذاذ ماء منعش وجلسة طعام خارجية مريحة", "area": "المساحة: 90 م²", "alt": "جلسة بستان والمظلة الريفية"}, "cabin": {"name": "الكوخ الأبيض الريفي", "desc": "طراز خشبي أوروبي، صالة شاي دافئة، وشرفة مطلة على الحدائق", "area": "المساحة: 55 م²", "alt": "الكوخ الأبيض الريفي"}, "playground": {"name": "الملاعب الرياضية والحديقة", "desc": "ملعب كرة طائرة رملي، مسطحات خضراء، ومنطقة ألعاب أطفال آمنة", "area": "المساحة: 450 م²", "alt": "الملاعب الرياضية والحديقة"}}, "whatsapp_message": {"note": "Lines joined with newlines and sent to wa.me/966508332211 on booking submit. The • lines take a runtime value after the colon.", "greeting": "مرحباً إدارة شاليه ومنتجع رِيست الفاخر", "intro": "أود تأكيد الاستفسار وحجز الشاليه وفق التفاصيل التالية:", "package": "• الباقة المطلوبة:", "date": "• تاريخ الحجز:", "guests": "• عدد الضيوف:", "addons": "• الإضافات المختارة:", "price": "• القيمة التقديرية للباقة:", "price_suffix": "ريال يمني", "closing": "يرجى إفادتي بتوفر التاريخ وتأكيد إجراءات الحجز. شكراً لكم!", "addons_fallback": "بدون إضافات خاصة", "date_fallback": "غير محدد", "guests_fallback": "غير محدد"}, "counters": {"facilities": {"note": "Rendered as 'المرفق {NN} من 06 — {name}' with names from facilityStepNames.", "pattern": "المرفق 01 من 06 — المسبح العائلي والشلال", "names": ["المسبح العائلي والشلال", "جلسة حكاية وموقد النار", "الديوان والمجلس الملكي", "جلسة بستان والشرفة", "الكوخ الأبيض وملاعب الأطفال", "أركان التصوير الحصرية"]}, "guide": {"note": "Rendered as 'المرفق {NN} من 13 • مرر أفقياً للاستكشاف'.", "pattern": "المرفق 01 من 13 • مرر أفقياً للاستكشاف"}, "morph_packages": {"note": "Rendered as 'الباقة 0{X} من 04'.", "pattern": "الباقة 01 من 04"}}, "booking_schedule": {"note": "scheduleDictionary: shown as the live timing line in the booking summary.", "day": "09:00 ص — 09:00 م (12 ساعة)", "night": "11:00 م — 07:00 ص (8 ساعات)", "moment": "04:00 م — 10:00 م (6 ساعات — أمسية مناسبات)", "business-ext": "12:00 ظ — 09:00 م (فترة ممتدة)", "business-full": "12:00 ظ — 12:00 منتصف الليل (يوم كامل)", "fallback": "فترة مخصصة"}, "booking_summary_fallbacks": {"no_addons": "لا توجد إضافات", "date_empty": "اليوم"}, "theme_toggle": {"note": "JS-set title/description strings for the light/dark theme switch.", "to_night": "التحويل إلى الوضع الليلي", "to_sea": "التحويل إلى الوضع البحري الفاتح", "desc_sea": "الوضع البحري الفاتح", "desc_night": "الوضع الليلي الفاخر"}, "lightbox_fallback_titles": {"note": "Fallback captions passed to openLightboxDirect when a row/card has no title.", "directory": "مرافق شاليه ريست", "metric": "مرافق ريست"}, "video_toggle_caption": {"note": "Caption toggled with the hero video source.", "resort": "مشهد المنتجع الفاخر 1080p", "pool": "توثيق المسبح الحي والشلال"}}, "لوحة اتجاهات المنتجع": "Resort Directions Board", "كل المرافق بين يديك من مكان واحد": "Every facility at your fingertips, in one place", "الجلسة الدائرية ليلاً": "The Circular Lounge at Night", "أضواء النيون وشجرة الزهر الوردية": "Neon lights and the pink blossom tree", "ألعاب الأرضية": "Floor Games", "الحجلة والتيك تاك تو للأطفال": "Hopscotch and tic-tac-toe for children", "الباحة والدكان ليلاً": "The Courtyard & Shop at Night", "ألعاب الأرضية والكوخ الأزرق": "Floor games and the blue cabin", "البرج الحجري": "The Stone Tower", "جلسة مقوّسة بدرج حجري وعشب أخضر": "An arched lounge with stone steps and green grass", "فناء المنتجع ليلاً": "The Resort Courtyard at Night", "ألعاب الأرضية والكوخ الأزرق والواجهة التراثية": "Floor games, the blue cabin, and the heritage facade", "لوحة دليل المرافق": "Facilities Guide Board", "الجلسة الغائرة في الفناء": "The Sunken Courtyard Lounge", "مجلس دائري منخفض في قلب الفناء": "A low circular lounge in the heart of the courtyard", "نسخة معاينة: جميع الصور والفيديوهات في هذه النسخة من Pexels (صور مخزون تجريبية للمعاينة فقط) وليست صور المنتجع الحقيقية — ستُستبدل بصور REST الحقيقية عند نسخ الأصول إلى جذر المستودع.": "Preview version: all photos and videos in this version are from Pexels (trial stock media for preview only), not the resort’s real photos — they will be replaced with REST’s real photos once the assets are copied to the repository root.", "الصور في هذه النسخة هي صور المنتجع الحقيقية من المستودع؛ الفيديوهات ما زالت مخزوناً تجريبياً من Pexels وستُستبدل بفيديوهات REST الحقيقية عند توفرها.": "The photos in this version are the resort’s real photos from the repository; the videos are still trial stock from Pexels and will be replaced with REST’s real videos when available.", "نسخة معاينة بالصور الحقيقية: جميع الصور في هذه النسخة هي صور المنتجع الحقيقية (أرسلها المالك)؛ الفيديوهات ما زالت مخزوناً تجريبياً من Pexels وستُستبدل بفيديوهات REST الحقيقية عند توفرها.": "Real-photo preview: all photos in this version are the resort’s real photos (sent by the owner); the videos are still trial stock from Pexels and will be replaced with REST’s real videos when available.", "ريست شاليه يمنحك عالمك الخاص من السكينة والرفاهية والخصوصية التامة": "REST Chalet gives you your own private world of serenity, luxury and complete privacy", "الإعدادات": "Settings", "لوحة التحكم": "Admin", "اسم العميل": "Client name", "رقم جوال العميل": "Client phone", "رقم الجوال": "Phone number", "الاسم الكامل": "Full name", "يرجى إدخال اسم العميل ورقم الجوال قبل المتابعة.": "Please enter the client name and phone number before continuing.", "طلب حجز جديد من الموقع:": "New booking request from the website:", "• اسم العميل:": "• Client name:", "• رقم جوال العميل:": "• Client phone:", "• وقت الحجز:": "• Booking time:", "طلب حجز جديد — شاليه ومنتجع رِيست": "New booking request — REST Chalet & Resort", "رقم مرجع الحجز:": "Booking reference:", "رقم مرجع الحجز": "Booking reference", "تاريخ الطلب:": "Request date:", "بيانات العميل:": "Client details:", "تفاصيل الحجز:": "Booking details:", "المصدر: موقع رِيست الرسمي": "Source: REST official website", "يرجى تأكيد التوفر وإجراءات الحجز. شكراً لكم!": "Please confirm availability and the booking procedure. Thank you!", "04:00 م — 10:00 م (6 ساعات)": "4:00 PM — 10:00 PM (6 hours)", "احجز هذه الباقة": "Book this package", "احجز": "Book", "الحجز": "Booking", "باقة المناسبات": "Events package", "تم إرسال طلب الحجز بنجاح": "Your booking request was sent successfully", "رقم مرجع حجزك هو:": "Your booking reference is:", "سنتواصل معك قريباً عبر واتساب لتأكيد التوفر وإجراءات الحجز. احتفظ برقم المرجع عند التواصل معنا.": "We will contact you soon on WhatsApp to confirm availability and the booking procedure. Please keep your reference number when contacting us.", "حجز جديد": "New booking", "مسبح عائلي مغلق ومدفأ طوال العام، بشلال جداري ونوافير قوسية ومسبح أطفال وجاكوزي.": "An enclosed, heated family pool all year round — wall waterfall, arched fountains, a children's pool, and a jacuzzi.", "جلسة حجرية دائرية حول موقد نار طبيعي، للشاي والسمر تحت زهور الكرز المضيئة.": "A circular stone lounge around a natural fire pit — tea and quiet family evenings beneath the illuminated cherry blossoms.", "صالة استقبال فسيحة بأثاث مخملي ملكي، شاشة 4K وتكييف مركزي، لكبار الضيوف.": "A spacious reception hall with royal velvet furnishings, a 4K screen and central air conditioning — for your honoured guests.", "شرفة حجرية بمظلة قرميدية حمراء تطل على المنتجع والمسبح، لقهوة الصباح والشاي.": "A stone terrace under a red-tiled canopy overlooking the resort and pool — for morning coffee and tea.", "ركن آمن للأطفال والعائلة: كوخ أبيض، ملعبا كرة قدم وسلة، ترامبولين وألعاب أرضية.": "A safe corner for children and families: a white cabin, football and basketball courts, a trampoline, and floor games.", "زوايا احترافية لأجمل اللقطات: شعار REST النيوني وأرجوحة الورد وأرجوحة الفرو.": "Professional corners for your best shots: the glowing REST neon sign, the rose swing, and the fur swing.", "مسبح دافئ مغلق (30–34°) بشلال جداري ونوافير مضيئة وفلترة وتعقيم متطور.": "An enclosed heated pool (30–34°C) with a wall waterfall, illuminated fountains, and advanced filtration and sterilisation.", "جلسة حجرية دائرية بفرش أزرق ملكي، تتوسطها حفرة نار تحت شجرة الكرز.": "A circular stone lounge with royal blue seating around a natural fire pit beneath the blossoming cherry tree.", "جلسة خارجية هادئة بين الخضرة والزهور والمظلات، للشاي والقهوة.": "A quiet outdoor lounge among green lawns, flowers, and shade canopies — for tea and coffee.", "كوخ أبيض ريفي هادئ للاسترخاء والأحاديث، بعيداً عن الصخب.": "A quiet rustic white cabin for relaxing and conversation, away from the noise.", "ركن خشبي تراثي بسقف السعف، بضيافة وحلويات شعبية للأطفال.": "A heritage wooden corner with a palm-thatch roof, serving traditional sweets and hospitality for children.", "برج حجري بقرميد إسباني أحمر وجهنمية متسلقة، يطل على المنتجع والحديقة.": "A stone tower with red Spanish tiles and climbing bougainvillea, overlooking the whole resort and garden.", "ملعب كرة قدم بعشب آمن وحواجز واقية، وملعب سلة وترامبولين للأطفال.": "A family football pitch with safe turf and protective netting, a basketball court, and a children's trampoline.", "مصلّى هادئ بسجاد فاخر وتكييف ممتاز، مع مغاسل وضوء قريبة.": "A quiet prayer room with luxurious carpets and excellent air conditioning, with nearby ablution washbasins.", "صالة استقبال كبرى بكنب مخملي أزرق وشاشات ذكية وثريا ذهبية لكبار الضيوف.": "A grand reception hall with luxurious blue velvet sofas, smart screens, and a golden chandelier for honoured guests.", "غرفة نوم رئيسية فاخرة بفرش فندقي راقٍ وإضاءة مهدئة، لنوم هانئ.": "A luxurious master bedroom with premium hotel bedding and soothing lighting, for a restful night's sleep.", "ركن سينما 4K وألعاب بلوت وبورد جيمز عائلية، بجلسات مريحة.": "A 4K cinema corner with baloot and family board games, and comfortable seating.", "مطبخ عصري مجهز بالثلاجة والفرن والمايكروويف وأواني الضيافة والشاي والقهوة.": "A modern kitchen with a fridge, oven, microwave, hospitality utensils, and everything for tea and coffee.", "ركن شواء بمناقل حطب وفحم، وغرف تبديل ودورات مياه مستقلة بجوار المسبح.": "A barbecue corner with wood and charcoal grills, plus separate changing rooms and washrooms by the pool.", "باقات صُممت لخصوصيتك وراحتك مع أحبابك — اختر ما يناسب مناسبتك.": "Packages designed for your privacy and comfort with your loved ones — choose what suits your occasion.", "ريست ليس مكاناً تقضي فيه وقتك، بل إيقاعٌ تعيشه: ماء دافئ، ونار هادئة، وخضرة تظلّلك.": "REST is not a place you spend time in — it is a rhythm you live: warm water, a quiet fire, and greenery above you.", "مرافق صُممت للاسترخاء والخصوصية العائلية المطلقة — فخامة وسكينة في كل تفصيلة.": "Facilities designed for relaxation and complete family privacy — luxury and serenity in every detail.", "وجبات راقية من قائمة مطاعم معتمدة: غداء أعمال، بوفيهات، ولحوم شواء طازجة — تُحتسب بشكل مستقل.": "Refined meals from an approved restaurant list: business lunches, open buffets, and fresh barbecue meats — priced separately.", "تدفئة تلقائية بين 30 و34° لسباحة مريحة لكل العائلة، في كل الفصول.": "Automatic heating between 30 and 34°C, for comfortable swimming for the whole family in every season.", "حجز سلس وسريع، بتأكيد فوري من إدارة المنتجع.": "A smooth, fast booking — confirmed instantly by resort management.", "حدد اختياراتك، وسنجهّز رسالتك على واتساب فوراً.": "Choose your options and your WhatsApp message will be ready instantly.", "تعقيم كامل للمسبح والمجالس قبل وصولكم، مع تسليم شفرتكم الخاصة.": "The pool and lounges are fully sterilised before your arrival, with your private code handed over.", "كل ما تحتاج معرفته قبل الحجز.": "Everything you need to know before booking.", "المرافق الـ 13 وقواعد المسبح والإضافات والأنشطة — كل ما تحتاجه.": "The 13 facilities, pool rules, extras, and activities — everything you need.", "ريست دي: 09:00 ص — 09:00 م (12 ساعة). ريست نايت: 11:00 م — 07:00 ص (8 ساعات). ريست مومنت: 04:00 م — 10:00 م (6 ساعات). غداء الأعمال: 12:00 ظ — 09:00 م (ممتدة) أو حتى 12:00 منتصف الليل (يوم كامل).": "REST Day: 9:00 AM – 9:00 PM (12 hours). REST Night: 11:00 PM – 7:00 AM (8 hours). REST Moment: 4:00 PM – 10:00 PM (6 hours). Business Lunch: 12:00 PM – 9:00 PM (extended) or until 12:00 AM (full day).", "نعم — المسبح مغلق ومدفأ على مدار الساعة (30–34°) مع مسبح آمن للأطفال وتعقيم فندقي دوري.": "Yes — the pool is enclosed and heated around the clock (30–34°C), with a safe children's pool and regular hotel-grade sterilisation.", "يتسع لـ 40–50 شخصاً حسب الباقة، والشاليه كاملاً لكم وحدكم — خصوصية 100%.": "It fits 40–50 guests depending on the package, and the whole chalet is yours alone — 100% privacy.", "تُحضّر حسب الطلب وعدد الضيوف، وتُحتسب بشكل مستقل عن الباقة وفق قائمة الطعام — مع ضيافة مجانية واستخدام المجالس والحديقة والواي فاي.": "Prepared to order by guest count, priced separately from the package per the menu — with complimentary hospitality and access to the lounges, garden, and Wi-Fi.", "نعم — 10,000 ريال للساعة، حسب التوافر والموافقة المسبقة.": "Yes — 10,000 YER per hour, subject to availability and prior approval.", "نعم — مطبخ مجهز (ثلاجة، فرن، مايكروويف، أواني ضيافة) ومنطقة شواء خارجية بمناقل حطب وفحم وموقد نار.": "Yes — an equipped kitchen (fridge, oven, microwave, hospitality utensils) and an outdoor barbecue area with wood and charcoal grills and a fire pit.", "تُصمَّم حسب مناسبتكم وميزانيتكم — نتواصل عبر واتساب لتحديد الديكور والكيكة والصوتيات والتصوير قبل وصولكم.": "Designed around your occasion and budget — we contact you on WhatsApp to arrange the decor, cake, sound, and photography before you arrive.", "يُثبَّت الحجز بعربون عبر الحسابات البنكية أو المحافظ المعتمدة، مع سند حجز رسمي وفاتورة إلكترونية وإرشادات الوصول.": "Your booking is secured with a deposit via approved bank accounts or e-wallets, with an official booking voucher, an electronic invoice, and arrival directions."};
       var LS_KEY = 'rest_lang';
       var currentLang = 'ar';
       try { var saved = localStorage.getItem(LS_KEY); if (saved === 'en' || saved === 'ar') currentLang = saved; } catch (e) {}
@@ -9629,23 +9792,75 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     });
   }
 
+  /* ---------- Admin login (email + password, server-verified) ---------- */
+  /* The admin panel is gated behind an email + password. The check runs in
+     the Vercel function /api/admin-auth, which compares the email to the
+     ADMIN_EMAIL env var and the SHA-256 of the password to
+     ADMIN_PASSWORD_HASH. The password itself is never stored in the browser
+     or in this file. A successful login sets a session flag (sessionStorage)
+     so this browser stays logged in until the tab closes or the owner logs
+     out; the flag alone grants nothing — the function re-verifies on login. */
+  var AUTH_KEY = 'rest_admin_auth_v1';
+  function isAuthed() {
+    try { return sessionStorage.getItem(AUTH_KEY) === '1'; } catch (e) { return false; }
+  }
+  function setAuthed(v) {
+    try { if (v) sessionStorage.setItem(AUTH_KEY, '1'); else sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
+  }
+
   /* ---------- Auto-publish (server) ---------- */
-  /* Every save POSTs the overrides to /api/publish (a Vercel function).
-     There is NO token in the browser anymore: the function commits the
-     payload to public/overrides.json in the repo using a GitHub token stored
-     as the Vercel env var GITHUB_TOKEN (set once in the Vercel dashboard).
-     Vercel auto-deploys on push, so all visitors see the edits within ~a
-     minute. Remote wins on load only when it is newer than this browser's
-     last local save, so an unpublished local edit is never wiped by a reload.
+  /* Saves are DRAFTS: nothing is published until the owner confirms.
+     Every save stores the edit locally and marks it pending; the owner
+     presses «تأكيد ونشر» (top bar or tools page) to publish. The publish
+     POSTs the overrides to /api/publish (a Vercel function). There is NO
+     token in the browser: the function commits the payload to
+     public/overrides.json in the repo using a GitHub token stored as the
+     Vercel env var GITHUB_TOKEN (set once in the Vercel dashboard). Vercel
+     auto-deploys on push, so all visitors see the edits within ~a minute.
+     Remote wins on load only when it is newer than this browser's last
+     local save, so an unpublished local edit is never wiped by a reload.
      The overrides are read from the site's OWN /overrides.json (deployed by
      Vercel) — NOT from GitHub raw, which 404s for a private repo. */
   var LOCAL_TS_KEY = 'rest_local_updated_v1';
+  var LAST_PUB_KEY = 'rest_last_published_v1';
+  function getLastPublished() { return lsGet(LAST_PUB_KEY, null); }
+  function setLastPublished(payload) {
+    if (!payload) return;
+    lsSet(LAST_PUB_KEY, { overrides: payload.overrides || {}, waNumber: payload.waNumber || getWaNumber() });
+  }
+  /* How many edits are waiting for the owner's confirmation. */
+  function pendingCount() {
+    var last = getLastPublished();
+    if (!last) return Object.keys(getOverrides()).length + (getWaNumber() !== WA_NUM_DEFAULT ? 1 : 0);
+    var ovs = getOverrides();
+    var n = 0;
+    var keys = {};
+    Object.keys(ovs).forEach(function (k) { keys[k] = true; });
+    Object.keys(last.overrides || {}).forEach(function (k) { keys[k] = true; });
+    Object.keys(keys).forEach(function (k) {
+      var a = ovs[k] ? ovs[k].value : null;
+      var b = last.overrides[k] ? last.overrides[k].value : null;
+      if (a !== b) n++;
+    });
+    if (getWaNumber() !== (last.waNumber || WA_NUM_DEFAULT)) n++;
+    return n;
+  }
+  function updatePendingBadge() {
+    var n = pendingCount();
+    var b = document.getElementById('rab-pending');
+    if (b) {
+      b.hidden = n === 0;
+      b.textContent = 'تأكيد ونشر (' + n + ')';
+    }
+    var t = document.getElementById('rap-pending-line');
+    if (t) t.textContent = n > 0 ? 'لديك ' + n + ' تعديل بانتظار التأكيد — لن يُنشر شيء حتى تضغط «تأكيد ونشر».' : 'لا توجد تعديلات بانتظار النشر — كل شيء منشور.';
+    if (typeof updateVisualBar === 'function' && visualEdit) updateVisualBar();
+  }
   function touchLocal() { try { localStorage.setItem(LOCAL_TS_KEY, String(Date.now())); } catch (e) {} }
   function localTs() { try { return parseInt(localStorage.getItem(LOCAL_TS_KEY) || '0', 10) || 0; } catch (e) { return 0; } }
   function remotePayload() {
     return { v: 1, updatedAt: Date.now(), overrides: getOverrides(), waNumber: getWaNumber() };
   }
-  var publishTimer = null;
   var publishState = 'idle';
   /* Visual edit mode: the live site itself is the editor. Edits are kept as
      drafts (local only) until the owner confirms, so nothing reaches the
@@ -9726,26 +9941,26 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     var pn = document.getElementById('rap-publish-now');
     if (pn) {
       if (s === 'publishing') { pn.disabled = true; pn.textContent = 'جارٍ النشر…'; }
-      else { pn.disabled = false; pn.textContent = 'نشر الآن'; }
+      else { pn.disabled = false; pn.textContent = '✓ تأكيد ونشر التعديلات'; }
     }
     var sv = document.getElementById('rap-save-publish');
     if (sv) {
       if (s === 'publishing') { sv.disabled = true; sv.textContent = 'جارٍ النشر…'; }
       else { sv.disabled = false; sv.textContent = 'حفظ ونشر'; }
     }
-  }
-  function schedulePublish() {
-    if (publishTimer) clearTimeout(publishTimer);
-    publishTimer = setTimeout(publishRemote, 1500); // batch rapid saves into one commit
+    var pb = document.getElementById('rab-pending');
+    if (pb) {
+      if (s === 'publishing') { pb.disabled = true; pb.textContent = 'جارٍ النشر…'; }
+      else { pb.disabled = false; updatePendingBadge(); }
+    }
   }
   function publishNow() {
-    // Immediate publish (used by the explicit buttons): cancel any pending
-    // debounced publish so we do not publish twice.
-    if (publishTimer) { clearTimeout(publishTimer); publishTimer = null; }
+    // Immediate publish (used by the explicit confirm buttons). Nothing
+    // publishes automatically anymore — every publish is an explicit tap.
     return publishRemote();
   }
   function publishRemote() {
-    if (typeof fetch !== 'function') { setPublishState('error', 'تعذّر النشر التلقائي — هذا المتصفح لا يدعم النشر. استخدم التنزيل اليدوي.'); return Promise.resolve(false); }
+    if (typeof fetch !== 'function') { setPublishState('error', 'تعذّر النشر — هذا المتصفح لا يدعم النشر. استخدم التنزيل اليدوي.'); return Promise.resolve(false); }
     setPublishState('publishing', 'جارٍ نشر التعديلات للجميع…');
     var payload = remotePayload();
     return fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
@@ -9760,7 +9975,9 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       .then(function (j) {
         if (!j || !j.ok) throw new Error(j && j.error ? j.error : 'failed');
         try { localStorage.setItem(LOCAL_TS_KEY, String(payload.updatedAt)); } catch (e) {}
-        setPublishState('published', 'تم النشر تلقائياً ✓ — ستظهر التعديلات لكل الزوار خلال دقيقة تقريباً.');
+        setLastPublished(payload);
+        updatePendingBadge();
+        setPublishState('published', 'تم النشر ✓ — ستظهر التعديلات لكل الزوار خلال دقيقة تقريباً.');
         return true;
       })
       .catch(function (err) {
@@ -9775,9 +9992,9 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         } else if (m === 'too-large') {
           msg = 'التعديلات كبيرة جداً للنشر التلقائي (صور كبيرة) — استخدم التنزيل اليدوي.';
         } else if (m === 'network' || m === 'Failed to fetch' || m.indexOf('Network') !== -1) {
-          msg = 'تعذّر الاتصال بخادم النشر (مشكلة شبكة مؤقتة) — تحقق من الإنترنت ثم اضغط «نشر الآن» مجدداً.';
+          msg = 'تعذّر الاتصال بخادم النشر (مشكلة شبكة مؤقتة) — تحقق من الإنترنت ثم اضغط «تأكيد ونشر» مجدداً.';
         } else {
-          msg = 'تعذّر النشر التلقائي (' + m + ') — التعديلات محفوظة في هذا المتصفح، جرّب «نشر الآن» أو التنزيل اليدوي.';
+          msg = 'تعذّر النشر (' + m + ') — التعديلات محفوظة في هذا المتصفح، جرّب «تأكيد ونشر» أو التنزيل اليدوي.';
         }
         setPublishState('error', msg);
         return false;
@@ -9801,7 +10018,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           applyWaNumber();
         }
         try { localStorage.setItem(LOCAL_TS_KEY, String(data.updatedAt)); } catch (e) {}
+        // The remote file IS the published state — record it so the pending
+        // count compares against what visitors actually see.
+        setLastPublished({ overrides: data.overrides || {}, waNumber: data.waNumber || getWaNumber() });
         refreshNavCounts();
+        updatePendingBadge();
         return true;
       })
       .catch(function () { return false; }); // offline / not published yet: keep the local copy
@@ -9901,7 +10122,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     refreshNavCounts();
     touchLocal();
     if (visualEdit) updateVisualBar(); // draft: publish only on «تأكيد التعديل ونشره»
-    else schedulePublish();
+    else updatePendingBadge(); // draft: publish only on «تأكيد ونشر»
   }
   function resetOne(id) {
     var o = originals[id];
@@ -9911,7 +10132,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     lsSet(OV_KEY, ovs);
     touchLocal();
     if (visualEdit) updateVisualBar();
-    else schedulePublish();
+    else updatePendingBadge();
     var el = document.querySelector('[data-admin-id="' + id + '"]');
     if (el) {
       if (o.type === 'text') el.innerHTML = o.original;
@@ -10109,11 +10330,12 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   }
   function dashboardStatusHtml() {
     var wa = getWaNumber();
+    var pend = pendingCount();
     var pub = publishState === 'published' ? '<span class="ok">منشور ✓</span>'
       : publishState === 'publishing' ? '<span class="warn">جارٍ النشر…</span>'
       : publishState === 'error' ? '<span class="warn">تعذّر النشر — راجع صفحة «إعادة تعيين وتصدير»</span>'
-      : '<span class="ok">النشر التلقائي مفعّل عبر الخادم</span>';
-    return '<b>حالة النشر:</b> ' + pub + '<br><b>رقم واتساب الاستقبال:</b> <span dir="ltr">+' + wa + '</span>';
+      : (pend > 0 ? '<span class="warn">' + pend + ' تعديل بانتظار التأكيد</span>' : '<span class="ok">كل شيء منشور ✓</span>');
+    return '<b>حالة النشر:</b> ' + pub + ' <small>(النشر بعد التأكيد فقط — لا نشر تلقائي)</small><br><b>رقم واتساب الاستقبال:</b> <span dir="ltr">+' + wa + '</span>';
   }
   function dashboardLatestHtml() {
     var list = lsGet(BOOK_KEY, []);
@@ -10130,15 +10352,21 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     bar.innerHTML =
       '<button type="button" class="rab-menu" id="rest-admin-menu" aria-label="فتح صفحات لوحة التحكم" title="صفحات لوحة التحكم">☰</button>' +
       '<div class="rab-title">لوحة تحكم REST <span id="rest-admin-count"></span></div>' +
-      '<div class="rab-actions"><button type="button" id="rest-admin-pages">الصفحات</button><button type="button" id="rest-admin-done">عرض الموقع</button></div>';
+      '<div class="rab-actions"><button type="button" id="rab-pending" hidden>تأكيد ونشر (0)</button><button type="button" id="rest-admin-pages">الصفحات</button><button type="button" id="rest-admin-done">عرض الموقع</button><button type="button" id="rest-admin-logout" title="تسجيل الخروج من لوحة التحكم">خروج</button></div>';
     document.body.appendChild(bar);
     document.getElementById('rest-admin-menu').addEventListener('click', function () { toggleDrawer(); });
     document.getElementById('rest-admin-pages').addEventListener('click', function () { openDrawer(); showPages(); });
+    document.getElementById('rab-pending').addEventListener('click', function () { publishNow(); });
+    document.getElementById('rest-admin-logout').addEventListener('click', function () {
+      setAuthed(false);
+      location.reload();
+    });
     document.getElementById('rest-admin-done').addEventListener('click', function () {
       var u = new URL(location.href);
       u.searchParams.delete('admin');
       location.href = u.toString();
     });
+    updatePendingBadge();
   }
   function buildSidebar() {
     var bd = document.createElement('div');
@@ -10545,27 +10773,38 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-wa-save">حفظ الرقم وربطه</button>' +
       '<button type="button" class="rap-btn" id="rap-wa-test">اختبار الإرسال</button>' +
       '<button type="button" class="rap-btn" id="rap-wa-reset">إعادة الرقم الأصلي</button></div>' +
+      '<div class="rap-success" id="rap-wa-success" hidden></div>' +
       '<p class="rap-hint" id="rap-wa-status"></p>' +
       '<div class="rap-field"><label>قالب رسالة الحجز الذي يصلك على واتساب (مثال)</label>' +
       '<pre class="rap-original" style="white-space: pre-wrap;">' + esc(sample) + '</pre>' +
       '<p class="rap-hint">عندما يملأ الزائر بيانات الحجز (الاسم والجوال والباقة والتاريخ والوقت والضيوف والإضافات والسعر) ويضغط «إرسال»، تُفتح واتساب بهذه الرسالة كاملة إلى الرقم أعلاه، جاهزة للإرسال.</p></div>' +
-      '<p class="rap-hint"><b>النشر التلقائي:</b> مع تفعيله من صفحة «إعادة تعيين وتصدير» يُنشر الرقم الجديد لكل الزوار تلقائياً عند الحفظ.</p>';
+      '<p class="rap-hint"><b>النشر بعد التأكيد:</b> حفظ الرقم يخزّنه كمسودة في هذا المتصفح. لن يصل للزوار إلا بعد الضغط على «تأكيد ونشر» في الأعلى.</p>';
     return h;
   }
   function wireWaLink() {
     var input = document.getElementById('rap-wa-num');
     var status = document.getElementById('rap-wa-status');
+    var success = document.getElementById('rap-wa-success');
     var say = function (msg) { if (status) status.textContent = msg; };
     var save = document.getElementById('rap-wa-save');
     if (save) save.addEventListener('click', function () {
       var num = normalizeWaNumber(input ? input.value : '');
-      if (num.length < 9 || num.length > 15) { say('رقم غير صالح — أدخل 9 إلى 15 رقماً بالصيغة الدولية بدون +.'); return; }
+      if (num.length < 9 || num.length > 15) {
+        if (success) success.hidden = true;
+        say('رقم غير صالح — أدخل 9 إلى 15 رقماً بالصيغة الدولية بدون +.');
+        return;
+      }
       try { localStorage.setItem(WA_NUM_KEY, num); } catch (e) {}
       applyWaNumber();
       touchLocal();
-      schedulePublish();
-      say('تم حفظ الرقم وربطه: ' + num + ' — كل أزرار واتساب والحجوزات تصل إليه الآن، وسيُنشر تلقائياً لكل الزوار.');
-      showPage('wa-link');
+      updatePendingBadge();
+      // Prominent success banner (no re-render, so it is never wiped).
+      if (success) {
+        success.innerHTML = '<b>✓ تم تغيير الرقم بنجاح</b><br>رقم الاستقبال الجديد: <span dir="ltr">+' + num + '</span> — كل أزرار واتساب والحجوزات تصل إليه الآن في هذا المتصفح. اضغط «تأكيد ونشر» في الأعلى لنشره لكل الزوار.';
+        success.hidden = false;
+      }
+      say('تم حفظ الرقم وربطه: +' + num + ' (مسودة — بانتظار «تأكيد ونشر»).');
+      refreshNavCounts();
     });
     var test = document.getElementById('rap-wa-test');
     if (test) test.addEventListener('click', function () {
@@ -10578,18 +10817,25 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       try { localStorage.removeItem(WA_NUM_KEY); } catch (e) {}
       applyWaNumber();
       touchLocal();
-      schedulePublish();
-      showPage('wa-link');
+      updatePendingBadge();
+      if (success) {
+        success.innerHTML = '<b>✓ تمت إعادة الرقم إلى الأصل</b><br>رقم الاستقبال الآن: <span dir="ltr">+' + WA_NUM_DEFAULT + '</span> (مسودة — بانتظار «تأكيد ونشر»).';
+        success.hidden = false;
+      }
+      say('أُعيد الرقم إلى الأصل: +' + WA_NUM_DEFAULT + ' (مسودة — بانتظار «تأكيد ونشر»).');
+      refreshNavCounts();
     });
   }
   /* ----- page: reset & export ----- */
   function renderTools() {
     var n = Object.keys(getOverrides()).length;
-    return pageHead('إعادة تعيين وتصدير', 'التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). كل حفظ يُنشر تلقائياً لكل الزوار خلال دقيقة تقريباً — بلا رمز وبلا تنزيل ولا رفع يدوي؛ وإن تعذّر النشر نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان index.html.') +
-      '<div class="rap-field"><label>النشر التلقائي</label>' +
-      '<p class="rap-hint">يُنشر كل تعديل تحفظه تلقائياً لكل الزوار — بلا رمز في المتصفح وبلا انتهاء صلاحية. النشر يتم من الخادم مباشرة.</p>' +
-      '<p class="rap-hint" id="rap-publish-status">النشر التلقائي مفعّل — كل حفظ يُنشر تلقائياً.</p>' +
-      '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-publish-now">نشر الآن</button></div>' +
+    var pend = pendingCount();
+    return pageHead('إعادة تعيين وتصدير', 'التعديلات محفوظة في هذا المتصفح (' + n + ' تعديل). لا يُنشر أي تعديل إلا بعد الضغط على «تأكيد ونشر» — بلا رمز وبلا تنزيل ولا رفع يدوي؛ وإن تعذّر النشر نزّل «الموقع المحدّث» وارفع الملف إلى المستودع مكان index.html.') +
+      '<div class="rap-field"><label>تأكيد النشر</label>' +
+      '<p class="rap-hint" id="rap-pending-line">' + (pend > 0 ? 'لديك ' + pend + ' تعديل بانتظار التأكيد — لن يُنشر شيء حتى تضغط «تأكيد ونشر».' : 'لا توجد تعديلات بانتظار النشر — كل شيء منشور.') + '</p>' +
+      '<p class="rap-hint">النشر يتم من الخادم مباشرة (بلا رمز في المتصفح وبلا انتهاء صلاحية)، ويصل لكل الزوار خلال دقيقة تقريباً.</p>' +
+      '<p class="rap-hint" id="rap-publish-status"></p>' +
+      '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-publish-now">✓ تأكيد ونشر التعديلات</button></div>' +
       '<p class="rap-hint" id="rap-publish-status2" style="font-weight:700;"></p></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn primary" id="rap-download">تنزيل الموقع المحدّث (HTML)</button></div>' +
       '<div class="rap-row"><button type="button" class="rap-btn" id="rap-export">تصدير التعديلات (JSON)</button>' +
@@ -10631,12 +10877,12 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
   /* ----- page: about ----- */
   function renderAbout() {
     return pageHead('حول اللوحة', 'كيف تعمل لوحة التحكم وكيف تنشر تعديلاتك.') +
+      '<p class="rap-hint"><b>0 — الدخول:</b> اللوحة محمية بالبريد وكلمة المرور. الدخول من رابط «لوحة التحكم» في أسفل الموقع، أو بإضافة <code>?admin=1</code> إلى رابط الموقع. زر «خروج» في الأعلى ينهي الجلسة.</p>' +
       '<p class="rap-hint"><b>1 — تحرير الموقع مباشرة:</b> اضغط «تحرير الموقع» في الرئيسية أو أيقونة ✎ في الشريط الجانبي، فيظهر الموقع كما يراه الزوار. انقر أي نص فاكتب مباشرة، وانقر أي صورة أو فيديو فاختر بديلاً من جهازك. التعديلات تبقى مسودة في هذا المتصفح حتى تؤكدها.</p>' +
-      '<p class="rap-hint"><b>2 — تأكيد أو إعادة:</b> بعد الانتهاء اضغط «✓ تأكيد التعديل ونشره» في الشريط العلوي فيُنشر كل شيء فوراً لكل الزوار — بلا رمز وبلا صفحة إعدادات. وإن أردت التراجع اضغط «↺ إعادة إلى الحالة السابقة» فيعود الموقع كما كان قبل بدء التحرير، ويُنشر التراجع أيضاً.</p>' +
+      '<p class="rap-hint"><b>2 — تأكيد قبل النشر:</b> لا يُنشر أي تعديل تلقائياً. كل تعديل تحفظه (نص، صورة، رقم واتساب) يبقى مسودة، ويظهر زر «تأكيد ونشر (N)» في الأعلى بعدد التعديلات المنتظرة. اضغطه لنشر كل شيء فوراً لكل الزوار — بلا رمز وبلا صفحة إعدادات. وإن أردت التراجع في وضع التحرير اضغط «↺ إعادة إلى الحالة السابقة» فيعود الموقع كما كان قبل بدء التحرير، ويُنشر التراجع أيضاً.</p>' +
       '<p class="rap-hint"><b>3 — الأصل محفوظ:</b> القيمة التي بُني عليها الموقع تظهر دائماً تحت كل عنصر. حذف المحتوى يعيده إلى أصله، و«إعادة كل شيء إلى الأصل» تلغي كل التعديلات.</p>' +
-      '<p class="rap-hint"><b>4 — النشر التلقائي:</b> التعديلات من صفحات «كل النصوص» و«مكتبة الوسائط» و«ربط واتساب» تُنشر تلقائياً لكل الزوار خلال دقيقة تقريباً عبر الخادم — بلا رمز في المتصفح. وإن تعذّر النشر نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع مكان <code>index.html</code>.</p>' +
-      '<p class="rap-hint"><b>التقارير:</b> نقرات واتساب ومشاهدات الصفحة تُسجَّل في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>' +
-      '<p class="rap-hint">الدخول إلى اللوحة من رابط «لوحة التحكم» في أسفل الموقع، أو بإضافة <code>?admin=1</code> إلى رابط الموقع.</p>';
+      '<p class="rap-hint"><b>4 — النشر:</b> النشر يتم من الخادم مباشرة (بلا رمز في المتصفح وبلا انتهاء صلاحية)، ويصل لكل الزوار خلال دقيقة تقريباً. وإن تعذّر النشر نزّل «الموقع المحدّث» من صفحة «إعادة تعيين وتصدير» وارفع الملف إلى المستودع مكان <code>index.html</code>.</p>' +
+      '<p class="rap-hint"><b>التقارير:</b> نقرات واتساب ومشاهدات الصفحة تُسجَّل في هذا المتصفح. لجمع نقرات جميع الزوار في تقرير واحد يلزم خادم صغير — أخبرني وسأضيفه.</p>';
   }
   function downloadBlob(content, name, type) {
     var blob = content instanceof Blob ? content : new Blob([content], { type: type || 'text/plain' });
@@ -10656,6 +10902,8 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     var bd = clone.querySelector('#rest-admin-backdrop');
     if (bd) bd.remove();
     clone.querySelectorAll('.rest-admin-ui').forEach(function (e) { e.remove(); });
+    var login = clone.querySelector('#rest-admin-login');
+    if (login) login.remove();
     clone.classList.remove('admin-mode');
     clone.classList.remove('ras-drawer-open');
     clone.classList.remove('ras-visual-edit');
@@ -10795,6 +11043,68 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     });
   }
 
+  /* ---------- Admin login screen ---------- */
+  function buildLogin() {
+    var wrap = document.createElement('div');
+    wrap.id = 'rest-admin-login';
+    wrap.className = 'rest-admin-ui';
+    wrap.setAttribute('dir', 'rtl');
+    wrap.innerHTML =
+      '<div class="ral-card">' +
+      '<div class="ral-logo">R</div>' +
+      '<h1>لوحة تحكم شاليه رِيست</h1>' +
+      '<p>هذه اللوحة خاصة بإدارة الموقع. أدخل البريد وكلمة المرور للمتابعة.</p>' +
+      '<form id="ral-form">' +
+      '<label>البريد الإلكتروني أو اسم المستخدم</label>' +
+      '<input type="text" id="ral-email" dir="ltr" placeholder="admin@rest.local" autocomplete="username" required>' +
+      '<label>كلمة المرور</label>' +
+      '<input type="password" id="ral-pass" dir="ltr" placeholder="••••••••" autocomplete="current-password" required>' +
+      '<button type="submit" id="ral-submit">دخول لوحة التحكم</button>' +
+      '<p class="ral-error" id="ral-error" hidden></p>' +
+      '</form>' +
+      '<button type="button" class="ral-back" id="ral-back">← العودة إلى الموقع</button>' +
+      '</div>';
+    document.body.appendChild(wrap);
+    document.getElementById('ral-back').addEventListener('click', function () {
+      var u = new URL(location.href);
+      u.searchParams.delete('admin');
+      location.href = u.toString();
+    });
+    document.getElementById('ral-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('ral-email').value.trim();
+      var pass = document.getElementById('ral-pass').value;
+      var err = document.getElementById('ral-error');
+      var btn = document.getElementById('ral-submit');
+      if (err) err.hidden = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'جارٍ التحقق…'; }
+      fetch('/api/admin-auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: pass }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; }); })
+        .then(function (res) {
+          if (res.body && res.body.ok) {
+            setAuthed(true);
+            wrap.remove();
+            enableEditing();
+          } else {
+            if (err) {
+              err.textContent = res.body && res.body.error === 'no-auth-configured'
+                ? 'الدخول غير مفعّل بعد — أضف متغيري ADMIN_EMAIL و ADMIN_PASSWORD_HASH في إعدادات مشروع Vercel.'
+                : 'البريد أو كلمة المرور غير صحيحة — تحقق وحاول مجدداً.';
+              err.hidden = false;
+            }
+          }
+        })
+        .catch(function () {
+          if (err) { err.textContent = 'تعذّر الاتصال بخادم التحقق — تحقق من الإنترنت وحاول مجدداً.'; err.hidden = false; }
+        })
+        .finally(function () {
+          if (btn) { btn.disabled = false; btn.textContent = 'دخول لوحة التحكم'; }
+        });
+    });
+    var em = document.getElementById('ral-email');
+    if (em) em.focus();
+  }
+
   /* ---------- boot ---------- */
   function boot() {
     assignIds();
@@ -10802,7 +11112,10 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     applyWaNumber();
     fetchRemote();
     trackWa();
-    if (isAdmin) enableEditing();
+    if (isAdmin) {
+      if (isAuthed()) enableEditing();
+      else buildLogin();
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
