@@ -5916,6 +5916,134 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
       .plx32 { transform: none !important; }
     }
     </style>
+    <style id="rest-fix-33">
+    /* ===== REST §33 — precision fixes: summary inset region, numeral
+       discipline, WhatsApp states, deck clearance, per-carousel scroll
+       motion, staged entrances/exits. Identity tokens only. ===== */
+
+    /* D1 — the summary is an inset region of the console: a very light
+       navy tint, a hairline only, a soft radius, real padding on every
+       side (the §26/§30 cascade had left it radius:0 with padding only
+       on top, so its rows touched the panel edges — the clipped look
+       in the owner's screenshot 1). Rows get a calm rhythm; on narrow
+       screens each value takes its own line under its label. */
+    .calc-summary-panel { border: 1px solid var(--w-line);
+      border-radius: 20px; box-shadow: none;
+      padding: clamp(20px, 3vw, 26px); gap: 20px; }
+    .calc-summary-panel, [data-theme="light"] .calc-summary-panel { background: #F2F6FA; }
+    [data-theme="dark"] .calc-summary-panel { background: var(--navy-850); }
+    .calc-summary-panel .summary-title { margin-bottom: 4px; padding-bottom: 14px; }
+    .calc-summary-panel .summary-spec-row { margin-bottom: 0; padding: 9px 0;
+      gap: 20px; align-items: baseline; }
+    .calc-summary-panel .summary-spec-row span:first-child { flex: none; }
+    .calc-summary-panel .summary-spec-row span:last-child,
+    .calc-summary-panel .summary-spec-row strong { overflow-wrap: normal; text-align: end; }
+    .calc-summary-panel .summary-price-grand { margin-top: 8px; padding-top: 18px;
+      margin-bottom: 0; border-top: 1px solid var(--w-line); }
+    @media (max-width: 640px) {
+      .calc-summary-panel .summary-spec-row { flex-direction: column; gap: 2px; padding: 8px 0; }
+      .calc-summary-panel .summary-spec-row span:last-child,
+      .calc-summary-panel .summary-spec-row strong { text-align: start; }
+    }
+    .summary-assure { display: flex; gap: 10px; align-items: flex-start; }
+    .summary-assure .sa-icon { flex: none; width: 30px; height: 30px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(236, 72, 153, 0.12); color: var(--pink-deep); }
+    [data-theme="dark"] .summary-assure .sa-icon { color: var(--pink-soft); }
+    .summary-assure .sa-title { font-size: 0.8125rem; font-weight: 700;
+      color: var(--w-ink); margin-bottom: 3px; }
+    /* The summary sticks in the DESKTOP two-column console; in the
+       single-column console it must sit still as an inset region —
+       stickiness displaced it into the console's bottom padding. */
+    @media (max-width: 1024px) {
+      .calc-summary-panel { position: static; }
+    }
+
+    /* D2a — ghost chapter numerals: removed on <=1280px everywhere,
+       and the facilities numeral is removed at EVERY width (measured
+       intersecting the facilities heading at 1280 on the §32 build —
+       the owner's screenshot 2, his second complaint about it). The
+       remaining wide-desktop numerals sit in the whitespace the §33
+       probe verifies; heading blocks hold a solid stacking context. */
+    .facilities-wrap .rest-chapter-num { display: none; }
+    @media (max-width: 1280px) { .rest-chapter-num { display: none; } }
+    .facilities-stage-header, .section-headline-group { position: relative; z-index: 1; }
+
+    /* D2b — WhatsApp pill states: a compact circle once the visitor is
+       past the hero (footprint shrinks to the icon); tucked fully
+       clear while a pinned stage (packages deck / facilities theatre)
+       is on screen — those stages plus the booking bar carry the
+       booking CTAs, and the pill may not cover stage content. */
+    .floating-wa-pill { transition: bottom 0.45s var(--ease-cinematic),
+      background-color 0.3s ease, width 0.35s var(--ease-fluid),
+      height 0.35s var(--ease-fluid), padding 0.35s var(--ease-fluid),
+      transform 0.45s var(--ease-cinematic), opacity 0.35s ease; }
+    body.wa-compact .floating-wa-pill { width: 52px; height: 52px; padding: 0;
+      justify-content: center; border-radius: 50%; }
+    body.wa-compact .floating-wa-pill > span { display: none; }
+    body.wa-stage .floating-wa-pill { transform: translateY(200px);
+      opacity: 0; pointer-events: none; }
+
+    /* D2c — the theatre zoom pill is gone (it had no handler at all);
+       the photo itself opens the lightbox (§33 script). */
+    .f-photo-zoom-btn { display: none !important; }
+    .f-photo-box { cursor: pointer; }
+
+    /* D3 — deck geometry (<=992px): the sticky stage reserves the
+       header zone at the top and the booking-bar zone at the bottom,
+       and the deck content is compressed to live between them, so the
+       active card (photo, price row and CTA) always rests fully above
+       the bar with a clean gap. Desktop geometry is untouched. */
+    @media (max-width: 992px) {
+      .morph-sticky-stage { justify-content: flex-start;
+        padding-top: 68px; padding-bottom: 104px; }
+      .suffo-packages-layout { gap: 10px; }
+      .suffo-deck-stage { height: 384px; }
+      .package-morph-card { height: 372px; }
+      /* The filter pills stay on ONE row in both languages: the EN
+         labels wrapped to two rows and pushed the whole deck ~40px
+         down into the booking bar (measured on the first §33 build). */
+      .suffo-filter-pills-row { margin-bottom: 8px; flex-wrap: nowrap;
+        gap: 6px; overflow-x: auto; scrollbar-width: none; }
+      .suffo-filter-pills-row::-webkit-scrollbar { display: none; }
+      html[lang="en"] .suffo-filter-pills-row > * { padding-inline: 8px; }
+    }
+    @media (max-width: 768px) {
+      .suffo-card-photo-wrap { height: 118px; }
+    }
+
+    /* M1 — per-carousel scroll motion; every value is a CSS var the
+       §33 loop writes, so each carousel moves differently:
+       deck photo drifts vertically inside the active card; theatre
+       photo slow-zooms (composed with §32's parallax var) while its
+       caption drifts up; guide card photos parallax horizontally,
+       against the scroll-driven rail; gallery photos counter-drift
+       vertically by row parity; day photos fan in (no-GSAP path). */
+    .package-morph-card .suffo-card-photo-wrap img {
+      transform: translateY(var(--dp33, 0px)) scale(1.1); }
+    .f-photo-element.plx32 { transform: translateY(var(--py32, 0px)) scale(var(--ks33, 1.12)); }
+    .f-photo-badge { transform: translateY(var(--cap33, 0px)); }
+    .guide-horizon-track .guide-card-photo-box img {
+      transform: translateX(var(--gx33, 0px)) scale(1.14); }
+    .gallery-brick:nth-child(odd) .brick-img {
+      transform: translateY(var(--gy33, 0px)) scale(1.07); }
+    .gallery-brick:nth-child(even) .brick-img {
+      transform: translateY(calc(var(--gy33, 0px) * -1)) scale(1.07); }
+    .day-card-photo img { transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+    .day-card.fan33-pre .day-card-photo img {
+      transform: rotate(var(--fan33, 0deg)) scale(1.14); }
+
+    /* M2 — section entry rise + exit drift: the §33 loop writes
+       --ey33/--eo33 on each section; .ex33 marks inner wrappers only
+       (never an element another system transforms). */
+    .ex33 { transform: translateY(var(--ey33, 0px)); opacity: var(--eo33, 1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ex33 { transform: none !important; opacity: 1 !important; }
+      .day-card.fan33-pre .day-card-photo img { transform: none !important; }
+      .floating-wa-pill { transition: none !important; }
+    }
+    </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
 /* 0) Hero text visible immediately: never wait for the reveal observer or the
@@ -8295,14 +8423,12 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
               </div>
             </div>
 
-            <div style="background-color: var(--bg-card); padding: var(--sp-200); border-radius: var(--r-lg); border: 1px solid var(--border-subtle);">
-              <div style="display: flex; align-items: center; gap: var(--sp-75); color: var(--gold-light); font-size: 0.8125rem; font-weight: 600; margin-bottom: 4px;">
-                <span class="mini-dot" style="background-color: var(--gold-primary); width:6px; height:6px; border-radius:50%;"></span>
-                <span>ضمان الجاهزية والتعقيم الفندقي الكامل</span>
+            <div class="summary-assure">
+              <span class="sa-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <div>
+                <div class="sa-title">ضمان الجاهزية والتعقيم الفندقي الكامل</div>
+                <p class="text-caption" style="margin: 0;">تعقيم كامل للمسبح والمجالس قبل وصولكم، مع تسليم شفرتكم الخاصة.</p>
               </div>
-              <p class="text-caption" style="margin: 0;">
-                تعقيم كامل للمسبح والمجالس قبل وصولكم، مع تسليم شفرتكم الخاصة.
-              </p>
             </div>
           </div>
         </div>
@@ -9102,6 +9228,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
         modalDialog.showModal();
       }
     }
+    window.openLightboxDirect = openLightboxDirect; /* §33: theatre photo tap */
 
     function openModalAtIndex(index) {
       syncVisibleBricks();
@@ -9717,8 +9844,11 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       var rad = 8 * Math.PI / 180;
       var pw = cw * Math.cos(rad) + ch * Math.sin(rad);
       if (isPhone) {
-        if (isRTL) { dirPreview.style.left = '6px'; }
-        else { dirPreview.style.left = Math.max(6, tableRect.width - pw - 6) + 'px'; }
+        /* §33: the reserved strip is physical (the row padding is
+           physical in both directions), so the card docks at the same
+           physical edge in LTR — at the right it covered the row's
+           name, area value and description (owner screenshot, EN). */
+        dirPreview.style.left = '6px';
         return;
       }
       var areaR = dirTextRect(row.querySelector('.suffo-dir-col-area'));
@@ -12231,7 +12361,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           var railUpd = function () {
             var max = rail.scrollWidth - rail.clientWidth;
             var p = max > 0 ? Math.abs(rail.scrollLeft) / max : 0;
-            if (fill) fill.style.transform = 'scaleX(' + Math.min(1, p).toFixed(4) + ')';
+            /* §33: the fill is written by the §33 scroll loop (section progress + rail position, single writer). */
             var rr = rail.getBoundingClientRect();
             var midX = rr.left + rr.width / 2;
             var best = null, bd = Infinity;
@@ -12365,6 +12495,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           gsap.registerPlugin(ST);
           if (!reduced) {
             gsap.from('.day-card', { y: 36, autoAlpha: 0, duration: 0.85, ease: 'power3.out',
+              rotation: function (i) { return (i - 2) * 3; }, transformOrigin: '50% 110%',
               stagger: 0.09,
               scrollTrigger: { trigger: '#day-rail-track', start: 'top 86%', once: true } });
             var lead = document.querySelector('.gallery-brick .brick-img');
@@ -12503,6 +12634,372 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
           upd();
         } catch (e) {}
       }
+    })();
+    </script>
+    <!-- v10 §33: rest-fix-33 — precision fixes + per-carousel scroll motion -->
+    <script>
+    (function () {
+      'use strict';
+      if (/[?&]admin=1/.test(location.search)) return;
+      var reduced = false;
+      try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+      var hasGsap = typeof window.gsap !== 'undefined';
+      var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+
+      /* ---------- D2c: the theatre photo itself opens the lightbox ---------- */
+      try {
+        document.querySelectorAll('.f-photo-box').forEach(function (box) {
+          box.addEventListener('click', function () {
+            var img = box.querySelector('.f-photo-element');
+            if (!img || typeof window.openLightboxDirect !== 'function') return;
+            var badge = box.querySelector('.f-photo-badge');
+            window.openLightboxDirect(img.getAttribute('src'),
+              badge ? badge.textContent.trim() : (img.getAttribute('alt') || ''));
+          });
+        });
+      } catch (e) {}
+
+      /* ---------- D2b: WhatsApp tucked clear over the pinned stages ---------- */
+      var waStage = { packages: false, facilities: false };
+      try {
+        var stageIO = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { waStage[en.target.id] = en.isIntersecting; });
+          document.body.classList.toggle('wa-stage', !!(waStage.packages || waStage.facilities));
+        }, { threshold: 0.15 });
+        ['packages', 'facilities'].forEach(function (id) {
+          var s = document.getElementById(id);
+          if (s) stageIO.observe(s);
+        });
+      } catch (e) {}
+
+      /* ---------- M2a: staged entrances — semantic delay order ----------
+         §32 claimed these elements with per-parent delays; §33 re-orders
+         the still-unrevealed ones by their role inside the section:
+         chapter/title first, then the section's working parts, then its
+         summary/closing parts. Cards in rails keep §32's per-parent
+         stagger (already sequential). */
+      try {
+        var stageMap = [
+          ['.rest-chapter', 0], ['h2.h-section', 0], ['.suffo-editorial-title', 0],
+          ['.day-head', 0], ['.bk-steps-nav', 0], ['.rest-wordmark', 0],
+          ['.suffo-hotline-center', 40], ['.suffo-editorial-side', 60],
+          ['.bk-step', 130], ['.footer-end-bar', 140], ['.day-rail', 170],
+          ['.calc-summary-panel', 280]
+        ];
+        stageMap.forEach(function (pair) {
+          document.querySelectorAll(pair[0]).forEach(function (el) {
+            if (el.classList.contains('rv32') && !el.classList.contains('rv32-in')) {
+              el.style.transitionDelay = pair[1] + 'ms';
+            }
+          });
+        });
+      } catch (e) {}
+
+      /* ---------- safety sweep: a §32-claimed element that is FULLY in
+         view must never stay hidden (e.g. after a language switch
+         reflows the page around the observer). Fully-in-view only, so
+         off-strip rail cards are never force-shown. ---------- */
+      if (!reduced && 'IntersectionObserver' in window) {
+        try {
+          setInterval(function () {
+            document.querySelectorAll('.rv32:not(.rv32-in)').forEach(function (el) {
+              var r = el.getBoundingClientRect();
+              if (r.height > 0 && r.top >= 0 && r.bottom <= window.innerHeight &&
+                  r.left >= 0 && r.right <= window.innerWidth) {
+                el.classList.add('rv32-in');
+                setTimeout(function () {
+                  el.classList.remove('rv32', 'rv32-in');
+                  el.style.transitionDelay = '';
+                }, 1000);
+              }
+            });
+          }, 1600);
+        } catch (e) {}
+      }
+
+      /* ---------- M1e (no-GSAP path): day cards fan in ----------
+         §32 already rises the cards; §33 rotates each card's photo
+         from a slight per-card angle into place. The GSAP path fans
+         the cards themselves (see the §33 edit of the §30 entrance). */
+      if (!hasGsap && !reduced && 'IntersectionObserver' in window) {
+        try {
+          var dcards = Array.prototype.slice.call(document.querySelectorAll('.day-card'));
+          dcards.forEach(function (c, i) {
+            c.style.setProperty('--fan33', ((i - 2) * 3.5) + 'deg');
+            c.classList.add('fan33-pre');
+          });
+          var drailEl = document.getElementById('day-rail-track');
+          if (drailEl && dcards.length) {
+            var dio = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                dio.unobserve(en.target);
+                dcards.forEach(function (c, i) {
+                  setTimeout(function () {
+                    c.classList.remove('fan33-pre');
+                    setTimeout(function () { c.style.removeProperty('--fan33'); }, 1600);
+                  }, i * 90);
+                });
+              });
+            }, { threshold: 0.25 });
+            dio.observe(drailEl);
+          }
+        } catch (e) {}
+      }
+
+      if (reduced) return; /* everything below is scroll motion */
+
+      /* ---------- M2b: exit/entry drift targets ---------- */
+      var drift = [];
+      try {
+        var driftSpec = [
+          ['facilities-index', function (sec) { return Array.prototype.slice.call(sec.querySelectorAll(':scope > .container')); }],
+          ['guide', function (sec) {
+            var out = Array.prototype.slice.call(sec.querySelectorAll(':scope > .container'));
+            return out.concat(Array.prototype.slice.call(sec.querySelectorAll('.guide-body-pane')));
+          }],
+          ['gallery', function (sec) { return Array.prototype.slice.call(sec.querySelectorAll(':scope > .container')); }],
+          ['day-rail', function (sec) { return Array.prototype.slice.call(sec.querySelectorAll(':scope > .container')); }],
+          ['numbers', function (sec) { var g = sec.querySelector('.numbers-grid'); return g ? [g] : []; }],
+          ['faq', function (sec) { return Array.prototype.slice.call(sec.querySelectorAll(':scope > .container')); }],
+          ['booking', function (sec) { return Array.prototype.slice.call(sec.querySelectorAll(':scope > .container')); }]
+        ];
+        driftSpec.forEach(function (pair) {
+          var sec = document.getElementById(pair[0]);
+          if (!sec) return;
+          var targets = pair[1](sec);
+          targets.forEach(function (tg) { tg.classList.add('ex33'); });
+          if (targets.length) drift.push({ sec: sec, ey: null, eo: null });
+        });
+      } catch (e) {}
+
+      /* ---------- shared element handles ---------- */
+      var hero = document.getElementById('hero');
+      var deckSec = document.getElementById('packages');
+      var deckCards = deckSec ? deckSec.querySelectorAll('.package-morph-card').length : 0;
+      var facSec = document.getElementById('facilities');
+      var gTrack = document.querySelector('.guide-horizon-track');
+      var gView = document.querySelector('.guide-horizon-open-viewport');
+      var mqTrack = document.querySelector('.marquee-track');
+      var mqBase = 34;
+      if (mqTrack && !hasGsap) {
+        var md = parseFloat(getComputedStyle(mqTrack).animationDuration);
+        if (md > 0) mqBase = md;
+      }
+      var daySec = document.getElementById('day-rail');
+      var dayFill = document.getElementById('day-progress-fill');
+      var dayRailEl = document.getElementById('day-rail-track');
+      var galGrid = document.getElementById('gallery-grid');
+
+      /* ---------- guide rail: scroll drive with model detection ---------- */
+      var gModel = null, gHold = false, gSuspendUntil = 0, gLastSet = null;
+      function gDetect(max) {
+        if (gModel !== null) return;
+        if (document.documentElement.dir === 'ltr') { gModel = 'std'; return; }
+        var before = gTrack.scrollLeft;
+        gTrack.scrollLeft = -10;
+        if (gTrack.scrollLeft < 0) { gModel = 'neg'; }
+        else {
+          gTrack.scrollLeft = 10;
+          gModel = (gTrack.scrollLeft > 0) ? 'std' : 'rev';
+        }
+        gTrack.scrollLeft = before;
+      }
+      function gCur(max) {
+        var sl = gTrack.scrollLeft;
+        if (gModel === 'neg') return -sl;
+        if (gModel === 'rev') return max - sl;
+        return sl;
+      }
+      function gSet(v, max) {
+        if (gModel === 'neg') gTrack.scrollLeft = -v;
+        else if (gModel === 'rev') gTrack.scrollLeft = max - v;
+        else gTrack.scrollLeft = v;
+      }
+      if (gTrack) {
+        try {
+          var hold = function () { gSuspendUntil = Date.now() + 1800; };
+          gTrack.addEventListener('pointerdown', function () { gHold = true; hold(); });
+          window.addEventListener('pointerup', function () {
+            if (gHold) { gHold = false; gSuspendUntil = Date.now() + 1200; }
+          });
+          gTrack.addEventListener('wheel', hold, { passive: true });
+          gTrack.addEventListener('touchmove', hold, { passive: true });
+          var arrows = document.querySelector('.guide-horizon-arrows');
+          if (arrows) arrows.addEventListener('pointerdown', hold);
+        } catch (e) {}
+      }
+
+      /* ---------- the §33 scroll loop ---------- */
+      var rafId = null, lastY = window.scrollY, vel = 0;
+      var lastKs = null, lastCap = null, lastDp = null, lastGy = null,
+          lastDay = null, lastMqD = null, mqTween = null;
+      function tick() {
+        rafId = null;
+        if (document.hidden) return;
+        var keep = false;
+        var vh = window.innerHeight;
+        var sy = window.scrollY || 0;
+        var dy = sy - lastY; lastY = sy;
+        vel = vel * 0.82 + Math.abs(dy) * 0.18;
+
+        /* D2b: compact circle past the hero (hysteresis band) */
+        try {
+          var heroH = hero ? hero.offsetHeight : vh;
+          var compact = document.body.classList.contains('wa-compact');
+          if (!compact && sy > heroH * 0.55) document.body.classList.add('wa-compact');
+          else if (compact && sy < heroH * 0.35) document.body.classList.remove('wa-compact');
+        } catch (e) {}
+
+        /* M1d: marquee — scroll velocity boosts the loop, then decays */
+        try {
+          var boost = Math.min(2.4, vel * 0.045);
+          if (boost > 0.02) keep = true;
+          if (mqTrack && hasGsap && typeof window.gsap !== 'undefined') {
+            if (!mqTween) {
+              var tws = window.gsap.getTweensOf(mqTrack);
+              if (tws && tws.length) mqTween = tws[0];
+            }
+            if (mqTween) {
+              var ts = 1 + boost;
+              if (Math.abs(mqTween.timeScale() - ts) > 0.02) mqTween.timeScale(ts);
+            }
+          } else if (mqTrack) {
+            var dur = mqBase / (1 + boost);
+            if (lastMqD === null || Math.abs(dur - lastMqD) > 0.25) {
+              mqTrack.style.animationDuration = dur.toFixed(2) + 's';
+              lastMqD = dur;
+            }
+          }
+        } catch (e) {}
+
+        /* M1a: deck — the active card's photo drifts against the step */
+        try {
+          if (deckSec && deckCards) {
+            var dr = deckSec.getBoundingClientRect();
+            if (dr.bottom > 0 && dr.top < vh && dr.height > vh) {
+              var dp = clamp(-dr.top / (dr.height - vh), 0, 1);
+              var df = (dp * deckCards) % 1;
+              var dv = ((df - 0.5) * 20).toFixed(1);
+              var cimg = deckSec.querySelector('.package-morph-card.is-center .suffo-card-photo-wrap img');
+              if (cimg && lastDp !== dv) { cimg.style.setProperty('--dp33', dv + 'px'); lastDp = dv; }
+            }
+          }
+        } catch (e) {}
+
+        /* M1b: theatre — Ken Burns on the active panel + caption drift */
+        try {
+          if (facSec) {
+            var fr = facSec.getBoundingClientRect();
+            if (fr.bottom > 0 && fr.top < vh && fr.height > vh) {
+              var fp = clamp(-fr.top / (fr.height - vh), 0, 1);
+              var act = facSec.querySelector('.f-stage-panel.is-active');
+              if (act) {
+                var fimg = act.querySelector('.f-photo-element');
+                var ks = (1.05 + fp * 0.075).toFixed(3);
+                if (fimg && lastKs !== ks) { fimg.style.setProperty('--ks33', ks); lastKs = ks; }
+                var badge = act.querySelector('.f-photo-badge');
+                var cap = (6 - fp * 12).toFixed(1);
+                if (badge && lastCap !== cap) { badge.style.setProperty('--cap33', cap + 'px'); lastCap = cap; }
+              }
+            }
+          }
+        } catch (e) {}
+
+        /* M1c: guide — page scroll drives the rail; card photos
+           parallax against it. Suspended while the visitor drives the
+           rail himself, and while a deep-link flash is showing. */
+        try {
+          if (gTrack && gView) {
+            var vr = gView.getBoundingClientRect();
+            var max = gTrack.scrollWidth - gTrack.clientWidth;
+            var driving = false;
+            if (max > 0 && vr.bottom > 0 && vr.top < vh && !gHold &&
+                Date.now() > gSuspendUntil &&
+                !document.querySelector('.guide-horizon-card.fix-flash')) {
+              gDetect(max);
+              var gp = clamp((vh - vr.top) / (vh + vr.height), 0, 1);
+              var mapped = clamp((gp - 0.12) / 0.76, 0, 1);
+              var target = mapped * max;
+              var cur = gCur(max);
+              var diff = target - cur;
+              if (Math.abs(diff) > 0.5) {
+                gTrack.style.scrollBehavior = 'auto';
+                gSet(cur + diff * 0.16, max);
+                driving = true; keep = true;
+                var gx = ((target / max) - 0.5) * -14;
+                gTrack.style.setProperty('--gx33', gx.toFixed(1) + 'px');
+              }
+            }
+            if (!driving && gTrack.style.scrollBehavior === 'auto') {
+              gTrack.style.scrollBehavior = '';
+            }
+          }
+        } catch (e) {}
+
+        /* M1e: day progress — section progress and rail position,
+           single writer (the §30 driver was retired in §33b) */
+        try {
+          if (daySec && dayFill) {
+            var yr = daySec.getBoundingClientRect();
+            if (yr.bottom > 0 && yr.top < vh) {
+              var yp = clamp((vh - yr.top) / (vh + yr.height), 0, 1);
+              var ym = clamp((yp - 0.08) / 0.84, 0, 1);
+              var rp = 0;
+              if (dayRailEl) {
+                var rm = dayRailEl.scrollWidth - dayRailEl.clientWidth;
+                rp = rm > 0 ? Math.abs(dayRailEl.scrollLeft) / rm : 0;
+              }
+              var yv = Math.max(ym, rp);
+              if (lastDay === null || Math.abs(yv - lastDay) > 0.002) {
+                dayFill.style.transform = 'scaleX(' + yv.toFixed(4) + ')';
+                lastDay = yv;
+              }
+            }
+          }
+        } catch (e) {}
+
+        /* M1f: gallery — odd/even photos counter-drift */
+        try {
+          if (galGrid) {
+            var gr = galGrid.getBoundingClientRect();
+            if (gr.bottom > 0 && gr.top < vh) {
+              var gp2 = clamp((vh - gr.top) / (vh + gr.height), 0, 1);
+              var gy = ((gp2 - 0.5) * 30).toFixed(1);
+              if (lastGy !== gy) { galGrid.style.setProperty('--gy33', gy + 'px'); lastGy = gy; }
+            }
+          }
+        } catch (e) {}
+
+        /* M2b: section entry rise + exit drift/fade */
+        try {
+          for (var i = 0; i < drift.length; i++) {
+            var d = drift[i];
+            var r = d.sec.getBoundingClientRect();
+            if (r.bottom < -80 || r.top > vh + 80) continue;
+            var ey = 0, eo = 1;
+            if (r.top > 0) {
+              ey = (1 - clamp((vh - r.top) / (vh * 0.4), 0, 1)) * 18;
+            } else if (r.height > 0) {
+              var xp = clamp(-r.top / r.height, 0, 1);
+              ey = -xp * 24;
+              if (xp > 0.85) eo = 1 - (xp - 0.85) / 0.15 * 0.6;
+            }
+            var eys = ey.toFixed(1), eos = eo.toFixed(2);
+            if (d.ey !== eys) { d.sec.style.setProperty('--ey33', eys + 'px'); d.ey = eys; }
+            if (d.eo !== eos) { d.sec.style.setProperty('--eo33', eos); d.eo = eos; }
+          }
+        } catch (e) {}
+
+        if (keep) rafId = requestAnimationFrame(tick);
+      }
+      function wake() { if (!rafId) rafId = requestAnimationFrame(tick); }
+      window.addEventListener('scroll', wake, { passive: true });
+      window.addEventListener('resize', wake);
+      if (gTrack) gTrack.addEventListener('scroll', wake, { passive: true });
+      if (dayRailEl) dayRailEl.addEventListener('scroll', wake, { passive: true });
+      setInterval(wake, 700);
+      wake();
     })();
     </script>
 </body>
