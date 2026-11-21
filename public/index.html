@@ -6044,6 +6044,24 @@ html.admin-mode [data-admin-id][contenteditable="true"] { outline: 2px solid #EC
       .floating-wa-pill { transition: none !important; }
     }
     </style>
+    <style>
+    /* ===== REST §34 — rest-fix-34: boundary overlap kill + scroll-driven theatre ===== */
+    /* D1: the facilities chapter mark is retired in full (see §34 note
+       in transform_v10.py): its label band sat inside the pinned
+       stage's heading band for the whole entry scroll range. */
+    .facilities-wrap .rest-chapter { display: none !important; }
+
+    /* D2: while the §34 scroll drive is live, panel opacity/transform
+       are written per frame from the lerped scroll position — the
+       class-based 0.32s transition must not fight them. */
+    .facilities-stage-theater.f34-drive .f-stage-panel { transition: none !important; }
+
+    /* Reduced motion: no interpolated transforms — the discrete
+       engine's class switches land instantly at thresholds. */
+    @media (prefers-reduced-motion: reduce) {
+      .f-stage-panel { transition: none !important; }
+    }
+    </style>
 <style id="preview-design-polish">
 /* ===== PREVIEW DESIGN POLISH — de-template pass (visual audit 2026-11-08) ===== */
 /* 0) Hero text visible immediately: never wait for the reveal observer or the
@@ -9101,7 +9119,7 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
     // Smooth programmatic scroll when clicking a specific facility pill/dot
     function scrollToFacilityStep(stepIndex) {
       if (!facilitiesSection || cachedFacDist <= 0) return;
-      var stepFractions = [0.04, 0.22, 0.40, 0.58, 0.76, 0.94];
+      var stepFractions = [0.0833, 0.25, 0.4167, 0.5833, 0.75, 0.9167]; /* §34: band centres — clicks land where the scroll-mapped drive has the panel fully settled */
       var targetProgress = stepFractions[stepIndex] !== undefined ? stepFractions[stepIndex] : (stepIndex / totalFacilitySteps);
       var targetTop = cachedFacTop + (cachedFacDist * targetProgress);
       window.scrollTo({
@@ -12999,6 +13017,90 @@ html:not([data-theme="light"]) .map-panel { background: linear-gradient(165deg, 
       if (gTrack) gTrack.addEventListener('scroll', wake, { passive: true });
       if (dayRailEl) dayRailEl.addEventListener('scroll', wake, { passive: true });
       setInterval(wake, 700);
+      wake();
+    })();
+    </script>
+    <!-- v10 §34: rest-fix-34 — scroll-driven facilities theatre -->
+    <script>
+    (function () {
+      'use strict';
+      if (/[?&]admin=1/.test(location.search)) return;
+      var reduced = false;
+      try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+      if (reduced) return; /* discrete engine + instant CSS switches only */
+      var sec = document.getElementById('facilities');
+      var theater = document.getElementById('facilities-stage-theater');
+      if (!sec || !theater) return;
+      var panels = Array.prototype.slice.call(theater.querySelectorAll('.f-stage-panel'));
+      var N = panels.length;
+      if (N < 2) return;
+      theater.classList.add('f34-drive');
+      var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+      function progress() {
+        var r = sec.getBoundingClientRect();
+        var dist = r.height - window.innerHeight;
+        if (dist <= 0) return 0;
+        return clamp(-r.top / dist, 0, 1);
+      }
+      /* panel i is fully settled at the centre of its scroll band —
+         the same point where the legacy engine's floor(p*N) index and
+         round(f) agree — so classes, chips, counter and visuals never
+         disagree about which panel is active. */
+      function target() { return clamp(progress() * N - 0.5, 0, N - 1); }
+      var fDisp = target();
+      var last = [];
+      for (var k = 0; k < N; k++) last.push('');
+      function apply() {
+        for (var i = 0; i < N; i++) {
+          var el = panels[i];
+          var d = fDisp - i;
+          var ad = Math.abs(d);
+          var a = clamp(1 - ad, 0, 1);
+          if (a <= 0.001) {
+            if (last[i] !== 'h') {
+              el.style.opacity = '0';
+              el.style.visibility = 'hidden';
+              el.style.transform = '';
+              el.style.zIndex = '';
+              last[i] = 'h';
+            }
+            continue;
+          }
+          var op = a.toFixed(3);
+          var ty = (-d * 14).toFixed(1);
+          var sc = (1 - ad * 0.025).toFixed(3);
+          var key = op + '|' + ty + '|' + sc;
+          if (last[i] !== key) {
+            el.style.visibility = 'visible';
+            el.style.opacity = op;
+            el.style.transform = 'translate3d(0,' + ty + 'px,0) scale(' + sc + ')';
+            el.style.zIndex = String(5 + Math.round(a * 5));
+            last[i] = key;
+          }
+        }
+      }
+      var rafId = null;
+      function tick() {
+        rafId = null;
+        if (document.hidden) return;
+        var t = target();
+        var diff = t - fDisp;
+        if (Math.abs(diff) > 0.0004) {
+          fDisp += diff * 0.18;
+          if (Math.abs(t - fDisp) <= 0.0004) fDisp = t;
+          apply();
+          rafId = requestAnimationFrame(tick);
+        } else if (fDisp !== t) {
+          fDisp = t;
+          apply();
+        }
+        /* settled: stop; scroll / resize / the interval wake us */
+      }
+      function wake() { if (!rafId) rafId = requestAnimationFrame(tick); }
+      window.addEventListener('scroll', wake, { passive: true });
+      window.addEventListener('resize', wake);
+      setInterval(wake, 700);
+      apply();
       wake();
     })();
     </script>
