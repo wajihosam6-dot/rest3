@@ -1,15 +1,78 @@
 // api/publish.js — Server-side auto-publish for the REST admin panel.
-// The admin panel POSTs {overrides, waNumber, updatedAt} here. There is NO
-// token in the browser anymore: this function commits the payload to
-// public/overrides.json in the rest3 repo using a GitHub token stored as the
-// Vercel env var GITHUB_TOKEN (a classic PAT with `repo` scope and no
+// The admin panel POSTs {overrides, waNumber, updatedAt} here with an
+// `Authorization: Bearer <token>` header. The token is issued by
+// /api/admin-auth on a successful admin login (24h HMAC token, keyed by
+// ADMIN_PASSWORD_HASH). This endpoint is AUTHENTICATED — without a valid
+// token it returns 401 and publishes nothing. It used to be public, which
+// let anyone who found the URL deface the site for all visitors.
+// There is NO GitHub token in the browser: this function commits the payload
+// to public/overrides.json in the rest3 repo using a GitHub token stored as
+// the Vercel env var GITHUB_TOKEN (a classic PAT with `repo` scope and no
 // expiration — set once in the Vercel dashboard, never in the browser).
 // Vercel auto-deploys on push, so the new overrides go live for all
-// visitors within ~a minute. The endpoint is public but unlinked; a size
-// limit guards against abuse. A login/secret can be added later if wanted.
+// visitors within ~a minute.
+//
+// Payload validation (fail closed): `overrides` must be an object with at
+// most 500 entries; each key must look like a stable admin id (t12 / i3 /
+// v1) and each value must be {type: text|img|video, value: string,
+// original: string}. Text values are capped at 100KB, media URLs at 2KB.
+// `waNumber`, when present, must be 9–15 digits. Anything else -> 400.
+const crypto = require('crypto');
+
+function safeEqual(a, b) {
+  const ba = Buffer.from(String(a || ''), 'utf8');
+  const bb = Buffer.from(String(b || ''), 'utf8');
+  if (ba.length !== bb.length) return false;
+  try { return crypto.timingSafeEqual(ba, bb); } catch (e) { return false; }
+}
+function hmacHex(key, msg) {
+  return crypto.createHmac('sha256', String(key || '')).update(String(msg || ''), 'utf8').digest('hex');
+}
+// Verify the Bearer token issued by /api/admin-auth:
+// `<expiry>.<hmac>` where hmac = HMAC-SHA256(key=ADMIN_PASSWORD_HASH,
+// message=`rest-admin:<email>:<expiry>`).
+function verifyPublishToken(req) {
+  const hash = (process.env.ADMIN_PASSWORD_HASH || '').toLowerCase();
+  const email = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+  if (!hash || !email) return false;
+  const auth = (req.headers && (req.headers.authorization || req.headers.Authorization)) || '';
+  const m = /^Bearer\s+(\S+)$/.exec(String(auth));
+  if (!m) return false;
+  const parts = m[1].split('.');
+  if (parts.length !== 2) return false;
+  const expiry = parseInt(parts[0], 10);
+  if (!expiry || expiry * 1000 <= Date.now()) return false; // expired / malformed
+  const expected = hmacHex(hash, 'rest-admin:' + email + ':' + expiry);
+  return safeEqual(parts[1].toLowerCase(), expected);
+}
+function validOverrides(overrides) {
+  if (!overrides || typeof overrides !== 'object' || Array.isArray(overrides)) return false;
+  const keys = Object.keys(overrides);
+  if (keys.length > 500) return false;
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
+    if (!/^[a-z]\d+$/.test(k)) return false;
+    const v = overrides[k];
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return false;
+    if (v.type !== 'text' && v.type !== 'img' && v.type !== 'video') return false;
+    if (typeof v.value !== 'string') return false;
+    if (typeof v.original !== 'string') return false;
+    const cap = v.type === 'text' ? 100 * 1024 : 2 * 1024;
+    if (v.value.length > cap || v.original.length > cap) return false;
+    if (v.poster != null && typeof v.poster !== 'string') return false;
+    if (v.poster && v.poster.length > 2 * 1024) return false;
+  }
+  return true;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ ok: false, error: 'method' });
+    return;
+  }
+  // Authenticate first — before touching the token or the payload.
+  if (!verifyPublishToken(req)) {
+    res.status(401).json({ ok: false, error: 'unauthorized' });
     return;
   }
   var token = process.env.GITHUB_TOKEN;
@@ -21,9 +84,15 @@ module.exports = async (req, res) => {
   if (typeof payload === 'string') {
     try { payload = JSON.parse(payload); } catch (e) { res.status(400).json({ ok: false, error: 'bad-json' }); return; }
   }
-  if (!payload || typeof payload !== 'object' || typeof payload.overrides !== 'object') {
+  if (!payload || typeof payload !== 'object' || !validOverrides(payload.overrides)) {
     res.status(400).json({ ok: false, error: 'bad-payload' });
     return;
+  }
+  if (payload.waNumber != null) {
+    if (typeof payload.waNumber !== 'string' || !/^\d{9,15}$/.test(payload.waNumber)) {
+      res.status(400).json({ ok: false, error: 'bad-payload' });
+      return;
+    }
   }
   payload.v = 1;
   payload.updatedAt = Date.now();
